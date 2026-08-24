@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide Alpine elements before hydration */
+[x-cloak] {
+    display: none !important;
+}
+
+/* TRATIX base: dark slate surface */
+@layer base {
+    body {
+        @apply bg-slate-900 text-slate-100 antialiased selection:bg-emerald-500 selection:text-slate-950;
+    }
+
+    /* Global form controls reset to guarantee legibility and dark theme uniformity */
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+    select,
+    textarea {
+        @apply bg-slate-900 border-slate-600 text-slate-100 placeholder-slate-500 rounded-md focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 text-sm;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        @apply bg-slate-900 border-slate-600 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-slate-900 rounded;
+    }
+
+    input[type="radio"] {
+        @apply rounded-full;
+    }
+}
+
+/* Reusable brand surfaces & UI elements */
+@layer components {
+    .card {
+        @apply bg-slate-800 border border-slate-700 rounded-xl shadow-sm;
+    }
+    .card-header {
+        @apply font-semibold text-slate-100 border-b border-slate-700 pb-2 mb-3;
+    }
+    .btn-primary {
+        @apply inline-flex items-center justify-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-4 py-2 rounded-md text-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm;
+    }
+    .btn-outline {
+        @apply inline-flex items-center justify-center bg-slate-800 border border-slate-600 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-md text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center justify-center bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 px-4 py-2 rounded-md text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-slate-500;
+    }
+    .btn-danger {
+        @apply inline-flex items-center justify-center bg-rose-600 hover:bg-rose-500 text-white font-semibold px-4 py-2 rounded-md text-sm transition focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+    }
+    .input {
+        @apply w-full border border-slate-600 rounded-md bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500 placeholder-slate-500 transition;
+    }
+    .label {
+        @apply block text-sm font-medium mb-1 text-slate-200;
+    }
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+    .badge-emerald {
+        @apply bg-emerald-950/60 text-emerald-300 border border-emerald-800;
+    }
+    .badge-blue {
+        @apply bg-blue-950/60 text-blue-300 border border-blue-800;
+    }
+    .badge-amber {
+        @apply bg-amber-950/60 text-amber-300 border border-amber-800;
+    }
+    .badge-rose {
+        @apply bg-rose-950/60 text-rose-300 border border-rose-800;
+    }
+}

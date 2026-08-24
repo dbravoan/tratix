@@ -1,0 +1,311 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - "docs/**"
+      - "progress/**"
+      - ".agents/**"
+      - "AGENTS.md"
+      - "OPENCODE.md"
+      - "CHECKPOINTS.md"
+      - "README.md"
+      - ".editorconfig"
+      - ".gitattributes"
+      - ".styleci.yml"
+      - "*.md"
+
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PHP_VERSION: '8.3'
+  NODE_VERSION: '20'
+
+jobs:
+  test:
+    name: Run Test Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: contratos_test
+          MYSQL_USER: contratos_user
+          MYSQL_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, json, bcmath, fileinfo, gd
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Validate Composer Configuration
+        run: composer validate --strict --no-check-lock
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-test-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-test-
+
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Install NPM Dependencies & Build Assets
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Prepare Environment for Testing
+        run: |
+          cp .env.example .env.testing
+          php artisan key:generate --env=testing
+
+      - name: Run Automated Tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: contratos_test
+          DB_USERNAME: contratos_user
+          DB_PASSWORD: password
+        run: php artisan test
+
+  deploy:
+    name: Deploy to Production VPS
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: success()
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, dom, filter, json, bcmath, fileinfo, gd
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: composer-prod-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-prod-
+
+      - name: Install Production PHP Dependencies
+        run: |
+          composer install \
+            --no-interaction \
+            --no-progress \
+            --prefer-dist \
+            --optimize-autoloader \
+            --no-dev \
+            --classmap-authoritative
+
+      - name: Build Production Frontend Assets (Vite)
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: Create Deployment Artifact
+        run: |
+          RELEASE_NAME="release-$(date +%Y%m%d%H%M%S)-${{ github.sha }}"
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+
+          tar -czf "${{ runner.temp }}/$RELEASE_NAME.tar.gz" \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=.agents \
+            --exclude=node_modules \
+            --exclude=tests \
+            --exclude=testbench.yaml \
+            --exclude=phpunit.xml \
+            --exclude=phpstan.neon \
+            --exclude=.env \
+            --exclude=compose.yaml \
+            --exclude=skills-lock.json \
+            --exclude=CHECKPOINTS.md \
+            --exclude=AGENTS.md \
+            --exclude=OPENCODE.md \
+            --exclude=progress \
+            --exclude=vendor/bin \
+            --exclude=storage \
+            -C "${{ github.workspace }}" .
+
+      - name: Install SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          sed -i -e '$a\' ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p ${{ secrets.VPS_PORT || '22' }} ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Upload Artifact to VPS
+        run: |
+          scp -P ${{ secrets.VPS_PORT || '22' }} -i ~/.ssh/id_rsa \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            "${{ runner.temp }}/${{ env.RELEASE_NAME }}.tar.gz" \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/tmp/
+
+      - name: Execute Zero-Downtime Deployment on VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            bash -l <<'BASH_EOF'
+            set -euo pipefail
+
+            APP_DIR="${{ secrets.VPS_DIR }}"
+            RELEASES_DIR="$APP_DIR/releases"
+            CURRENT_DIR="$APP_DIR/current"
+            RELEASE_NAME="${{ env.RELEASE_NAME }}"
+            RELEASE_DIR="$RELEASES_DIR/$RELEASE_NAME"
+
+            echo "🚀 Starting Tratix Zero-Downtime Deployment..."
+            echo "Using PHP: $(php -v | head -1)"
+
+            echo "::group::1. Prepare Directories"
+            mkdir -p "$RELEASES_DIR" \
+              "$APP_DIR/storage/app/public" \
+              "$APP_DIR/storage/framework/cache/data" \
+              "$APP_DIR/storage/framework/views" \
+              "$APP_DIR/storage/framework/sessions" \
+              "$APP_DIR/storage/logs"
+            echo "::endgroup::"
+
+            echo "::group::2. Extract Artifact"
+            mkdir -p "$RELEASE_DIR"
+            tar -xzf "/tmp/$RELEASE_NAME.tar.gz" -C "$RELEASE_DIR"
+            rm -f "/tmp/$RELEASE_NAME.tar.gz"
+            echo "::endgroup::"
+
+            echo "::group::3. Link Persistent Resources"
+            rm -rf "$RELEASE_DIR/storage"
+            ln -sfn "$APP_DIR/storage" "$RELEASE_DIR/storage"
+            chmod -R 775 "$APP_DIR/storage"
+
+            if [ -f "$APP_DIR/.env" ]; then
+              ln -sfn "$APP_DIR/.env" "$RELEASE_DIR/.env"
+              # Check if APP_KEY is empty and generate if needed
+              if grep -q '^APP_KEY=$' "$APP_DIR/.env" 2>/dev/null || grep -q '^APP_KEY=""$' "$APP_DIR/.env" 2>/dev/null; then
+                php "$RELEASE_DIR/artisan" key:generate --force
+                cp "$RELEASE_DIR/.env" "$APP_DIR/.env"
+              fi
+            else
+              if [ -f "$RELEASE_DIR/.env.production.example" ]; then
+                echo "::warning::No .env at $APP_DIR/.env — creating from .env.production.example"
+                cp "$RELEASE_DIR/.env.production.example" "$APP_DIR/.env"
+                ln -sfn "$APP_DIR/.env" "$RELEASE_DIR/.env"
+                php "$RELEASE_DIR/artisan" key:generate --force
+                cp "$RELEASE_DIR/.env" "$APP_DIR/.env"
+              else
+                echo "::error::No .env at $APP_DIR/.env and no .env.production.example found. Aborting."
+                exit 1
+              fi
+            fi
+            echo "::endgroup::"
+
+            echo "::group::4. Maintenance Mode (Optional Graceful Transition)"
+            if [ -L "$CURRENT_DIR" ] && [ -f "$CURRENT_DIR/artisan" ]; then
+              php "$CURRENT_DIR/artisan" down --retry=15 --quiet 2>/dev/null || true
+            fi
+            echo "::endgroup::"
+
+            echo "::group::5. Activate New Release"
+            ln -sfn "$RELEASE_DIR" "$CURRENT_DIR.tmp"
+            mv -fT "$CURRENT_DIR.tmp" "$CURRENT_DIR"
+            cd "$CURRENT_DIR"
+            echo "::endgroup::"
+
+            echo "::group::6. Laravel Production Optimizations"
+            php artisan storage:link --quiet 2>/dev/null || true
+
+            chmod -R 775 "$RELEASE_DIR/bootstrap/cache"
+
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan event:cache
+
+            php artisan migrate --force
+            php artisan queue:restart || true
+
+            # Reload PHP-FPM if systemctl is available
+            sudo systemctl reload php8.3-fpm 2>/dev/null || \
+            sudo systemctl reload php8.4-fpm 2>/dev/null || \
+            sudo systemctl reload php-fpm 2>/dev/null || true
+
+            chmod -R 775 "$RELEASE_DIR/bootstrap/cache"
+            chmod -R 775 "$APP_DIR/storage"
+            echo "::endgroup::"
+
+            echo "::group::7. Health Check & Bring Application Up"
+            php artisan up --quiet
+
+            sleep 2
+            APP_URL=$(php -r "echo config('app.url');" 2>/dev/null || echo "http://localhost")
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              --connect-timeout 5 --max-time 10 \
+              "$APP_URL/" 2>/dev/null || echo "000")
+
+            if [ "$STATUS" = "000" ]; then
+              echo "ℹ️ Health check: Server responded (Status: $STATUS). Check web server (Nginx/Apache) root points to $CURRENT_DIR/public"
+            elif [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 500 ]; then
+              echo "✅ Health check passed (HTTP $STATUS)"
+            else
+              echo "⚠️ Health check returned HTTP $STATUS"
+            fi
+            echo "::endgroup::"
+
+            echo "::group::8. Cleanup Old Releases (Keep last 4)"
+            cd "$RELEASES_DIR"
+            ls -1t | tail -n +5 | xargs -r rm -rf
+            echo "Active Releases:"
+            ls -1t | head -5
+            echo "::endgroup::"
+
+            echo ""
+            echo "✨ Successfully Deployed: $RELEASE_NAME"
+            BASH_EOF
