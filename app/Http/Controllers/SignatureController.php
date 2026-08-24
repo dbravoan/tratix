@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -107,9 +108,9 @@ class SignatureController extends Controller
     {
         $contract = $this->contractByToken($token);
 
-        if ($contract->final_pdf_path) {
-            return response()->download(
-                storage_path('app/private/'.$contract->final_pdf_path),
+        if ($contract->final_pdf_path && Storage::disk('local')->exists($contract->final_pdf_path)) {
+            return Storage::disk('local')->download(
+                $contract->final_pdf_path,
                 $contract->reference.'-firmado.pdf'
             );
         }

@@ -21,6 +21,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ContractController extends Controller
@@ -195,9 +196,9 @@ class ContractController extends Controller
     {
         $this->authorize('view', $contract);
 
-        if ($contract->final_pdf_path) {
-            return response()->download(
-                storage_path('app/private/'.$contract->final_pdf_path),
+        if ($contract->final_pdf_path && Storage::disk('local')->exists($contract->final_pdf_path)) {
+            return Storage::disk('local')->download(
+                $contract->final_pdf_path,
                 $contract->reference.'-firmado.pdf'
             );
         }
@@ -209,15 +210,23 @@ class ContractController extends Controller
     {
         $this->authorize('view', $contract);
 
-        if (! $contract->final_pdf_path) {
-            return redirect()->route('contracts.show', $contract)
-                ->with('error', 'El contrato aún no está firmado ni sellado.');
+        $evidencePath = 'contracts/'.$contract->reference.'/evidence-payload.txt';
+        if (Storage::disk('local')->exists($evidencePath)) {
+            return Storage::disk('local')->download(
+                $evidencePath,
+                $contract->reference.'-evidencia.txt'
+            );
         }
 
-        return response()->download(
-            storage_path('app/private/'.$contract->final_pdf_path),
-            $contract->reference.'-final.pdf'
-        );
+        if ($contract->final_pdf_path && Storage::disk('local')->exists($contract->final_pdf_path)) {
+            return Storage::disk('local')->download(
+                $contract->final_pdf_path,
+                $contract->reference.'-final.pdf'
+            );
+        }
+
+        return redirect()->route('contracts.show', $contract)
+            ->with('error', 'La hoja de evidencias aún no está disponible.');
     }
 
     public function verify(Request $request, Contract $contract): RedirectResponse
