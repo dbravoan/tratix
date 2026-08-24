@@ -23,8 +23,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PHP_VERSION: '8.3'
-  NODE_VERSION: '20'
+  PHP_VERSION: '8.4'
+  NODE_VERSION: '22'
 
 jobs:
   test:
