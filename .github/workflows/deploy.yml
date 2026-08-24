@@ -197,13 +197,14 @@ jobs:
             bash -l <<'BASH_EOF'
             set -euo pipefail
 
-            APP_DIR="${{ secrets.VPS_DIR }}"
+            APP_DIR="$(printf '%s' "${{ secrets.VPS_DIR }}" | tr -d '\r\n' | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's:/*$::')"
             RELEASES_DIR="$APP_DIR/releases"
             CURRENT_DIR="$APP_DIR/current"
             RELEASE_NAME="${{ env.RELEASE_NAME }}"
             RELEASE_DIR="$RELEASES_DIR/$RELEASE_NAME"
 
             echo "🚀 Starting Tratix Zero-Downtime Deployment..."
+            echo "Deploying to: $APP_DIR"
             echo "Using PHP: $(php -v | head -1)"
 
             echo "::group::1. Prepare Directories"
@@ -227,11 +228,12 @@ jobs:
             chmod -R 775 "$APP_DIR/storage"
 
             if [ -f "$APP_DIR/.env" ]; then
+              echo "Found existing persistent .env at $APP_DIR/.env"
               ln -sfn "$APP_DIR/.env" "$RELEASE_DIR/.env"
               # Check if APP_KEY is empty and generate if needed
               if grep -q '^APP_KEY=$' "$APP_DIR/.env" 2>/dev/null || grep -q '^APP_KEY=""$' "$APP_DIR/.env" 2>/dev/null; then
+                echo "Generating APP_KEY into .env..."
                 php "$RELEASE_DIR/artisan" key:generate --force
-                cp "$RELEASE_DIR/.env" "$APP_DIR/.env"
               fi
             else
               if [ -f "$RELEASE_DIR/.env.production.example" ]; then
@@ -239,7 +241,6 @@ jobs:
                 cp "$RELEASE_DIR/.env.production.example" "$APP_DIR/.env"
                 ln -sfn "$APP_DIR/.env" "$RELEASE_DIR/.env"
                 php "$RELEASE_DIR/artisan" key:generate --force
-                cp "$RELEASE_DIR/.env" "$APP_DIR/.env"
               else
                 echo "::error::No .env at $APP_DIR/.env and no .env.production.example found. Aborting."
                 exit 1
