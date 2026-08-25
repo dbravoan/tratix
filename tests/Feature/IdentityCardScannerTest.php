@@ -354,6 +354,7 @@ class IdentityCardScannerTest extends TestCase
 
     public function test_document_guidance_resolves_all_attached_id_cards_and_extra_documents(): void
     {
+        $this->seed(\Database\Seeders\DocumentRequirementSeeder::class);
         Storage::fake('local');
         $user = User::factory()->create();
 
