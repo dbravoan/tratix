@@ -17,6 +17,7 @@ class ContractFactory extends Factory
         return [
             'reference' => 'C-'.now()->format('Y').'-'.fake()->unique()->numberBetween(1000, 9999),
             'contract_type' => 'bienes_muebles',
+            'creator_role' => 'vendedor',
             'transaction_type' => 'b2c',
             'jurisdiction' => 'nacional',
             'title' => 'Contrato de compraventa de prueba',

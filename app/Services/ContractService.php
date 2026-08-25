@@ -92,7 +92,7 @@ class ContractService
         $data['applicable_law'] = $this->resolveApplicableLaw($seller, $buyer);
         $data['creator_role'] = in_array($data['creator_role'] ?? null, ['vendedor', 'comprador'], true)
             ? $data['creator_role']
-            : 'comprador';
+            : 'vendedor';
         $data['tax_amount'] ??= 0;
         $data['total_amount'] = round((float) ($data['price_amount'] ?? 0) + (float) $data['tax_amount'], 2);
         $data['legal_notes'] = $this->resolver->vatTreatmentNotes($resolution, $data['applicable_law']);
