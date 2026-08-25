@@ -72,7 +72,7 @@ class IdentityCardScannerTest extends TestCase
 
         // 1. Front scan with client OCR
         $fileFront = UploadedFile::fake()->createWithContent('anverso.jpg', 'binary-photo-data');
-        $ocrFront = "ESPAÑA DOCUMENTO NACIONAL DE IDENTIDAD\n1. APELLIDO\nRODRIGUEZ\n2. APELLIDO\nSANCHEZ\nNOMBRE\nDAVID\nNUM: 52.345.678-W\nVALIDEZ 10 10 2032";
+        $ocrFront = "ESPAÑA DOCUMENTO NACIONAL DE IDENTIDAD\n1. APELLIDO\nRODRIGUEZ\n2. APELLIDO\nSANCHEZ\nNOMBRE\nDAVID\nNUM: 12.345.678-Z\nVALIDEZ 10 10 2032";
 
         $resFront = $this->actingAs($user)->postJson(route('contracts.scan-id'), [
             'document' => $fileFront,
@@ -84,7 +84,7 @@ class IdentityCardScannerTest extends TestCase
         $resFront->assertJson([
             'success' => true,
             'side' => 'front',
-            'tax_id' => '52345678W',
+            'tax_id' => '12345678Z',
             'full_name' => 'David Rodriguez Sanchez',
         ]);
         $frontToken = $resFront->json('scan_token');
@@ -92,7 +92,7 @@ class IdentityCardScannerTest extends TestCase
 
         // 2. Back scan with client OCR
         $fileBack = UploadedFile::fake()->createWithContent('reverso.jpg', 'binary-photo-data');
-        $ocrBack = "DOMICILIO: PASEO DE LA CASTELLANA 100 4ºA\nMUNICIPIO: MADRID\nPROVINCIA: MADRID\nCP: 28046\nIDESP52345678W0<<<<<<<<<<<<<<<\n8801014M3210108ESP<<<<<<<<<<<2\nRODRIGUEZ<SANCHEZ<<DAVID<<<<<<";
+        $ocrBack = "DOMICILIO: PASEO DE LA CASTELLANA 100 4ºA\nMUNICIPIO: MADRID\nPROVINCIA: MADRID\nCP: 28046\nIDESP12345678Z0<<<<<<<<<<<<<<<\n8801014M3210108ESP<<<<<<<<<<<2\nRODRIGUEZ<SANCHEZ<<DAVID<<<<<<";
 
         $resBack = $this->actingAs($user)->postJson(route('contracts.scan-id'), [
             'document' => $fileBack,
