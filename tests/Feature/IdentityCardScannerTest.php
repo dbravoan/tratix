@@ -301,12 +301,12 @@ class IdentityCardScannerTest extends TestCase
     {
         $parser = app(IdentityCardParserService::class);
 
-        // Real Spanish DNI 3.0 MRZ where line 1 has support number CKL159690 and line 2 has real NIF 52345678W
-        $mrz = "IDESPCKL159690<<<<<<<<<<<<<<<\n8505152M3005154ESP52345678W<<<8\nGARCIA<LOPEZ<<JUAN<CARLOS<<<<<";
+        // Real Spanish DNI 3.0 MRZ where line 1 has support number CKL159690 and line 2 has real NIF 12345678Z
+        $mrz = "DOMICILIO: CALLE ALCALA 45 2ºB\nMUNICIPIO: MADRID\nCP: 28014\nIDESPCKL159690<<<<<<<<<<<<<<<\n8505152M3005154ESP12345678Z<<<<8\nGARCIA<LOPEZ<<JUAN<CARLOS<<<<<";
         $parsed = $parser->parseText($mrz);
 
         $this->assertTrue($parsed['success']);
-        $this->assertEquals('52345678W', $parsed['tax_id']);
+        $this->assertEquals('12345678Z', $parsed['tax_id']);
         $this->assertEquals('CKL159690', $parsed['support_number']);
         $this->assertEquals('ES', $parsed['tax_id_country']);
         $this->assertTrue($parsed['tax_id_valid']);
@@ -333,10 +333,10 @@ class IdentityCardScannerTest extends TestCase
         $parser = app(IdentityCardParserService::class);
 
         // 1. Argentina DNI & CUIT
-        $arText = "REPÚBLICA ARGENTINA\nREGISTRO NACIONAL DE LAS PERSONAS\nDOCUMENTO NACIONAL DE IDENTIDAD\nAPELLIDO: GONZALEZ\nNOMBRE: MARTIN\nCUIT: 20-30123456-4\nDOMICILIO: AV CORRIENTES 1234\nLOCALIDAD: BUENOS AIRES\nCP: 1425";
+        $arText = "REPÚBLICA ARGENTINA\nREGISTRO NACIONAL DE LAS PERSONAS\nDOCUMENTO NACIONAL DE IDENTIDAD\nAPELLIDO: GONZALEZ\nNOMBRE: MARTIN\nCUIT: 20-30123456-3\nDOMICILIO: AV CORRIENTES 1234\nLOCALIDAD: BUENOS AIRES\nCP: 1425";
         $arParsed = $parser->parseText($arText);
         $this->assertTrue($arParsed['success']);
-        $this->assertEquals('20301234564', str_replace('-', '', $arParsed['tax_id']));
+        $this->assertEquals('20301234563', str_replace('-', '', $arParsed['tax_id']));
         $this->assertEquals('AR', $arParsed['tax_id_country']);
         $this->assertEquals('Martin Gonzalez', $arParsed['full_name']);
         $this->assertEquals('AV CORRIENTES 1234', $arParsed['address']);
