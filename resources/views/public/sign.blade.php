@@ -263,7 +263,7 @@
                 {{-- GDPR First Layer Notice on Signature --}}
                 <x-gdpr-info-box 
                     title="Protección de datos y registro de evidencias de firma (RGPD / eIDAS)"
-                    purpose="Formalización de la firma electrónica, generación de evidencias probatorias técnicas (IP, hash criptográfico SHA-256, sellado de tiempo y código OTP) y custodia contractual legal."
+                    purpose="Formalización de la firma electrónica, generación de evidencias probatorias técnicas (dirección IP, User-Agent, hash criptográfico SHA-256 y sellado de tiempo) y custodia contractual legal."
                     legitimation="Ejecución de la relación contractual (art. 6.1.b RGPD) y cumplimiento de obligaciones legales en materia de firma electrónica (Reglamento UE 910/2014 eIDAS y Ley 6/2020)."
                 />
 
@@ -272,7 +272,7 @@
                     <label class="flex items-start gap-2.5 text-xs text-slate-300 cursor-pointer">
                         <input type="checkbox" name="consent" value="1" required class="mt-0.5 rounded border-slate-700 bg-slate-900 text-emerald-500 focus:ring-emerald-500">
                         <span>
-                            <strong>Consiento formalizar y firmar electrónicamente este contrato</strong> con plena validez legal (Reglamento UE 910/2014 eIDAS), aceptando el registro técnico de evidencias (hash criptográfico, IP, fecha y código de verificación). He leído y acepto la <a href="{{ route('privacy') }}" class="underline text-emerald-400 font-semibold" target="_blank">Política de Privacidad y Protección de Datos</a>.
+                            <strong>Consiento formalizar y firmar electrónicamente este contrato</strong> con plena validez legal (Reglamento UE 910/2014 eIDAS), aceptando el registro técnico de evidencias (hash criptográfico SHA-256, IP pública, fecha y evidencias de firma). He leído y acepto la <a href="{{ route('privacy') }}" class="underline text-emerald-400 font-semibold" target="_blank">Política de Privacidad y Protección de Datos</a>.
                         </span>
                     </label>
                 </div>
