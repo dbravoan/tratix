@@ -67,33 +67,53 @@
 
             <section class="bg-slate-800 rounded-lg shadow p-5">
                 <div class="flex items-center justify-between mb-3">
-                    <h2 class="font-semibold text-emerald-400">Trámites y documentos</h2>
-                    <a href="{{ route('contracts.documents', $contract) }}" class="text-sm text-emerald-400 hover:underline">Ver todos</a>
+                    <h2 class="font-semibold text-emerald-400">Trámites y Documentos Oficiales</h2>
+                    <a href="{{ route('contracts.documents', $contract) }}" class="text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline">Expediente completo →</a>
                 </div>
                 <div class="mb-3">
                     <div class="flex justify-between text-sm mb-1">
-                        <span class="text-slate-400">Progreso</span>
-                        <span class="font-semibold text-emerald-400">{{ $completeness['done'] }}/{{ $completeness['total'] }}</span>
+                        <span class="text-slate-400">Progreso legal</span>
+                        <span class="font-semibold text-emerald-400">{{ $completeness['done'] }}/{{ $completeness['total'] }} ({{ $completeness['percent'] }}%)</span>
                     </div>
                     <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
                         <div class="h-2 bg-emerald-500 rounded-full" style="width: {{ $completeness['percent'] }}%"></div>
                     </div>
                 </div>
-                <ul class="space-y-2 text-sm">
+                <ul class="space-y-2.5 text-xs">
                     @foreach($checklist->take(6) as $item)
-                        <li class="flex items-start gap-2">
-                            @if($item['uploaded'])
-                                <span class="text-emerald-400 font-bold">✓</span>
-                            @else
-                                <span class="text-slate-500 font-bold">○</span>
+                        @php $docs = $item['documents'] ?? collect([$item['document']])->filter(); @endphp
+                        <li class="space-y-1">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="flex items-start gap-1.5 min-w-0">
+                                    @if($item['uploaded'])
+                                        <span class="text-emerald-400 font-bold">✓</span>
+                                    @else
+                                        <span class="text-slate-500 font-bold">○</span>
+                                    @endif
+                                    <span class="{{ $item['uploaded'] ? 'text-slate-300 font-medium' : 'text-slate-400' }} truncate">{{ $item['requirement']->title }}</span>
+                                </div>
+                                @if($item['uploaded'] && $docs->isNotEmpty())
+                                    <span class="text-[10px] text-emerald-400 font-semibold shrink-0">({{ $docs->count() }})</span>
+                                @endif
+                            </div>
+                            @if($docs->isNotEmpty())
+                                <div class="pl-4 flex flex-wrap gap-1">
+                                    @foreach($docs as $d)
+                                        <a href="{{ route('contracts.documents.download', [$contract, $d]) }}" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-slate-900 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition" title="Descargar {{ $d->filename }}">
+                                            <span>📥</span>
+                                            <span class="truncate max-w-[140px]">{{ $d->filename }}</span>
+                                        </a>
+                                    @endforeach
+                                </div>
                             @endif
-                            <span class="{{ $item['uploaded'] ? 'text-slate-400' : 'text-slate-200' }}">{{ $item['requirement']->title }}</span>
                         </li>
                     @endforeach
-                    @if($checklist->count() > 6)
-                        <li class="text-slate-500 text-xs">… y {{ $checklist->count() - 6 }} más</li>
-                    @endif
                 </ul>
+                <div class="mt-4 pt-3 border-t border-slate-700">
+                    <a href="{{ route('contracts.documents', $contract) }}" class="btn-outline w-full text-center text-xs py-1.5 block font-semibold hover:border-emerald-500 hover:text-emerald-300">
+                        📎 Adjuntar más documentos o gestionar trámites
+                    </a>
+                </div>
             </section>
 
             <section class="bg-slate-800 rounded-lg shadow p-5">

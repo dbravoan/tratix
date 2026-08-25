@@ -31,11 +31,12 @@ class ReviewController extends Controller
         private readonly ContractWorkflowService $workflow,
         private readonly PartyRightsObligations $rightsObligations,
         private readonly ContractService $contractService,
+        private readonly \App\Services\DocumentGuidanceService $guidance,
     ) {}
 
     private function contractByToken(string $token): Contract
     {
-        $contract = Contract::with(['parties', 'proposals', 'versions', 'comments'])
+        $contract = Contract::with(['parties', 'proposals', 'versions', 'comments', 'documents'])
             ->where('access_token', $token)
             ->firstOrFail();
 
@@ -66,6 +67,10 @@ class ReviewController extends Controller
             'comprador' => $this->rightsObligations->for($contract, $buyer),
         ];
 
+        $checklist = $this->guidance->checklist($contract);
+        $completeness = $this->guidance->completeness($contract);
+        $extraDocuments = $this->guidance->extraDocuments($contract);
+
         return view('public.review', compact(
             'contract',
             'token',
@@ -77,7 +82,10 @@ class ReviewController extends Controller
             'counterpartyRole',
             'counterpartyParty',
             'activeRole',
-            'activeParty'
+            'activeParty',
+            'checklist',
+            'completeness',
+            'extraDocuments'
         ));
     }
 
@@ -241,5 +249,68 @@ class ReviewController extends Controller
 
         return redirect()->route('review.show', $token)
             ->with('success', 'Tus datos legales se han guardado y el borrador se ha actualizado correctamente.');
+    }
+
+    public function downloadDocument(string $token, \App\Models\ContractDocument $document): \Symfony\Component\HttpFoundation\Response
+    {
+        $contract = $this->contractByToken($token);
+        abort_unless($document->contract_id === $contract->id, 404);
+
+        $diskName = config('filesystems.documents_disk', 'local');
+        $disk = \Illuminate\Support\Facades\Storage::disk($diskName);
+        if (! $disk->exists($document->path) && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->path)) {
+            $disk = \Illuminate\Support\Facades\Storage::disk('local');
+        }
+
+        abort_unless($disk->exists($document->path), 404, 'El archivo solicitado no se encuentra en el almacenamiento.');
+
+        return $disk->download($document->path, $document->filename);
+    }
+
+    public function uploadDocument(Request $request, string $token): RedirectResponse
+    {
+        $contract = $this->contractByToken($token);
+
+        $data = $request->validate([
+            'requirement_key' => ['nullable', 'string', 'max:64'],
+            'custom_label' => ['nullable', 'string', 'max:128'],
+            'document' => ['required', 'file', 'max:10240', 'mimes:pdf,png,jpg,jpeg,webp', 'mimetypes:application/pdf,image/png,image/jpeg,image/webp'],
+        ]);
+
+        $requirementKey = ! empty($data['requirement_key'])
+            ? $data['requirement_key']
+            : (! empty($data['custom_label']) ? \Illuminate\Support\Str::slug($data['custom_label'], '_') : 'documento_contraparte');
+
+        $file = $request->file('document');
+        $diskName = config('filesystems.documents_disk', 'local');
+        $path = $file->store('documents/'.$contract->reference, $diskName);
+
+        $creatorRole = $contract->creator_role ?? 'vendedor';
+        $counterpartyRole = $creatorRole === 'vendedor' ? 'comprador' : 'vendedor';
+        $counterparty = $contract->counterparty();
+        $actorName = $counterparty?->displayName() ?? ucfirst($counterpartyRole);
+
+        $doc = \App\Models\ContractDocument::create([
+            'contract_id' => $contract->id,
+            'requirement_key' => $requirementKey,
+            'filename' => $file->getClientOriginalName(),
+            'path' => $path,
+            'mime' => $file->getMimeType(),
+            'size' => $file->getSize(),
+            'status' => 'uploaded',
+            'uploaded_by_user_id' => null,
+            'uploaded_at' => now(),
+        ]);
+
+        \App\Models\AuditEvent::create([
+            'contract_id' => $contract->id,
+            'user_id' => null,
+            'event' => 'document_uploaded',
+            'actor' => $actorName,
+            'detail' => "Documento adjuntado por la contraparte: {$doc->filename}",
+            'happened_at' => now(),
+        ]);
+
+        return back()->with('success', 'Documento adjuntado correctamente al expediente.');
     }
 }

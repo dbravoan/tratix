@@ -245,4 +245,20 @@ class SignatureController extends Controller
 
         return redirect()->route('sign.show', $token)->with('success', $message);
     }
+
+    public function downloadDocument(string $token, \App\Models\ContractDocument $document): \Symfony\Component\HttpFoundation\Response
+    {
+        $contract = $this->contractByToken($token);
+        abort_unless($document->contract_id === $contract->id, 404);
+
+        $diskName = config('filesystems.documents_disk', 'local');
+        $disk = \Illuminate\Support\Facades\Storage::disk($diskName);
+        if (! $disk->exists($document->path) && \Illuminate\Support\Facades\Storage::disk('local')->exists($document->path)) {
+            $disk = \Illuminate\Support\Facades\Storage::disk('local');
+        }
+
+        abort_unless($disk->exists($document->path), 404, 'El archivo solicitado no se encuentra en el almacenamiento.');
+
+        return $disk->download($document->path, $document->filename);
+    }
 }

@@ -92,10 +92,13 @@ Route::post('/review/{token}/accept', [ReviewController::class, 'accept'])->midd
 Route::post('/review/{token}/propose', [ReviewController::class, 'propose'])->middleware('throttle:20,1')->name('review.propose');
 Route::post('/review/{token}/comments', [ContractCommentController::class, 'storePublic'])->middleware('throttle:30,1')->name('review.comments.store');
 Route::get('/review/{token}/download', [ReviewController::class, 'download'])->name('review.download');
+Route::get('/review/{token}/documents/{document}/download', [ReviewController::class, 'downloadDocument'])->name('review.documents.download');
+Route::post('/review/{token}/documents', [ReviewController::class, 'uploadDocument'])->name('review.documents.upload');
 
 Route::get('/sign/{token}', [SignatureController::class, 'show'])->name('sign.show');
 Route::post('/sign/{token}', [SignatureController::class, 'store'])->middleware('throttle:15,1')->name('sign.store');
 Route::post('/sign/{token}/otp', [SignatureController::class, 'requestOtp'])->middleware('throttle:6,1')->name('sign.otp');
 Route::get('/sign/{token}/download', [SignatureController::class, 'download'])->name('sign.download');
+Route::get('/sign/{token}/documents/{document}/download', [SignatureController::class, 'downloadDocument'])->name('sign.documents.download');
 
 require __DIR__.'/auth.php';

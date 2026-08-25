@@ -350,5 +350,89 @@ class IdentityCardScannerTest extends TestCase
         $this->assertEquals('MX', $mxParsed['tax_id_country']);
         $this->assertEquals('03100', $mxParsed['postal_code']);
     }
+
+    public function test_document_guidance_resolves_all_attached_id_cards_and_extra_documents(): void
+    {
+        Storage::fake('local');
+        $user = User::factory()->create();
+
+        $contract = Contract::factory()->create([
+            'user_id' => $user->id,
+            'contract_type' => 'vehiculos',
+            'transaction_type' => 'c2c',
+            'jurisdiction' => 'nacional',
+            'status' => 'en_revision',
+            'access_token' => 'test-token-docs-123',
+            'access_token_expires_at' => now()->addDays(7),
+        ]);
+
+        // Attach front and back DNI documents
+        $docFront = ContractDocument::create([
+            'contract_id' => $contract->id,
+            'requirement_key' => 'dni_partes',
+            'filename' => 'Documento_Identidad_vendedor_anverso.jpg',
+            'path' => "documents/{$contract->reference}/id_front.jpg",
+            'mime' => 'image/jpeg',
+            'size' => 10240,
+            'status' => 'uploaded',
+            'uploaded_at' => now(),
+        ]);
+        $docBack = ContractDocument::create([
+            'contract_id' => $contract->id,
+            'requirement_key' => 'dni_partes',
+            'filename' => 'Documento_Identidad_vendedor_reverso.jpg',
+            'path' => "documents/{$contract->reference}/id_back.jpg",
+            'mime' => 'image/jpeg',
+            'size' => 12300,
+            'status' => 'uploaded',
+            'uploaded_at' => now(),
+        ]);
+
+        // Attach custom extra document (e.g. recibo IBI / informe DGT)
+        $docExtra = ContractDocument::create([
+            'contract_id' => $contract->id,
+            'requirement_key' => 'informe_dgt_adicional',
+            'filename' => 'Informe_Completo_DGT.pdf',
+            'path' => "documents/{$contract->reference}/dgt.pdf",
+            'mime' => 'application/pdf',
+            'size' => 45000,
+            'status' => 'uploaded',
+            'uploaded_at' => now(),
+        ]);
+
+        Storage::disk('local')->put($docFront->path, 'front-content');
+        Storage::disk('local')->put($docBack->path, 'back-content');
+        Storage::disk('local')->put($docExtra->path, 'dgt-pdf-content');
+
+        $guidance = app(\App\Services\DocumentGuidanceService::class);
+        $checklist = $guidance->checklist($contract);
+        $extraDocs = $guidance->extraDocuments($contract);
+
+        $dniItem = $checklist->firstWhere('requirement.key', 'dni_partes');
+        $this->assertNotNull($dniItem);
+        $this->assertTrue($dniItem['uploaded']);
+        $this->assertCount(2, $dniItem['documents']);
+
+        $this->assertCount(1, $extraDocs);
+        $this->assertEquals('Informe_Completo_DGT.pdf', $extraDocs->first()->filename);
+
+        // Test public review download of document
+        $resDownload = $this->get(route('review.documents.download', ['test-token-docs-123', $docFront]));
+        $resDownload->assertOk();
+
+        // Test public counterparty upload of document
+        $fileUpload = UploadedFile::fake()->create('justificante_transferencia.pdf', 500, 'application/pdf');
+        $resUpload = $this->post(route('review.documents.upload', 'test-token-docs-123'), [
+            'custom_label' => 'Justificante de Pago Bancario',
+            'document' => $fileUpload,
+        ]);
+        $resUpload->assertRedirect();
+
+        $this->assertDatabaseHas('contract_documents', [
+            'contract_id' => $contract->id,
+            'requirement_key' => 'justificante_de_pago_bancario',
+            'filename' => 'justificante_transferencia.pdf',
+        ]);
+    }
 }
 

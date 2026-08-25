@@ -49,15 +49,26 @@ class DocumentGuidanceService
         $documents = $contract->documents()->get();
 
         return $requirements->map(function (DocumentRequirement $requirement) use ($documents) {
-            $doc = $documents->firstWhere('requirement_key', $requirement->key);
+            $matchingDocs = $documents->where('requirement_key', $requirement->key);
 
             return [
                 'requirement' => $requirement,
-                'uploaded' => $doc !== null,
-                'validated' => $doc?->status === 'validated',
-                'document' => $doc,
+                'uploaded' => $matchingDocs->isNotEmpty(),
+                'validated' => $matchingDocs->isNotEmpty() && $matchingDocs->every(fn ($d) => $d->status === 'validated'),
+                'document' => $matchingDocs->first(),
+                'documents' => $matchingDocs,
             ];
         });
+    }
+
+    public function extraDocuments(Contract $contract): Collection
+    {
+        $checklistKeys = $this->checklist($contract)->pluck('requirement.key')->all();
+
+        return $contract->documents()
+            ->whereNotIn('requirement_key', $checklistKeys)
+            ->orderByDesc('uploaded_at')
+            ->get();
     }
 
     public function completeness(Contract $contract): array

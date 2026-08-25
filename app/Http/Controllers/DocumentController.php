@@ -21,9 +21,10 @@ class DocumentController extends Controller
 
         $contract->load('documents');
         $checklist = $this->guidance->checklist($contract);
+        $extraDocuments = $this->guidance->extraDocuments($contract);
         $completeness = $this->guidance->completeness($contract);
 
-        return view('contracts.documents', compact('contract', 'checklist', 'completeness'));
+        return view('contracts.documents', compact('contract', 'checklist', 'extraDocuments', 'completeness'));
     }
 
     public function upload(Request $request, Contract $contract): RedirectResponse
@@ -31,9 +32,14 @@ class DocumentController extends Controller
         $this->authorize('update', $contract);
 
         $data = $request->validate([
-            'requirement_key' => ['required', 'string'],
-            'document' => ['required', 'file', 'max:10240', 'mimes:pdf,png,jpg,jpeg', 'mimetypes:application/pdf,image/png,image/jpeg'],
+            'requirement_key' => ['nullable', 'string', 'max:64'],
+            'custom_label' => ['nullable', 'string', 'max:128'],
+            'document' => ['required', 'file', 'max:10240', 'mimes:pdf,png,jpg,jpeg,webp', 'mimetypes:application/pdf,image/png,image/jpeg,image/webp'],
         ]);
+
+        $requirementKey = ! empty($data['requirement_key'])
+            ? $data['requirement_key']
+            : (! empty($data['custom_label']) ? \Illuminate\Support\Str::slug($data['custom_label'], '_') : 'documento_adicional');
 
         $file = $request->file('document');
         $diskName = config('filesystems.documents_disk', 'local');
@@ -41,7 +47,7 @@ class DocumentController extends Controller
 
         ContractDocument::create([
             'contract_id' => $contract->id,
-            'requirement_key' => $data['requirement_key'],
+            'requirement_key' => $requirementKey,
             'filename' => $file->getClientOriginalName(),
             'path' => $path,
             'mime' => $file->getMimeType(),

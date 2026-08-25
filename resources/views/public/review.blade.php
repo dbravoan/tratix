@@ -411,6 +411,88 @@
             </form>
         </div>
 
+        {{-- Official Documents & Procedures Checklist for Counterparty --}}
+        @if(isset($checklist) && $checklist->isNotEmpty())
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-teal-950/80 border border-teal-800 flex items-center justify-center text-teal-400 font-bold text-sm">
+                            📁
+                        </span>
+                        <div>
+                            <h2 class="font-bold text-teal-400 text-sm">Expediente y Documentación para Trámites Oficiales</h2>
+                            <p class="text-xs text-slate-400">Documentos necesarios para gestiones oficiales (DGT, Notaría, Hacienda, etc.). Ambas partes pueden consultar y aportar documentación.</p>
+                        </div>
+                    </div>
+                    @if(isset($completeness))
+                        <span class="text-xs px-2.5 py-1 rounded-full bg-slate-950 border border-slate-800 text-slate-300 font-semibold self-start sm:self-auto">
+                            {{ $completeness['done'] }}/{{ $completeness['total'] }} completados
+                        </span>
+                    @endif
+                </div>
+
+                <div class="space-y-3">
+                    @foreach($checklist as $item)
+                        @php 
+                            $req = $item['requirement'];
+                            $docs = $item['documents'] ?? collect([$item['document']])->filter();
+                        @endphp
+                        <div class="p-3.5 rounded-2xl bg-slate-950/70 border {{ $item['uploaded'] ? 'border-emerald-500/40' : 'border-slate-800' }} flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div class="space-y-1 min-w-0 flex-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold {{ $item['uploaded'] ? 'text-emerald-400' : 'text-slate-300' }}">
+                                        {{ $item['uploaded'] ? '✓' : '○' }} {{ $req->title }}
+                                    </span>
+                                    @if($req->mandatory)
+                                        <span class="text-[9px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 font-bold">Obligatorio</span>
+                                    @endif
+                                </div>
+                                <p class="text-[11px] text-slate-400 leading-relaxed">{{ $req->purpose }}</p>
+                                
+                                @if($docs->isNotEmpty())
+                                    <div class="flex flex-wrap gap-1.5 pt-1.5">
+                                        @foreach($docs as $doc)
+                                            <a href="{{ route('review.documents.download', [$token, $doc]) }}" class="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-800/60 font-semibold transition" title="Descargar {{ $doc->filename }}">
+                                                <span>📥</span>
+                                                <span class="truncate max-w-[180px]">{{ $doc->filename }}</span>
+                                                <span class="text-[9px] text-slate-500">({{ number_format($doc->size / 1024, 1) }} KB)</span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
+                                <form method="POST" action="{{ route('review.documents.upload', $token) }}" enctype="multipart/form-data" class="flex items-center gap-2">
+                                    @csrf
+                                    <input type="hidden" name="requirement_key" value="{{ $req->key }}">
+                                    <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-emerald-500 hover:text-emerald-300">
+                                        <span>📎 Adjuntar</span>
+                                        <input type="file" name="document" accept=".pdf,.png,.jpg,.jpeg,.webp" class="hidden" onchange="this.form.submit()">
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    @if(isset($extraDocuments) && $extraDocuments->isNotEmpty())
+                        <div class="pt-2">
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Otros documentos aportados:</span>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($extraDocuments as $extraDoc)
+                                    <a href="{{ route('review.documents.download', [$token, $extraDoc]) }}" class="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800 font-semibold transition">
+                                        <span>📄</span>
+                                        <span>{{ $extraDoc->filename }}</span>
+                                        <span class="text-[10px] text-emerald-400">📥</span>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+
         {{-- Decision / Accept or Propose Changes --}}
         <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-4">
             <h2 class="font-bold text-emerald-400 text-sm border-b border-slate-800 pb-2">✅ Aceptación del Borrador</h2>
@@ -680,6 +762,27 @@
                         });
                         const data = await res.json();
 
+                        if (data.scan_token) {
+                            if (side === 'front') {
+                                const frontToken = document.getElementById('id_card_front_token') || document.getElementById('input_id_card_front_token');
+                                if (frontToken) frontToken.value = data.scan_token;
+                            } else {
+                                const backToken = document.getElementById('id_card_back_token') || document.getElementById('input_id_card_back_token');
+                                if (backToken) backToken.value = data.scan_token;
+                            }
+                            const mainToken = document.getElementById('id_card_token') || document.getElementById('input_id_card_token');
+                            if (mainToken && !mainToken.value) mainToken.value = data.scan_token;
+                        }
+
+                        if (badgeEl) {
+                            badgeEl.className = 'text-[10px] text-emerald-400 font-semibold';
+                            badgeEl.textContent = '✓ ' + sideLabel + ' cargado';
+                        }
+                        if (slotEl) {
+                            slotEl.classList.remove('border-dashed', 'border-slate-800');
+                            slotEl.classList.add('border-solid', 'border-emerald-500/80', 'bg-emerald-950/20');
+                        }
+
                         if (data.success) {
                             let suggestionsCount = 0;
 
@@ -722,31 +825,10 @@
                                 if (res?.suggested) suggestionsCount++;
                             }
 
-                            if (data.scan_token) {
-                                if (side === 'front') {
-                                    const frontToken = document.getElementById('id_card_front_token');
-                                    if (frontToken) frontToken.value = data.scan_token;
-                                } else {
-                                    const backToken = document.getElementById('id_card_back_token');
-                                    if (backToken) backToken.value = data.scan_token;
-                                }
-                                const mainToken = document.getElementById('id_card_token');
-                                if (mainToken && !mainToken.value) mainToken.value = data.scan_token;
-                            }
-
-                            if (badgeEl) {
-                                badgeEl.className = 'text-[10px] text-emerald-400 font-semibold';
-                                badgeEl.textContent = '✓ ' + sideLabel + ' cargado';
-                            }
-                            if (slotEl) {
-                                slotEl.classList.remove('border-dashed', 'border-slate-800');
-                                slotEl.classList.add('border-solid', 'border-emerald-500/80', 'bg-emerald-950/20');
-                            }
-
                             if (statusEl) {
                                 statusEl.className = 'text-xs p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-700 text-emerald-200 block';
                                 const info = [data.full_name, data.tax_id, data.city].filter(Boolean).join(' · ');
-                                let msg = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${info || 'Datos reconocidos'}. Se adjuntará al contrato.`;
+                                let msg = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${info || 'Foto lista para adjuntar'}. Se adjuntará al contrato.`;
                                 if (suggestionsCount > 0) {
                                     msg += ` <span class="text-amber-300 ml-1">(${suggestionsCount} sugerencia(s) disponible(s) sin sobreescribir tus datos).</span>`;
                                 }
@@ -755,7 +837,7 @@
                         } else {
                             if (statusEl) {
                                 statusEl.className = 'text-xs p-2.5 rounded-lg border bg-amber-950/60 border-amber-700 text-amber-200 block';
-                                statusEl.textContent = 'El documento se ha adjuntado. Puedes completar los datos manualmente si algún campo no se detectó.';
+                                statusEl.innerHTML = `<strong>✓ ${sideLabel} adjuntado:</strong> La foto se adjuntará al expediente oficial del contrato. Puedes completar tus datos en los campos a continuación.`;
                             }
                         }
                     } catch (err) {
