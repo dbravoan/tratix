@@ -210,6 +210,22 @@ class PublicFlowTest extends TestCase
         ]);
     }
 
+    public function test_review_page_renders_clean_stacked_layout(): void
+    {
+        $contract = $this->makeContract();
+        $contract = app(ContractWorkflowService::class)->transition($contract, 'en_revision', 'creator');
+        $token = app(SignatureService::class)->ensureToken($contract)->access_token;
+
+        $response = $this->get(route('review.show', $token));
+        $response->assertOk();
+        $response->assertSee('Revisión Colaborativa');
+        $response->assertSee('Descargar borrador en PDF');
+        $response->assertSee('Estás revisando este contrato como la parte invitada:');
+        $response->assertSee('Datos de la Parte Creadora');
+        $response->assertSee('Tus Datos de Identificación');
+        $response->assertSee('Escáner de Documento (DNI / NIE / Pasaporte)');
+    }
+
     public function test_party_can_update_own_legal_details_during_review(): void
     {
         $contract = $this->makeContract();
