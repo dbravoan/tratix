@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Contract;
+use App\Models\ContractDocument;
 use App\Models\User;
 use App\Services\IdentityCardParserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
