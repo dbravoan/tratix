@@ -203,7 +203,7 @@ class NotificationsAndSignProcessTest extends TestCase
 
         $res->assertRedirect();
 
-        Mail::assertSent(OtpMail::class, function ($mail) {
+        Mail::assertQueued(OtpMail::class, function ($mail) {
             return $mail->hasTo('carlos.comprador@example.com');
         });
     }

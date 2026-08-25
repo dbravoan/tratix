@@ -158,12 +158,7 @@ class SignatureController extends Controller
         Cache::put('sign_otp:'.$token.':'.$role.':'.$emailKey, $code, now()->addMinutes(10));
         Cache::put('sign_otp:'.$token.':'.$emailKey, $code, now()->addMinutes(10));
 
-        try {
-            Mail::to($targetEmail)->send(new OtpMail($contract, $code));
-        } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::error('Error al enviar OTP de firma: '.$e->getMessage());
-            return back()->with('error', 'No se pudo enviar el correo con el código de verificación. Por favor, inténtalo de nuevo en unos momentos.');
-        }
+        Mail::to($targetEmail)->queue(new OtpMail($contract, $code));
 
         return back()->with('otp_sent', $targetEmail)->with('success', 'Código de verificación de 6 dígitos enviado a '.$targetEmail.'.');
     }
