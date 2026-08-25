@@ -210,13 +210,13 @@
                         <input name="signer_name" value="{{ old('signer_name', $activeParty?->displayName()) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" required>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-200 mb-1">Email para recepción de evidencias y OTP *</label>
+                        <label class="block text-xs font-semibold text-slate-200 mb-1">Email para recepción de copia firmada y evidencias *</label>
                         @if($activeParty?->email)
                             <input type="email" name="signer_email" id="signer-email" value="{{ $activeParty->email }}" readonly class="w-full border border-slate-800 bg-slate-900/90 text-emerald-300 font-mono rounded-lg px-3 py-2 text-sm cursor-not-allowed">
                             <p class="text-[11px] text-slate-400 mt-1">🔒 Email oficial registrado para la parte {{ strtoupper($activeRole) }}.</p>
                         @else
                             <input type="email" name="signer_email" id="signer-email" value="{{ old('signer_email') }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="tu-email@ejemplo.com" required>
-                            <p class="text-[11px] text-slate-400 mt-1">Introduce tu correo personal para verificar tu identidad mediante código OTP.</p>
+                            <p class="text-[11px] text-slate-400 mt-1">Introduce tu correo personal para recibir la copia oficial del contrato firmado.</p>
                         @endif
                     </div>
                 </div>

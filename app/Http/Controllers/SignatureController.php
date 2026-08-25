@@ -84,7 +84,7 @@ class SignatureController extends Controller
             'comprador' => $this->rightsObligations->for($contract, $buyer),
         ];
 
-        $otpEnabled = (bool) config('signing.otp_enabled', true);
+        $otpEnabled = (bool) config('signing.otp_enabled', false);
 
         return view('public.sign', compact(
             'contract',
@@ -195,7 +195,7 @@ class SignatureController extends Controller
                 ->withInput($request->except('otp_code'));
         }
 
-        if ((bool) config('signing.otp_enabled', true)) {
+        if ((bool) config('signing.otp_enabled', false)) {
             $data = array_merge($data, $request->validate([
                 'otp_code' => ['required', 'string', 'size:6'],
             ]));
@@ -225,7 +225,7 @@ class SignatureController extends Controller
                 [
                     'ip' => $request->ip(),
                     'user_agent' => $request->userAgent(),
-                    'otp_verified' => (bool) config('signing.otp_enabled', true),
+                    'otp_verified' => (bool) config('signing.otp_enabled', false),
                 ]
             );
         } catch (\DomainException $e) {

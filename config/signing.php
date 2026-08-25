@@ -2,8 +2,8 @@
 
 return [
     /*
-    | Firma Electrónica Avanzada (FEA): verificación del correo del firmante
-    | mediante código OTP antes de aceptar la firma. Actívala en producción.
+    | Firma Electrónica Simple / Avanzada: verificación del correo del firmante
+    | mediante código OTP antes de aceptar la firma. Desactivado por defecto.
     */
-    'otp_enabled' => env('SIGNING_OTP_ENABLED', true),
+    'otp_enabled' => env('SIGNING_OTP_ENABLED', false),
 ];
