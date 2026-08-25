@@ -240,7 +240,7 @@
             <a href="#comparativa" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">⚡ Cómo Funciona (Tratix vs PDF)</a>
             <a href="#modelos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">📋 Catálogo de Modelos</a>
             <a href="#precios" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">💰 Planes y Precios</a>
-            <a href="#referidos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-bold text-amber-400 hover:bg-slate-900">✨ Programa de Referidos (Ingresos Pasivos)</a>
+            <a href="#referidos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-bold text-amber-400 hover:bg-slate-900">🎁 Invita y Gana Pro (1 Mes Gratis Mutuo)</a>
             <a href="#contacto" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">🛡️ Contacto y DPO</a>
             
             <div class="pt-3 border-t border-slate-800 flex flex-col gap-2">
@@ -826,66 +826,66 @@
         </div>
     </section>
 
-    <!-- REFERRAL PROGRAM & INTERACTIVE PASSIVE INCOME CALCULATOR -->
+    <!-- REFERRAL PROGRAM & INTERACTIVE REWARDS CALCULATOR -->
     <section id="referidos" class="py-20 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/40 border-y border-emerald-900/40"
         x-data="{
-            referrals: 10,
-            commissionRate: 19,
-            get monthlyEarnings() {
-                return (this.referrals * this.commissionRate).toLocaleString('es-ES');
+            referrals: 5,
+            proPrice: 9,
+            get freeMonths() {
+                return this.referrals;
             },
-            get yearlyEarnings() {
-                return (this.referrals * this.commissionRate * 12).toLocaleString('es-ES');
+            get totalSavings() {
+                return (this.referrals * this.proPrice).toLocaleString('es-ES');
             }
         }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-950/80 border border-amber-800 px-4 py-1.5 rounded-full shadow-md">
-                    💰 Genera Ingresos Pasivos con Tratix
+                    🎁 Programa de Invitaciones y Recompensas
                 </span>
-                <h2 class="text-3xl sm:text-5xl font-black text-white">Recomienda Tratix y Gana Comisiones Recurrentes</h2>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Invita a tus contactos y ambos conseguís 1 Mes Pro Gratis</h2>
                 <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-                    ¿Conoces concesionarios de ocasión, agencias inmobiliarias, gestorías, freelancers o amigos que firman contratos habitualmente? Invítalos y genera ingresos mensuales garantizados.
+                    Comparte tu enlace exclusivo con amigos, clientes, autónomos o empresas. Por cada registro, tú y tu contacto recibís <strong>1 mes de Tratix Pro ilimitado gratis</strong> (valorado en 9 €) y <strong>1 crédito extra de sellado</strong>.
                 </p>
             </div>
 
-            {{-- Interactive Passive Income Calculator Card --}}
+            {{-- Interactive Free Months & Savings Calculator Card --}}
             <div class="max-w-3xl mx-auto p-6 sm:p-8 rounded-3xl bg-slate-950 border border-amber-500/40 shadow-2xl shadow-amber-950/20 space-y-6">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
                     <div>
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <span>🧮 Calculadora de Ingresos Pasivos Recurrentes</span>
+                            <span>🧮 Calculadora de Ahorro y Meses Pro Acumulados</span>
                         </h3>
-                        <span class="text-xs text-slate-400">Ajusta el número de personas o negocios que recomendarías</span>
+                        <span class="text-xs text-slate-400">Ajusta el número de amigos o colegas que invitarías a Tratix</span>
                     </div>
                     <div class="text-right">
-                        <span class="text-2xl font-black text-amber-400 block" x-text="monthlyEarnings + ' € / mes'"></span>
-                        <span class="text-[10px] text-slate-500 block" x-text="'(' + yearlyEarnings + ' € / año)'"></span>
+                        <span class="text-2xl font-black text-amber-400 block" x-text="freeMonths + ' meses Pro GRATIS'"></span>
+                        <span class="text-[10px] text-emerald-400 font-bold block" x-text="'(Ahorras ' + totalSavings + ' € en suscripción)'"></span>
                     </div>
                 </div>
 
                 {{-- Interactive Range Slider --}}
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs text-slate-300 font-semibold">
-                        <span>Usuarios o Clientes Referidos:</span>
-                        <span class="text-amber-400 font-bold" x-text="referrals + ' cuentas activas'"></span>
+                        <span>Contactos o Clientes Invitados:</span>
+                        <span class="text-amber-400 font-bold" x-text="referrals + ' registros completados'"></span>
                     </div>
-                    <input type="range" min="1" max="50" step="1" x-model="referrals" 
+                    <input type="range" min="1" max="24" step="1" x-model="referrals" 
                         class="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-400">
                     <div class="flex justify-between text-[10px] text-slate-500">
-                        <span>1 cliente</span>
-                        <span>10 clientes</span>
-                        <span>25 clientes</span>
-                        <span>50+ clientes</span>
+                        <span>1 amigo</span>
+                        <span>6 amigos</span>
+                        <span>12 amigos</span>
+                        <span>24 amigos (¡2 años gratis!)</span>
                     </div>
                 </div>
 
                 <div class="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                     <div class="text-slate-300 text-[11px] leading-relaxed">
-                        ✓ Comisiones transferidas a tu cuenta bancaria mensualmente sin costes ocultos.
+                        ✓ <strong>Beneficio mutuo:</strong> Tu invitado también recibe 1 mes de Plan Pro gratis de bienvenida y 1 crédito de sellado.
                     </div>
                     <a href="{{ route('register') }}" class="btn-primary text-xs px-6 py-2.5 font-bold shadow-lg shadow-emerald-950 shrink-0">
-                        ✨ Obtener mi Enlace de Afiliado →
+                        🎁 Obtener mi Enlace de Invitación →
                     </a>
                 </div>
             </div>
@@ -894,25 +894,25 @@
                 <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-center">
                     <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-950 border border-amber-800 flex items-center justify-center text-xl font-black text-amber-400">1</div>
                     <h3 class="text-base font-bold text-white">Obtén tu Enlace Único</h3>
-                    <p class="text-xs text-slate-400">Genera tu enlace de recomendación en tu panel en un solo clic.</p>
+                    <p class="text-xs text-slate-400">Copia tu enlace personal desde tu panel de usuario o perfil con un solo clic.</p>
                 </div>
 
                 <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-center">
                     <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-xl font-black text-emerald-400">2</div>
-                    <h3 class="text-base font-bold text-white">Comparte con tu Red</h3>
-                    <p class="text-xs text-slate-400">Tus contactos reciben descuentos especiales en su suscripción inicial.</p>
+                    <h3 class="text-base font-bold text-white">Compártelo con tu Red</h3>
+                    <p class="text-xs text-slate-400">Envíalo por WhatsApp, email o redes a quien necesite redactar o firmar contratos.</p>
                 </div>
 
                 <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-center">
                     <div class="w-12 h-12 mx-auto rounded-2xl bg-teal-950 border border-teal-800 flex items-center justify-center text-xl font-black text-teal-400">3</div>
-                    <h3 class="text-base font-bold text-white">Comisiones Recurrentes</h3>
-                    <p class="text-xs text-slate-400">Cobra comisiones de cada plan renovado por tus referidos mes a mes.</p>
+                    <h3 class="text-base font-bold text-white">Recompensas Inmediatas</h3>
+                    <p class="text-xs text-slate-400">En cuanto se registren, se os activa a ambos 1 mes de Plan Pro y créditos de sellado.</p>
                 </div>
             </div>
 
             <div class="text-center">
                 <a href="{{ route('register') }}" class="btn-primary inline-flex items-center gap-2 text-sm px-8 py-3.5 font-extrabold shadow-xl shadow-emerald-950">
-                    <span>✨ Unirme al Programa de Afiliados y Referidos</span>
+                    <span>🎁 Unirme al Programa y Conseguir Meses Pro Gratis</span>
                     <span>→</span>
                 </a>
             </div>
@@ -1349,8 +1349,8 @@
         <a href="#referidos" 
             :class="activeSection === 'referidos' ? 'bg-emerald-500 text-slate-950 font-bold' : 'hover:text-white hover:bg-slate-800'"
             class="px-3 py-1 rounded-full transition flex items-center gap-1 text-amber-400 font-bold">
-            <span>✨</span>
-            <span>Ganar Dinero</span>
+            <span>🎁</span>
+            <span>Invita y Gana Pro</span>
         </a>
         <a href="#contacto" 
             :class="activeSection === 'contacto' ? 'bg-emerald-500 text-slate-950 font-bold' : 'hover:text-white hover:bg-slate-800'"
