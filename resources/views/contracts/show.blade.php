@@ -161,7 +161,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="text-sm text-justify text-slate-300 leading-relaxed whitespace-pre-line">{{ $clause['body'] }}</div>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-1.5">{!! \App\Services\ClauseFormatter::formatHtml($clause['body']) !!}</div>
                         </div>
                     @endforeach
                 </div>

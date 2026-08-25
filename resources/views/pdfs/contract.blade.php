@@ -26,7 +26,12 @@
         .badge-c2c { background: #fef3c7; color: #92400e; }
         .badge-c2b { background: #fce7f3; color: #9d174d; }
         .issue-error { background: #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; margin: 3px 0; }
-        .clause-body { margin: 6px 0; text-align: justify; white-space: pre-line; line-height: 1.45; }
+        .clause-body { margin: 6px 0; line-height: 1.45; }
+        .clause-body p { margin: 4px 0; text-align: justify; line-height: 1.45; }
+        .clause-body ul { margin: 3px 0 6px 18px; padding: 0; list-style-type: disc; }
+        .clause-body li { margin-bottom: 2.5px; line-height: 1.35; text-align: left; font-size: 10px; color: #2d3748; }
+        .clause-section-header { font-weight: bold; color: #0f766e; font-size: 10.5px; margin-top: 8px; margin-bottom: 3px; border-bottom: 1px solid #e2e8f0; padding-bottom: 2px; }
+        .clause-sub-header { font-weight: bold; color: #1e293b; font-size: 10px; margin-top: 5px; margin-bottom: 2px; padding-left: 2px; }
     </style>
 </head>
 <body>
@@ -58,24 +63,23 @@
         @endforeach
     @endif
 
-    <h2>Partes contratantes</h2>
-    <div class="parties">
+    <h2>Partes intervinientes</h2>
+    <table class="table">
+        <tr><th>Rol</th><th>Identificación</th><th>NIF / N.º IVA</th><th>Tipo</th><th>Domicilio</th></tr>
         @foreach([$contract->seller(), $contract->buyer()] as $party)
             @if($party)
-                <div class="party-card">
-                    <span class="role-badge">{{ $party->role }}</span>
-                    <div><strong>{{ $party->displayName() }}</strong></div>
-                    <div>NIF/CIF: {{ strtoupper($party->tax_id_country) }} {{ strtoupper($party->tax_id) }} · {{ $party->party_type }}</div>
-                    <div>{{ $party->address }}, {{ $party->postal_code }} {{ $party->city }} ({{ $party->country }})</div>
-                    @if($party->email || $party->phone)
-                        <div>{{ $party->email }} {{ $party->phone ? '· '.$party->phone : '' }}</div>
-                    @endif
-                </div>
+                <tr>
+                    <td><strong>{{ strtoupper($party->role) }}</strong></td>
+                    <td>{{ $party->displayName() }}</td>
+                    <td>{{ strtoupper($party->tax_id_country) !== 'ES' ? strtoupper($party->tax_id_country) . '-' : '' }}{{ strtoupper($party->tax_id) }}</td>
+                    <td>{{ $party->party_type }}</td>
+                    <td>{{ $party->address }}, {{ $party->postal_code }} {{ $party->city }}</td>
+                </tr>
             @endif
         @endforeach
-    </div>
+    </table>
 
-    <h2>Condiciones económicas</h2>
+    <h2>Condiciones económicas y objeto</h2>
     <table class="table">
         <tr><th>Concepto</th><th>Detalle</th><th>Concepto</th><th>Detalle</th></tr>
         <tr><td><strong>Objeto</strong></td><td>{{ $contract->object_type ?? $contract->title }}</td><td><strong>Tipo de contrato</strong></td><td>{{ $contract->contract_type }}</td></tr>
@@ -88,7 +92,7 @@
 
     @foreach(($contract->clauses ?? []) as $clause)
         <h2>{{ $clause['title'] }}</h2>
-        <div class="clause-body">{!! nl2br(e($clause['body'])) !!}</div>
+        <div class="clause-body">{!! \App\Services\ClauseFormatter::formatHtml($clause['body'], true) !!}</div>
     @endforeach
 
     @if(($contract->legal_notes))

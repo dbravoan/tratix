@@ -549,9 +549,30 @@
                             <strong>QUINTA. Estado de cargas y garantías.</strong> <span class="preview-var text-emerald-400" id="preview_warranties">[GARANTÍAS Y CARGAS]</span>
                         </p>
 
-                        {{-- Cláusula 6: Fuero --}}
+                        {{-- Cláusula 6: Derechos y obligaciones --}}
+                        <div class="mb-2.5 p-3 rounded-xl bg-slate-900/70 border border-slate-800 space-y-2">
+                            <strong class="text-emerald-300 font-sans block text-xs">SEXTA. Derechos y obligaciones recíprocas de las partes</strong>
+                            <div class="space-y-1.5 text-[11px]">
+                                <div>
+                                    <span class="font-bold text-emerald-400 block text-[10px] uppercase">1. PARTE VENDEDORA:</span>
+                                    <ul class="space-y-0.5 pl-3 list-none text-slate-300">
+                                        <li class="flex items-start gap-1.5"><span class="text-emerald-400">•</span><span>Derecho al cobro íntegro del precio convenido en la forma y plazos estipulados.</span></li>
+                                        <li class="flex items-start gap-1.5"><span class="text-emerald-400">•</span><span>Obligación de entrega del bien libre de cargas y saneamiento por vicios ocultos.</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-emerald-400 block text-[10px] uppercase">2. PARTE COMPRADORA:</span>
+                                    <ul class="space-y-0.5 pl-3 list-none text-slate-300">
+                                        <li class="flex items-start gap-1.5"><span class="text-emerald-400">•</span><span>Derecho a la recepción del bien en el estado declarado y titularidad pacífica.</span></li>
+                                        <li class="flex items-start gap-1.5"><span class="text-emerald-400">•</span><span>Obligación de abono del precio pactado y liquidación de impuestos o tasas locales.</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Cláusula 7: Fuero --}}
                         <p>
-                            <strong>SEXTA. Ley aplicable y jurisdicción.</strong> Las partes se someten a la legislación aplicable y a los juzgados y tribunales competentes.
+                            <strong>SÉPTIMA. Ley aplicable y jurisdicción.</strong> Las partes se someten a la legislación aplicable y a los juzgados y tribunales competentes.
                         </p>
                     </div>
 

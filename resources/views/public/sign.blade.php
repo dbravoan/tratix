@@ -114,7 +114,7 @@
                 @foreach(($contract->latestVersion()?->clauses ?? $contract->clauses ?? []) as $clause)
                     <div class="pb-2 border-b border-slate-800/80 last:border-0">
                         <h3 class="text-emerald-400 font-bold mb-1">{{ $clause['title'] }}</h3>
-                        <div class="text-justify text-slate-300 whitespace-pre-line leading-relaxed">{{ $clause['body'] }}</div>
+                        <div class="text-slate-300 leading-relaxed space-y-1.5">{!! \App\Services\ClauseFormatter::formatHtml($clause['body']) !!}</div>
                     </div>
                 @endforeach
             </div>
