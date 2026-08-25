@@ -25,6 +25,7 @@
         .evidence-box { border: 1px solid #0f766e; border-radius: 6px; padding: 12px; margin-top: 8px; }
         .hash { font-family: 'Courier', monospace; font-size: 9px; word-break: break-all; background: #f1f5f9; padding: 4px 6px; border-radius: 4px; }
         .badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 10px; font-weight: bold; background: #0f766e; color: #fff; }
+        .clause-body { margin: 6px 0; text-align: justify; white-space: pre-line; line-height: 1.45; }
     </style>
 </head>
 <body>
@@ -70,7 +71,7 @@
 
     @foreach(($version->clauses ?? $contract->clauses ?? []) as $clause)
         <h2>{{ $clause['title'] }}</h2>
-        <p>{{ $clause['body'] }}</p>
+        <div class="clause-body">{!! nl2br(e($clause['body'])) !!}</div>
     @endforeach
 
     @if($contract->legal_notes)

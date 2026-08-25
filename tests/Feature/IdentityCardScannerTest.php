@@ -296,4 +296,59 @@ class IdentityCardScannerTest extends TestCase
             'filename' => 'Documento_Identidad_comprador_anverso.jpg',
         ]);
     }
+
+    public function test_parses_spanish_dni_3_mrz_with_support_number_and_real_nif_in_line_2(): void
+    {
+        $parser = app(IdentityCardParserService::class);
+
+        // Real Spanish DNI 3.0 MRZ where line 1 has support number CKL159690 and line 2 has real NIF 52345678W
+        $mrz = "IDESPCKL159690<<<<<<<<<<<<<<<\n8505152M3005154ESP52345678W<<<8\nGARCIA<LOPEZ<<JUAN<CARLOS<<<<<";
+        $parsed = $parser->parseText($mrz);
+
+        $this->assertTrue($parsed['success']);
+        $this->assertEquals('52345678W', $parsed['tax_id']);
+        $this->assertEquals('CKL159690', $parsed['support_number']);
+        $this->assertEquals('ES', $parsed['tax_id_country']);
+        $this->assertTrue($parsed['tax_id_valid']);
+        $this->assertEquals('Juan Carlos Garcia Lopez', $parsed['full_name']);
+    }
+
+    public function test_binary_image_upload_without_ocr_does_not_generate_noise_strings(): void
+    {
+        $parser = app(IdentityCardParserService::class);
+
+        // Simulating binary JPEG image bytes
+        $fakeBinaryImage = UploadedFile::fake()->createWithContent('photo.jpg', "\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01\x01\x01\x00`\x00`\x00\x00\xFF\xDB\x00C\x00Yhne0gpctfPxxwaw9x6l5xngls4truscx7dzm4xpysxf4vbmt9ctey8gcj4xgk7pvbdohykj5z7kbxcl7ayfe");
+
+        $parsed = $parser->parse($fakeBinaryImage, null);
+
+        $this->assertFalse($parsed['success']);
+        $this->assertNull($parsed['full_name']);
+        $this->assertNull($parsed['tax_id']);
+        $this->assertNull($parsed['address']);
+    }
+
+    public function test_parses_international_and_latam_identity_documents(): void
+    {
+        $parser = app(IdentityCardParserService::class);
+
+        // 1. Argentina DNI & CUIT
+        $arText = "REPÚBLICA ARGENTINA\nREGISTRO NACIONAL DE LAS PERSONAS\nDOCUMENTO NACIONAL DE IDENTIDAD\nAPELLIDO: GONZALEZ\nNOMBRE: MARTIN\nCUIT: 20-30123456-4\nDOMICILIO: AV CORRIENTES 1234\nLOCALIDAD: BUENOS AIRES\nCP: 1425";
+        $arParsed = $parser->parseText($arText);
+        $this->assertTrue($arParsed['success']);
+        $this->assertEquals('20301234564', str_replace('-', '', $arParsed['tax_id']));
+        $this->assertEquals('AR', $arParsed['tax_id_country']);
+        $this->assertEquals('Martin Gonzalez', $arParsed['full_name']);
+        $this->assertEquals('AV CORRIENTES 1234', $arParsed['address']);
+        $this->assertEquals('1425', $arParsed['postal_code']);
+
+        // 2. Mexico INE / RFC
+        $mxText = "INSTITUTO NACIONAL ELECTORAL\nCREDENCIAL PARA VOTAR\nNOMBRE: LOPEZ HERNANDEZ SOFIA\nDOMICILIO: CALLE INSURGENTES SUR 1200\nCOLONIA DEL VALLE\nC.P. 03100\nALCALDÍA: BENITO JUAREZ\nESTADO: CIUDAD DE MEXICO\nRFC: LOHS8505151A0";
+        $mxParsed = $parser->parseText($mxText);
+        $this->assertTrue($mxParsed['success']);
+        $this->assertEquals('LOHS8505151A0', $mxParsed['tax_id']);
+        $this->assertEquals('MX', $mxParsed['tax_id_country']);
+        $this->assertEquals('03100', $mxParsed['postal_code']);
+    }
 }
+

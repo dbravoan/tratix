@@ -53,200 +53,266 @@
                     <span>📄</span>
                     <span>Descargar borrador en PDF</span>
                 </a>
-            </div>
-
-            {{-- Role Selector Banner --}}
+                {{-- Clear Role & Status Banner --}}
             <div class="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <span class="text-2xl">👤</span>
                     <div>
-                        <span class="text-xs text-slate-400 font-medium">Estás revisando este contrato como:</span>
-                        <h3 class="text-sm font-bold text-slate-100">{{ $activeParty?->displayName() ?? 'Sin nombre asignado' }} ({{ ucfirst($activeRole) }})</h3>
+                        <span class="text-xs text-slate-400 font-medium">Estás revisando este contrato como la parte invitada:</span>
+                        <h3 class="text-sm font-bold text-emerald-400">{{ $counterpartyParty?->displayName() ?? 'Destinatario' }} ({{ ucfirst($counterpartyRole) }})</h3>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-2 text-xs">
-                    <span class="text-slate-400">Cambiar parte:</span>
-                    <a href="{{ route('review.show', ['token' => $token, 'role' => 'vendedor']) }}"
-                       class="px-3 py-1.5 rounded-lg border font-bold transition {{ $activeRole === 'vendedor' ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-600' }}">
-                        Vendedor
-                    </a>
-                    <a href="{{ route('review.show', ['token' => $token, 'role' => 'comprador']) }}"
-                       class="px-3 py-1.5 rounded-lg border font-bold transition {{ $activeRole === 'comprador' ? 'bg-emerald-500 text-slate-950 border-emerald-400' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-600' }}">
-                        Comprador
-                    </a>
+                    <span class="px-3 py-1.5 rounded-lg bg-slate-900 text-slate-300 border border-slate-700 font-medium">
+                        Parte creadora: <strong class="text-slate-100">{{ $creatorParty?->displayName() ?? 'Titular' }} ({{ ucfirst($creatorRole) }})</strong>
+                    </span>
                 </div>
             </div>
         </div>
 
-        {{-- Collaborative Party Form: Fill / Edit Your Own Legal Data --}}
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5" x-data="{ openEdit: true }">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div class="flex items-center gap-3">
-                    <span class="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-800 flex items-center justify-center text-emerald-400 font-bold text-base">
-                        🪪
-                    </span>
-                    <div>
-                        <h2 class="text-lg font-bold text-white">Tus Datos de Identificación Legal ({{ ucfirst($activeRole) }})</h2>
-                        <p class="text-xs text-slate-400">Puedes rellenar o modificar tus datos directamente aquí para que aparezcan en el contrato oficial.</p>
+        {{-- Side-by-Side Parties Overview & Counterparty Fillable Form --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {{-- Left Column: Creator Party (Read-only / Protected) --}}
+            <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-blue-950/80 border border-blue-800 flex items-center justify-center text-blue-400 font-bold text-sm">
+                            🛡️
+                        </span>
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Parte Creadora: {{ ucfirst($creatorRole) }}</h3>
+                            <span class="text-[11px] text-blue-300 font-medium">✓ Datos fijados por el creador</span>
+                        </div>
                     </div>
+                    <span class="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">Protegido</span>
                 </div>
-                <button type="button" @click="openEdit = !openEdit" class="text-xs font-semibold text-emerald-400 hover:underline">
-                    <span x-text="openEdit ? '▲ Ocultar formulario' : '▼ Modificar mis datos'"></span>
-                </button>
+
+                <div class="space-y-3 text-xs text-slate-300">
+                    <div>
+                        <span class="text-slate-500 block text-[11px]">Tipo de parte:</span>
+                        <span class="font-semibold text-slate-200 capitalize">{{ $creatorParty?->party_type ?? 'Particular' }}</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block text-[11px]">Nombre / Razón Social:</span>
+                        <span class="font-semibold text-slate-100 text-sm">{{ $creatorParty?->displayName() ?? '—' }}</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block text-[11px]">NIF / CIF / NIE:</span>
+                        <span class="font-mono text-slate-200">{{ strtoupper($creatorParty?->tax_id_country ?? 'ES') }} · {{ strtoupper($creatorParty?->tax_id ?? '—') }}</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block text-[11px]">Domicilio Legal:</span>
+                        <span class="text-slate-200">{{ $creatorParty?->address ?? '—' }}</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block text-[11px]">Población:</span>
+                        <span class="text-slate-200">{{ $creatorParty?->postal_code }} {{ $creatorParty?->city }} {{ $creatorParty?->province ? '('.$creatorParty->province.')' : '' }}</span>
+                    </div>
+                    @if($creatorParty?->email || $creatorParty?->phone)
+                        <div class="pt-2 border-t border-slate-800/80">
+                            <span class="text-slate-500 block text-[11px]">Contacto del creador:</span>
+                            <span class="text-slate-300">{{ $creatorParty?->email ?? '' }} {{ $creatorParty?->phone ? '· '.$creatorParty->phone : '' }}</span>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-[11px] text-slate-400 flex items-start gap-2">
+                    <span>🔒</span>
+                    <span>Los datos del creador del contrato están verificados y protegidos para asegurar la integridad jurídica del acuerdo.</span>
+                </div>
             </div>
 
-            <form method="POST" action="{{ route('review.party.update', $token) }}" x-show="openEdit" x-transition class="space-y-4">
-                @csrf
-                <input type="hidden" name="role" value="{{ $activeRole }}">
-
-                {{-- ID Card Scanner for Counterparty --}}
-                <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-200 flex items-center gap-2">
-                            <span>📷</span> Escáner de Documento (DNI / NIE / Pasaporte)
+            {{-- Right Column: Counterparty Form (Fillable / Editable for the Guest) --}}
+            <div class="lg:col-span-7 bg-slate-900 border border-emerald-900/60 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5" x-data="{ openEdit: true }">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-800 flex items-center justify-center text-emerald-400 font-bold text-sm">
+                            🪪
                         </span>
-                        <span id="scan_status_badge" class="text-[10px] text-slate-500 font-medium">Opcional para autocompletar</span>
+                        <div>
+                            <h2 class="text-sm font-bold text-white">Tus Datos de Identificación ({{ ucfirst($counterpartyRole) }})</h2>
+                            @php
+                                $isPending = blank($counterpartyParty?->tax_id) || in_array($counterpartyParty?->tax_id, ['00000000T', '000000000', 'PENDIENTE'], true) || blank($counterpartyParty?->address);
+                            @endphp
+                            @if($isPending)
+                                <span class="text-[11px] text-amber-300 font-semibold flex items-center gap-1">
+                                    <span>⚠️</span> Por favor completa tus datos fiscales para el contrato
+                                </span>
+                            @else
+                                <span class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                                    <span>✓</span> Datos registrados en el borrador
+                                </span>
+                            @endif
+                        </div>
                     </div>
+                </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div class="border border-dashed border-slate-800 rounded-xl p-3 bg-slate-900/40 flex flex-col justify-between" id="slot_front">
-                            <div>
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
-                                        1. Anverso (Cara delantera)
-                                    </span>
-                                    <span id="badge_front" class="text-[10px] text-slate-500 font-medium">Pendiente</span>
-                                </div>
-                                <p class="text-[11px] text-slate-400 mt-0.5 mb-2">Con foto y número de documento.</p>
+                <form method="POST" action="{{ route('review.party.update', $token) }}" class="space-y-4">
+                    @csrf
+                    <input type="hidden" name="role" value="{{ $counterpartyRole }}">
 
-                                {{-- Live Photo Preview --}}
-                                <div id="preview_front" class="hidden mb-2.5 p-2 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-2.5">
-                                    <img id="thumb_front" src="" alt="Anverso DNI" class="h-12 w-16 object-cover rounded border border-slate-700 shrink-0">
-                                    <div class="flex-1 min-w-0">
-                                        <span class="text-[11px] font-semibold text-emerald-400 block truncate" id="name_front">anverso.jpg</span>
-                                        <span class="text-[10px] text-slate-400">✓ Listo para adjuntar</span>
+                    {{-- ID Card Scanner for Counterparty --}}
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-200 flex items-center gap-2">
+                                <span>📷</span> Escáner de Documento (DNI / NIE / Pasaporte)
+                            </span>
+                            <span id="scan_status_badge" class="text-[10px] text-slate-500 font-medium">Recomendado para autocompletar</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="border border-dashed border-slate-800 rounded-xl p-3 bg-slate-900/40 flex flex-col justify-between" id="slot_front">
+                                <div>
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                                            1. Anverso (Cara delantera)
+                                        </span>
+                                        <span id="badge_front" class="text-[10px] text-slate-500 font-medium">Pendiente</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 mt-0.5 mb-2">Con foto, nombre y número de DNI/NIE.</p>
+
+                                    {{-- Live Photo Preview --}}
+                                    <div id="preview_front" class="hidden mb-2.5 p-2 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-2.5">
+                                        <img id="thumb_front" src="" alt="Anverso DNI" class="h-12 w-16 object-cover rounded border border-slate-700 shrink-0">
+                                        <div class="flex-1 min-w-0">
+                                            <span class="text-[11px] font-semibold text-emerald-400 block truncate" id="name_front">anverso.jpg</span>
+                                            <span class="text-[10px] text-slate-400">✓ Listo para adjuntar</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="flex gap-2">
-                                <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-emerald-500 hover:text-emerald-300">
-                                    <span>📷 Cámara</span>
-                                    <input type="file" class="hidden js-id-scanner" data-role="{{ $activeRole }}" data-side="front" accept="image/*" capture="environment">
-                                </label>
-                                <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-slate-500 text-slate-300">
-                                    <span>📁 Archivo</span>
-                                    <input type="file" class="hidden js-id-scanner" data-role="{{ $activeRole }}" data-side="front" accept="image/*,.pdf">
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="border border-dashed border-slate-800 rounded-xl p-3 bg-slate-900/40 flex flex-col justify-between" id="slot_back">
-                            <div>
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
-                                        2. Reverso (Cara trasera)
-                                    </span>
-                                    <span id="badge_back" class="text-[10px] text-slate-500 font-medium">Pendiente</span>
+                                <div class="flex gap-2">
+                                    <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-emerald-500 hover:text-emerald-300">
+                                        <span>📷 Cámara</span>
+                                        <input type="file" class="hidden js-id-scanner" data-role="{{ $counterpartyRole }}" data-side="front" accept="image/*" capture="environment">
+                                    </label>
+                                    <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-slate-500 text-slate-300">
+                                        <span>📁 Archivo</span>
+                                        <input type="file" class="hidden js-id-scanner" data-role="{{ $counterpartyRole }}" data-side="front" accept="image/*,.pdf">
+                                    </label>
                                 </div>
-                                <p class="text-[11px] text-slate-400 mt-0.5 mb-2">Con domicilio y líneas MRZ.</p>
+                            </div>
 
-                                {{-- Live Photo Preview --}}
-                                <div id="preview_back" class="hidden mb-2.5 p-2 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-2.5">
-                                    <img id="thumb_back" src="" alt="Reverso DNI" class="h-12 w-16 object-cover rounded border border-slate-700 shrink-0">
-                                    <div class="flex-1 min-w-0">
-                                        <span class="text-[11px] font-semibold text-blue-400 block truncate" id="name_back">reverso.jpg</span>
-                                        <span class="text-[10px] text-slate-400">✓ Listo para adjuntar</span>
+                            <div class="border border-dashed border-slate-800 rounded-xl p-3 bg-slate-900/40 flex flex-col justify-between" id="slot_back">
+                                <div>
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
+                                            2. Reverso (Cara trasera)
+                                        </span>
+                                        <span id="badge_back" class="text-[10px] text-slate-500 font-medium">Pendiente</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 mt-0.5 mb-2">Con domicilio, CP y líneas MRZ.</p>
+
+                                    {{-- Live Photo Preview --}}
+                                    <div id="preview_back" class="hidden mb-2.5 p-2 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-2.5">
+                                        <img id="thumb_back" src="" alt="Reverso DNI" class="h-12 w-16 object-cover rounded border border-slate-700 shrink-0">
+                                        <div class="flex-1 min-w-0">
+                                            <span class="text-[11px] font-semibold text-blue-400 block truncate" id="name_back">reverso.jpg</span>
+                                            <span class="text-[10px] text-slate-400">✓ Listo para adjuntar</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="flex gap-2">
+                                    <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-blue-500 hover:text-blue-300">
+                                        <span>📷 Cámara</span>
+                                        <input type="file" class="hidden js-id-scanner" data-role="{{ $counterpartyRole }}" data-side="back" accept="image/*" capture="environment">
+                                    </label>
+                                    <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-slate-500 text-slate-300">
+                                        <span>📁 Archivo</span>
+                                        <input type="file" class="hidden js-id-scanner" data-role="{{ $counterpartyRole }}" data-side="back" accept="image/*,.pdf">
+                                    </label>
+                                </div>
                             </div>
+                        </div>
+
+                        <div id="scan_status" class="hidden text-xs p-2.5 rounded-lg border"></div>
+                        <input type="hidden" name="id_card_front_token" id="id_card_front_token" value="{{ old('id_card_front_token') }}">
+                        <input type="hidden" name="id_card_back_token" id="id_card_back_token" value="{{ old('id_card_back_token') }}">
+                        <input type="hidden" name="id_card_token" id="id_card_token" value="{{ old('id_card_token') }}">
+                    </div>
+
+                    {{-- Legal Fields Grid --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">¿Cómo actúas en este contrato? *</label>
+                            <select name="party_type" id="party_type" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                                <option value="particular" @selected(old('party_type', $counterpartyParty?->party_type ?? 'particular') === 'particular')>👤 Persona Física / Particular</option>
+                                <option value="autonomo" @selected(old('party_type', $counterpartyParty?->party_type) === 'autonomo')>💼 Autónomo / Profesional</option>
+                                <option value="sociedad" @selected(old('party_type', $counterpartyParty?->party_type) === 'sociedad')>🏢 Sociedad / Empresa (SL, SA, etc.)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">País de Residencia Fiscal *</label>
+                            <input type="text" name="country" id="country" value="{{ old('country', $counterpartyParty?->country ?? 'ES') }}" maxlength="2" class="w-full uppercase border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
+
+                        <div id="wrapper_company_name" style="{{ ($counterpartyParty?->party_type ?? 'particular') === 'particular' ? 'display:none' : '' }}">
+                            <label class="block font-semibold text-slate-200 mb-1" id="label_company_name">
+                                {{ ($counterpartyParty?->party_type ?? '') === 'autonomo' ? 'Nombre Comercial / Actividad *' : 'Razón Social (Sociedad SL, SA...) *' }}
+                            </label>
+                            <input type="text" name="company_name" id="input_company_name" value="{{ old('company_name', $counterpartyParty?->company_name) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Nombre de la empresa o actividad">
+                        </div>
+
+                        <div id="wrapper_full_name">
+                            <label class="block font-semibold text-slate-200 mb-1" id="label_full_name">
+                                {{ ($counterpartyParty?->party_type ?? '') === 'sociedad' ? 'Representante Legal / Administrador (quien firma) *' : 'Nombre y Apellidos completos *' }}
+                            </label>
+                            <input type="text" name="full_name" id="input_full_name" value="{{ old('full_name', $counterpartyParty?->full_name) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Como figura en tu DNI">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1" id="label_tax_id">
+                                {{ ($counterpartyParty?->party_type ?? '') === 'sociedad' ? 'CIF de la Empresa *' : 'NIF / NIE / Documento de Identidad *' }}
+                            </label>
                             <div class="flex gap-2">
-                                <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-blue-500 hover:text-blue-300">
-                                    <span>📷 Cámara</span>
-                                    <input type="file" class="hidden js-id-scanner" data-role="{{ $activeRole }}" data-side="back" accept="image/*" capture="environment">
-                                </label>
-                                <label class="btn-outline cursor-pointer text-[11px] py-1.5 px-2.5 flex items-center gap-1.5 hover:border-slate-500 text-slate-300">
-                                    <span>📁 Archivo</span>
-                                    <input type="file" class="hidden js-id-scanner" data-role="{{ $activeRole }}" data-side="back" accept="image/*,.pdf">
-                                </label>
+                                <input type="text" name="tax_id_country" id="tax_id_country" value="{{ old('tax_id_country', $counterpartyParty?->tax_id_country ?? 'ES') }}" maxlength="2" class="w-14 uppercase text-center border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-2 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                                <input type="text" name="tax_id" id="tax_id" value="{{ old('tax_id', $counterpartyParty?->tax_id) }}" class="flex-1 uppercase border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="12345678Z" required>
                             </div>
                         </div>
-                    </div>
 
-                    <div id="scan_status" class="hidden text-xs p-2.5 rounded-lg border"></div>
-                    <input type="hidden" name="id_card_front_token" id="id_card_front_token" value="{{ old('id_card_front_token') }}">
-                    <input type="hidden" name="id_card_back_token" id="id_card_back_token" value="{{ old('id_card_back_token') }}">
-                    <input type="hidden" name="id_card_token" id="id_card_token" value="{{ old('id_card_token') }}">
-                </div>
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">Domicilio Fiscal / Dirección *</label>
+                            <input type="text" name="address" id="address" value="{{ old('address', $counterpartyParty?->address) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Calle, número, piso..." required>
+                        </div>
 
-                {{-- Legal Fields Grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">Tipo de Parte *</label>
-                        <select name="party_type" id="party_type" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                            <option value="particular" @selected(old('party_type', $activeParty?->party_type ?? 'particular') === 'particular')>Persona Física / Particular</option>
-                            <option value="autonomo" @selected(old('party_type', $activeParty?->party_type) === 'autonomo')>Autónomo / Profesional</option>
-                            <option value="sociedad" @selected(old('party_type', $activeParty?->party_type) === 'sociedad')>Sociedad / Empresa</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">Código Postal y Ciudad *</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code', $counterpartyParty?->postal_code) }}" class="border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="28001" required>
+                                <input type="text" name="city" id="city" value="{{ old('city', $counterpartyParty?->city) }}" class="col-span-2 border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Madrid" required>
+                            </div>
+                        </div>
 
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">País de Residencia Fiscal *</label>
-                        <input type="text" name="country" id="country" value="{{ old('country', $activeParty?->country ?? 'ES') }}" maxlength="2" class="w-full uppercase border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                    </div>
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">Provincia</label>
+                            <input type="text" name="province" id="province" value="{{ old('province', $counterpartyParty?->province) }}" class="border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Madrid">
+                        </div>
 
-                    <div id="wrapper_full_name">
-                        <label class="block font-semibold text-slate-200 mb-1">Nombre y Apellidos completos *</label>
-                        <input type="text" name="full_name" id="input_full_name" value="{{ old('full_name', $activeParty?->full_name) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Como figura en tu DNI">
-                    </div>
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">Email de Contacto</label>
+                            <input type="email" name="email" id="email" value="{{ old('email', $counterpartyParty?->email) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="email@ejemplo.com">
+                        </div>
 
-                    <div id="wrapper_company_name" style="{{ ($activeParty?->party_type ?? 'particular') === 'particular' ? 'display:none' : '' }}">
-                        <label class="block font-semibold text-slate-200 mb-1">Razón Social *</label>
-                        <input type="text" name="company_name" id="input_company_name" value="{{ old('company_name', $activeParty?->company_name) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Nombre oficial de la empresa">
-                    </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">NIF / CIF / NIE *</label>
-                        <div class="flex gap-2">
-                            <input type="text" name="tax_id_country" id="tax_id_country" value="{{ old('tax_id_country', $activeParty?->tax_id_country ?? 'ES') }}" maxlength="2" class="w-14 uppercase text-center border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-2 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                            <input type="text" name="tax_id" id="tax_id" value="{{ old('tax_id', $activeParty?->tax_id) }}" class="flex-1 uppercase border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="12345678Z" required>
+                        <div>
+                            <label class="block font-semibold text-slate-200 mb-1">Teléfono (WhatsApp)</label>
+                            <input type="text" name="phone" id="phone" value="{{ old('phone', $counterpartyParty?->phone) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="+34 600 000 000">
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">Domicilio Fiscal / Dirección *</label>
-                        <input type="text" name="address" id="address" value="{{ old('address', $activeParty?->address) }}" class="w-full border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Calle, número, piso..." required>
+                    <div class="mt-4">
+                        <x-gdpr-info-box title="Tratamiento de tus datos como parte contratante (RGPD)" />
                     </div>
 
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">Código Postal y Ciudad *</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <input type="text" name="postal_code" id="postal_code" value="{{ old('postal_code', $activeParty?->postal_code) }}" class="border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="28001" required>
-                            <input type="text" name="city" id="city" value="{{ old('city', $activeParty?->city) }}" class="col-span-2 border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="Madrid" required>
-                        </div>
+                    <div class="pt-3 border-t border-slate-800 flex justify-end">
+                        <button type="submit" class="btn-primary text-xs px-6 py-2.5 font-bold shadow-lg shadow-emerald-500/20">
+                            💾 Guardar y Actualizar mis datos en el contrato
+                        </button>
                     </div>
-
-                    <div>
-                        <label class="block font-semibold text-slate-200 mb-1">Email y Teléfono de Contacto</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="email" name="email" id="email" value="{{ old('email', $activeParty?->email) }}" class="border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="email@ejemplo.com">
-                            <input type="text" name="phone" id="phone" value="{{ old('phone', $activeParty?->phone) }}" class="border border-slate-700 bg-slate-950 text-slate-100 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500" placeholder="+34 600 000 000">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <x-gdpr-info-box title="Tratamiento de tus datos como parte contratante (RGPD)" />
-                </div>
-
-                <div class="pt-3 border-t border-slate-800 flex justify-end">
-                    <button type="submit" class="btn-primary text-xs px-6 py-2.5 font-bold shadow-lg shadow-emerald-500/20">
-                        💾 Guardar y Actualizar mis datos en el contrato
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         {{-- Document Clauses Card --}}
@@ -257,7 +323,7 @@
                 @foreach(($contract->latestVersion()?->clauses ?? $contract->clauses ?? []) as $clause)
                     <div class="pb-2 border-b border-slate-800/80 last:border-0">
                         <h3 class="text-emerald-400 font-bold mb-1">{{ $clause['title'] }}</h3>
-                        <p class="text-justify text-slate-300">{{ $clause['body'] }}</p>
+                        <div class="text-justify text-slate-300 whitespace-pre-line leading-relaxed">{{ $clause['body'] }}</div>
                     </div>
                 @endforeach
             </div>
@@ -391,19 +457,165 @@
         </div>
     </div>
 
-    {{-- OCR Scanner Script for Review Screen --}}
+    {{-- OCR Scanner Script for Review Screen with Client Tesseract.js --}}
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
     <script>
+        // High-contrast Canvas pre-processing & Tesseract OCR
+        async function preprocessAndOcrImage(file, onProgress) {
+            if (typeof Tesseract === 'undefined' || file.type === 'application/pdf') {
+                return null;
+            }
+
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    const img = new Image();
+                    img.onload = async () => {
+                        try {
+                            const canvas = document.createElement('canvas');
+                            const maxDim = 1800;
+                            let width = img.width;
+                            let height = img.height;
+                            if (width > maxDim || height > maxDim) {
+                                if (width > height) {
+                                    height = Math.round((height * maxDim) / width);
+                                    width = maxDim;
+                                } else {
+                                    width = Math.round((width * maxDim) / height);
+                                    height = maxDim;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            // Contrast and grayscale normalization
+                            const imgData = ctx.getImageData(0, 0, width, height);
+                            const d = imgData.data;
+                            for (let i = 0; i < d.length; i += 4) {
+                                const gray = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+                                const contrast = 1.25;
+                                const adjusted = Math.min(255, Math.max(0, (gray - 128) * contrast + 128));
+                                d[i] = adjusted;
+                                d[i + 1] = adjusted;
+                                d[i + 2] = adjusted;
+                            }
+                            ctx.putImageData(imgData, 0, 0);
+
+                            const worker = await Tesseract.createWorker('spa', 1, {
+                                logger: (m) => {
+                                    if (m.status === 'recognizing text' && onProgress) {
+                                        onProgress(Math.round((m.progress || 0) * 100));
+                                    }
+                                }
+                            });
+                            const ret = await worker.recognize(canvas);
+                            await worker.terminate();
+                            resolve(ret.data.text || null);
+                        } catch (err) {
+                            console.warn('OCR error:', err);
+                            resolve(null);
+                        }
+                    };
+                    img.onerror = () => resolve(null);
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function highlightField(el) {
+            if (!el) return;
+            el.classList.add('ring-2', 'ring-emerald-400', 'bg-emerald-950/40');
+            setTimeout(() => {
+                el.classList.remove('ring-2', 'ring-emerald-400', 'bg-emerald-950/40');
+            }, 2500);
+        }
+
+        // Helper for non-destructive autofill and suggestions
+        function smartFillOrSuggest(inputEl, newValue, fieldLabel) {
+            if (!inputEl || !newValue || !String(newValue).trim()) return { autoFilled: false, suggested: false };
+            const currentVal = (inputEl.value || '').trim();
+            const cleanNew = String(newValue).trim();
+
+            const isPlaceholder = !currentVal || ['PENDIENTE', '00000', '00000000T', '000000000', 'Pendiente de cumplimentar', 'Pendiente'].includes(currentVal);
+            const isEquivalent = currentVal.toLowerCase() === cleanNew.toLowerCase();
+
+            if (isPlaceholder || isEquivalent) {
+                inputEl.value = cleanNew;
+                highlightField(inputEl);
+                const oldPill = document.getElementById(`sugg_${inputEl.id}`);
+                if (oldPill) oldPill.remove();
+                return { autoFilled: true, suggested: false };
+            }
+
+            // Show suggestion pill without overwriting
+            let pill = document.getElementById(`sugg_${inputEl.id}`);
+            if (!pill) {
+                pill = document.createElement('div');
+                pill.id = `sugg_${inputEl.id}`;
+                pill.className = 'mt-1.5 flex items-center justify-between gap-2 text-[11px] text-amber-200 bg-amber-950/70 border border-amber-800/80 rounded-lg px-2.5 py-1.5 shadow-sm transition';
+                inputEl.parentNode.insertBefore(pill, inputEl.nextSibling);
+            }
+
+            pill.innerHTML = `
+                <span class="truncate">💡 Detectado en DNI (${fieldLabel}): <strong>${cleanNew}</strong></span>
+                <div class="flex items-center gap-2 shrink-0">
+                    <button type="button" class="text-xs text-emerald-400 font-semibold hover:underline" id="btn_apply_${inputEl.id}">Reemplazar</button>
+                    <button type="button" class="text-xs text-slate-400 hover:text-slate-200" id="btn_dismiss_${inputEl.id}">✕</button>
+                </div>
+            `;
+
+            document.getElementById(`btn_apply_${inputEl.id}`)?.addEventListener('click', () => {
+                inputEl.value = cleanNew;
+                highlightField(inputEl);
+                pill.remove();
+            });
+
+            document.getElementById(`btn_dismiss_${inputEl.id}`)?.addEventListener('click', () => {
+                pill.remove();
+            });
+
+            return { autoFilled: false, suggested: true };
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const partyTypeSelect = document.getElementById('party_type');
             const fullNameWrap = document.getElementById('wrapper_full_name');
             const compNameWrap = document.getElementById('wrapper_company_name');
 
             if (partyTypeSelect) {
-                partyTypeSelect.addEventListener('change', (e) => {
-                    const isPart = e.target.value === 'particular';
-                    if (fullNameWrap) fullNameWrap.style.display = isPart ? '' : 'none';
+                const updateLabels = (type) => {
+                    const isPart = type === 'particular';
+                    const isAutonomo = type === 'autonomo';
+                    const isSociedad = type === 'sociedad';
+
                     if (compNameWrap) compNameWrap.style.display = isPart ? 'none' : '';
+                    if (fullNameWrap) fullNameWrap.style.display = '';
+
+                    const lblComp = document.getElementById('label_company_name');
+                    if (lblComp) {
+                        lblComp.textContent = isAutonomo ? 'Nombre Comercial / Actividad *' : 'Razón Social (Sociedad SL, SA...) *';
+                    }
+
+                    const lblName = document.getElementById('label_full_name');
+                    if (lblName) {
+                        lblName.textContent = isSociedad ? 'Representante Legal / Administrador (quien firma) *' : (isAutonomo ? 'Nombre y Apellidos del profesional *' : 'Nombre y Apellidos completos *');
+                    }
+
+                    const lblTax = document.getElementById('label_tax_id');
+                    if (lblTax) {
+                        lblTax.textContent = isSociedad ? 'CIF de la Empresa *' : 'NIF / NIE / Documento de Identidad *';
+                    }
+                };
+
+                partyTypeSelect.addEventListener('change', (e) => {
+                    updateLabels(e.target.value);
                 });
+                updateLabels(partyTypeSelect.value);
             }
 
             document.querySelectorAll('.js-id-scanner').forEach(input => {
@@ -436,9 +648,28 @@
                         statusEl.innerHTML = `<span class="inline-block animate-spin mr-1.5">🔍</span> Analizando <strong>${sideLabel}</strong> (${file.name}) con OCR...`;
                     }
 
+                    // Run high-contrast client OCR with live progress
+                    let ocrText = null;
+                    try {
+                        ocrText = await preprocessAndOcrImage(file, (pct) => {
+                            if (statusEl) {
+                                statusEl.innerHTML = `<span class="inline-block animate-spin mr-1.5">🔍</span> Leyendo texto de <strong>${sideLabel}</strong>: ${pct}%...`;
+                            }
+                        });
+                    } catch (ocrErr) {
+                        console.log('Client OCR error, falling back to server', ocrErr);
+                    }
+
+                    if (statusEl) {
+                        statusEl.innerHTML = `<span class="inline-block animate-spin mr-1.5">⚡</span> Validando datos fiscales y extrayendo campos de <strong>${sideLabel}</strong>...`;
+                    }
+
                     const formData = new FormData();
                     formData.append('document', file);
                     formData.append('side', side);
+                    if (ocrText) {
+                        formData.append('ocr_text', ocrText);
+                    }
                     formData.append('_token', '{{ csrf_token() }}');
 
                     try {
@@ -450,23 +681,45 @@
                         const data = await res.json();
 
                         if (data.success) {
-                            if (data.full_name && document.getElementById('full_name')) {
-                                document.getElementById('full_name').value = data.full_name;
+                            let suggestionsCount = 0;
+
+                            if (data.party_type && partyTypeSelect && partyTypeSelect.value !== data.party_type) {
+                                partyTypeSelect.value = data.party_type;
+                                partyTypeSelect.dispatchEvent(new Event('change'));
                             }
-                            if (data.tax_id && document.getElementById('tax_id')) {
-                                document.getElementById('tax_id').value = data.tax_id;
+
+                            if (data.full_name) {
+                                const nameEl = document.getElementById('full_name');
+                                const res = smartFillOrSuggest(nameEl, data.full_name, 'Nombre');
+                                if (res?.suggested) suggestionsCount++;
                             }
+
+                            if (data.tax_id) {
+                                const taxEl = document.getElementById('tax_id');
+                                const res = smartFillOrSuggest(taxEl, data.tax_id, 'NIF/NIE');
+                                if (res?.suggested) suggestionsCount++;
+                            }
+
                             if (data.tax_id_country && document.getElementById('tax_id_country')) {
                                 document.getElementById('tax_id_country').value = data.tax_id_country;
                             }
-                            if (data.address && document.getElementById('address')) {
-                                document.getElementById('address').value = data.address;
+
+                            if (data.address) {
+                                const addrEl = document.getElementById('address');
+                                const res = smartFillOrSuggest(addrEl, data.address, 'Dirección');
+                                if (res?.suggested) suggestionsCount++;
                             }
-                            if (data.postal_code && document.getElementById('postal_code')) {
-                                document.getElementById('postal_code').value = data.postal_code;
+
+                            if (data.postal_code) {
+                                const cpEl = document.getElementById('postal_code');
+                                const res = smartFillOrSuggest(cpEl, data.postal_code, 'Código Postal');
+                                if (res?.suggested) suggestionsCount++;
                             }
-                            if (data.city && document.getElementById('city')) {
-                                document.getElementById('city').value = data.city;
+
+                            if (data.city) {
+                                const cityEl = document.getElementById('city');
+                                const res = smartFillOrSuggest(cityEl, data.city, 'Ciudad');
+                                if (res?.suggested) suggestionsCount++;
                             }
 
                             if (data.scan_token) {
@@ -493,7 +746,11 @@
                             if (statusEl) {
                                 statusEl.className = 'text-xs p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-700 text-emerald-200 block';
                                 const info = [data.full_name, data.tax_id, data.city].filter(Boolean).join(' · ');
-                                statusEl.innerHTML = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${info || 'Datos reconocidos'}. Se adjuntará al contrato.`;
+                                let msg = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${info || 'Datos reconocidos'}. Se adjuntará al contrato.`;
+                                if (suggestionsCount > 0) {
+                                    msg += ` <span class="text-amber-300 ml-1">(${suggestionsCount} sugerencia(s) disponible(s) sin sobreescribir tus datos).</span>`;
+                                }
+                                statusEl.innerHTML = msg;
                             }
                         } else {
                             if (statusEl) {

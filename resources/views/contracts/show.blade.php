@@ -141,7 +141,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <p class="text-sm text-justify text-slate-300 leading-relaxed">{{ $clause['body'] }}</p>
+                            <div class="text-sm text-justify text-slate-300 leading-relaxed whitespace-pre-line">{{ $clause['body'] }}</div>
                         </div>
                     @endforeach
                 </div>

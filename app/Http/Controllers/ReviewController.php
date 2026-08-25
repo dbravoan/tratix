@@ -51,22 +51,34 @@ class ReviewController extends Controller
 
         $seller = $contract->seller();
         $buyer = $contract->buyer();
-        $counterparty = $contract->counterparty();
-        $activeRole = $request->query('role') ?? $request->query('party') ?? $counterparty?->role ?? 'comprador';
-        if ($activeRole === 'seller') {
-            $activeRole = 'vendedor';
-        }
-        if ($activeRole === 'buyer') {
-            $activeRole = 'comprador';
-        }
-        $activeParty = $activeRole === 'vendedor' ? $seller : $buyer;
+        
+        $creatorRole = $contract->creator_role ?? 'vendedor';
+        $creatorParty = $creatorRole === 'vendedor' ? $seller : $buyer;
+        $counterpartyRole = $creatorRole === 'vendedor' ? 'comprador' : 'vendedor';
+        $counterpartyParty = $creatorRole === 'vendedor' ? $buyer : $seller;
+
+        // The shared review link is specifically for the counterparty
+        $activeRole = $counterpartyRole;
+        $activeParty = $counterpartyParty;
 
         $rights = [
             'vendedor' => $this->rightsObligations->for($contract, $seller),
             'comprador' => $this->rightsObligations->for($contract, $buyer),
         ];
 
-        return view('public.review', compact('contract', 'token', 'rights', 'seller', 'buyer', 'counterparty', 'activeRole', 'activeParty'));
+        return view('public.review', compact(
+            'contract',
+            'token',
+            'rights',
+            'seller',
+            'buyer',
+            'creatorRole',
+            'creatorParty',
+            'counterpartyRole',
+            'counterpartyParty',
+            'activeRole',
+            'activeParty'
+        ));
     }
 
     /**
@@ -154,11 +166,14 @@ class ReviewController extends Controller
     {
         $contract = $this->contractByToken($token);
 
+        $creatorRole = $contract->creator_role ?? 'vendedor';
+        $counterpartyRole = $creatorRole === 'vendedor' ? 'comprador' : 'vendedor';
+
         $data = $request->validate([
-            'role' => ['required', 'string', 'in:vendedor,comprador'],
+            'role' => ['nullable', 'string', 'in:vendedor,comprador'],
             'party_type' => ['required', 'string', 'in:particular,autonomo,sociedad'],
-            'full_name' => ['required_if:party_type,particular', 'nullable', 'string', 'max:255'],
-            'company_name' => ['required_if:party_type,autonomo', 'required_if:party_type,sociedad', 'nullable', 'string', 'max:255'],
+            'full_name' => ['required_if:party_type,particular', 'required_if:party_type,autonomo', 'nullable', 'string', 'max:255'],
+            'company_name' => ['required_if:party_type,sociedad', 'nullable', 'string', 'max:255'],
             'tax_id' => ['required', 'string', 'max:32'],
             'tax_id_country' => ['required', 'string', 'size:2'],
             'country' => ['required', 'string', 'size:2'],
@@ -174,7 +189,15 @@ class ReviewController extends Controller
             'id_card_token' => ['nullable', 'string', 'max:100'],
         ]);
 
-        $role = $data['role'];
+        // Strict security: via the public review link, only the counterparty party data can be modified
+        $requestedRole = $data['role'] ?? $counterpartyRole;
+        if ($requestedRole !== $counterpartyRole) {
+            return back()->with('error', 'Solo puedes cumplimentar o modificar los datos de tu propia parte (' . ucfirst($counterpartyRole) . '). Los datos del titular/creador (' . ucfirst($creatorRole) . ') están protegidos.');
+        }
+
+        $role = $counterpartyRole;
+        $data['role'] = $role;
+
         $party = $contract->parties()->where('role', $role)->first();
 
         if ($party) {
@@ -212,11 +235,11 @@ class ReviewController extends Controller
             'user_id' => null,
             'event' => 'party_updated',
             'actor' => "{$displayName} ({$role})",
-            'detail' => "Datos fiscales de {$role} actualizados por la contraparte en la revisión.",
+            'detail' => "Datos de identificación de {$role} cumplimentados por la contraparte en la revisión.",
             'happened_at' => now(),
         ]);
 
-        return redirect()->route('review.show', ['token' => $token, 'role' => $role])
+        return redirect()->route('review.show', $token)
             ->with('success', 'Tus datos legales se han guardado y el borrador se ha actualizado correctamente.');
     }
 }

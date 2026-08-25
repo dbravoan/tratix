@@ -26,7 +26,7 @@
         .badge-c2c { background: #fef3c7; color: #92400e; }
         .badge-c2b { background: #fce7f3; color: #9d174d; }
         .issue-error { background: #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; margin: 3px 0; }
-        .issue-warning { background: #fffbeb; color: #92400e; padding: 4px 8px; border-radius: 4px; margin: 3px 0; }
+        .clause-body { margin: 6px 0; text-align: justify; white-space: pre-line; line-height: 1.45; }
     </style>
 </head>
 <body>
@@ -44,29 +44,41 @@
             <span>Régimen:
                 <span class="badge badge-{{ $contract->transaction_type }}">{{ strtoupper($contract->transaction_type) }}</span>
             </span>
-            <span>Ámbito: <strong>{{ $contract->jurisdiction }}</strong></span>
+            <span>Jurisdicción: <strong>{{ $contract->jurisdiction }}</strong></span>
+            <span>Ley aplicable: <strong>{{ $contract->applicableLaw() }}</strong></span>
         </div>
     </div>
 
-    @if($contract->seller() && $contract->buyer())
-        <h2>Partes intervinientes</h2>
-        <table class="table">
-            <tr><th>Rol</th><th>Identificación</th><th>NIF / N.º IVA</th><th>Tipo</th><th>Domicilio</th></tr>
-            @foreach([$contract->seller(), $contract->buyer()] as $party)
-                <tr>
-                    <td>{{ ucfirst($party->role) }}</td>
-                    <td>{{ $party->displayName() }}</td>
-                    <td>{{ strtoupper($party->tax_id_country) !== 'ES' ? strtoupper($party->tax_id_country) . '-' : '' }}{{ strtoupper($party->tax_id) }}</td>
-                    <td>{{ $party->party_type }}</td>
-                    <td>{{ $party->address }}, {{ $party->postal_code }} {{ $party->city }}, {{ strtoupper($party->country) }}</td>
-                </tr>
-            @endforeach
-        </table>
+    @if(($contract->issues))
+        <h2>Revisión de validez del contrato</h2>
+        @foreach($contract->issues as $issue)
+            <div class="issue-{{ $issue['severity'] }}">
+                <strong>[{{ strtoupper($issue['severity']) }}]</strong> {{ $issue['message'] }}
+            </div>
+        @endforeach
     @endif
 
-    <h2>Datos económicos</h2>
+    <h2>Partes contratantes</h2>
+    <div class="parties">
+        @foreach([$contract->seller(), $contract->buyer()] as $party)
+            @if($party)
+                <div class="party-card">
+                    <span class="role-badge">{{ $party->role }}</span>
+                    <div><strong>{{ $party->displayName() }}</strong></div>
+                    <div>NIF/CIF: {{ strtoupper($party->tax_id_country) }} {{ strtoupper($party->tax_id) }} · {{ $party->party_type }}</div>
+                    <div>{{ $party->address }}, {{ $party->postal_code }} {{ $party->city }} ({{ $party->country }})</div>
+                    @if($party->email || $party->phone)
+                        <div>{{ $party->email }} {{ $party->phone ? '· '.$party->phone : '' }}</div>
+                    @endif
+                </div>
+            @endif
+        @endforeach
+    </div>
+
+    <h2>Condiciones económicas</h2>
     <table class="table">
-        <tr><td><strong>Tipo de contrato</strong></td><td>{{ $contract->contract_type }}</td><td><strong>Objeto</strong></td><td>{{ $contract->object_type ?? '—' }}</td></tr>
+        <tr><th>Concepto</th><th>Detalle</th><th>Concepto</th><th>Detalle</th></tr>
+        <tr><td><strong>Objeto</strong></td><td>{{ $contract->object_type ?? $contract->title }}</td><td><strong>Tipo de contrato</strong></td><td>{{ $contract->contract_type }}</td></tr>
         <tr><td><strong>Cantidad</strong></td><td>{{ $contract->quantity }}</td><td><strong>Precio</strong></td><td class="money">{{ number_format((float) $contract->price_amount, 2, ',', '.') }} {{ $contract->currency }}</td></tr>
         <tr><td><strong>Impuestos</strong></td><td class="money">{{ number_format((float) $contract->tax_amount, 2, ',', '.') }} {{ $contract->currency }}</td><td><strong>Total</strong></td><td class="money">{{ number_format((float) $contract->total_amount, 2, ',', '.') }} {{ $contract->currency }}</td></tr>
     </table>
@@ -76,7 +88,7 @@
 
     @foreach(($contract->clauses ?? []) as $clause)
         <h2>{{ $clause['title'] }}</h2>
-        <p>{{ $clause['body'] }}</p>
+        <div class="clause-body">{!! nl2br(e($clause['body'])) !!}</div>
     @endforeach
 
     @if(($contract->legal_notes))

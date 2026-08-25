@@ -83,7 +83,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-200 mb-1">Tipo de contrato *</label>
-                                <select name="contract_type" id="contract_type" x-model="form.contract_type" @change="updatePreview(); computeRegime();"
+                                <select name="contract_type" id="contract_type" x-model="form.contract_type" @change="onContractTypeChange()"
                                     class="w-full border border-slate-600 bg-slate-900 text-slate-100 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500">
                                     <option value="arras">Contrato de arras (reserva de inmueble)</option>
                                     <option value="inmuebles">Compraventa de inmueble</option>
@@ -174,29 +174,39 @@
                     </section>
                 </div>
 
-                {{-- PASO 2: Parte Vendedora --}}
+                {{-- PASO 2: Tus Datos de Identificación (Tu Parte) --}}
                 <div x-show="currentStep === 2" x-transition.opacity.duration.250ms class="space-y-6">
                     <section class="bg-slate-800/95 border border-slate-700 rounded-xl p-5 shadow-sm">
                         <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
                             <div>
-                                <h2 class="font-bold text-emerald-400 text-base" x-text="`2. Identificación de ${currentHints.sellerRoleLabel}`"></h2>
-                                <p class="text-xs text-slate-400">Modifica los datos del vendedor o escanea un nuevo documento de identidad si es necesario.</p>
+                                <h2 class="font-bold text-emerald-400 text-base" x-text="`2. Tus datos de identificación (${form.creator_role === 'vendedor' ? currentHints.sellerRoleLabel : currentHints.buyerRoleLabel})`"></h2>
+                                <p class="text-xs text-slate-400">Modifica tus datos fiscales o escanea un nuevo documento de identidad si es necesario.</p>
                             </div>
                         </div>
-                        @include('contracts._party_form', ['role' => 'seller', 'label' => 'Vendedor', 'party' => $seller])
+                        <div x-show="form.creator_role === 'vendedor'">
+                            @include('contracts._party_form', ['role' => 'seller', 'label' => 'Vendedor', 'party' => $seller])
+                        </div>
+                        <div x-show="form.creator_role === 'comprador'">
+                            @include('contracts._party_form', ['role' => 'buyer', 'label' => 'Comprador', 'party' => $buyer])
+                        </div>
                     </section>
                 </div>
 
-                {{-- PASO 3: Parte Compradora --}}
+                {{-- PASO 3: Identificación de la Otra Parte (Contraparte) --}}
                 <div x-show="currentStep === 3" x-transition.opacity.duration.250ms class="space-y-6">
                     <section class="bg-slate-800/95 border border-slate-700 rounded-xl p-5 shadow-sm">
                         <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
                             <div>
-                                <h2 class="font-bold text-emerald-400 text-base" x-text="`3. Identificación de ${currentHints.buyerRoleLabel}`"></h2>
-                                <p class="text-xs text-slate-400">Modifica los datos del comprador o actualiza sus documentos de identidad.</p>
+                                <h2 class="font-bold text-emerald-400 text-base" x-text="`3. Identificación de la otra parte (${form.creator_role === 'vendedor' ? currentHints.buyerRoleLabel : currentHints.sellerRoleLabel})`"></h2>
+                                <p class="text-xs text-slate-400">Modifica los datos de la otra parte o actualiza sus documentos de identidad.</p>
                             </div>
                         </div>
-                        @include('contracts._party_form', ['role' => 'buyer', 'label' => 'Comprador', 'party' => $buyer])
+                        <div x-show="form.creator_role === 'vendedor'">
+                            @include('contracts._party_form', ['role' => 'buyer', 'label' => 'Comprador', 'party' => $buyer])
+                        </div>
+                        <div x-show="form.creator_role === 'comprador'">
+                            @include('contracts._party_form', ['role' => 'seller', 'label' => 'Vendedor', 'party' => $seller])
+                        </div>
                     </section>
                 </div>
 
@@ -478,18 +488,18 @@
             completedFieldsCount: 10,
             totalVariablesCount: 10,
             form: {
-                contract_type: '{{ old('contract_type', $contract->contract_type) }}',
-                title: '{{ old('title', $contract->title) }}',
-                object_type: '{{ old('object_type', $contract->object_type) }}',
+                contract_type: @json(old('contract_type', $contract->contract_type)),
+                title: @json(old('title', $contract->title)),
+                object_type: @json(old('object_type', $contract->object_type)),
                 object_description: @json(old('object_description', $contract->object_description)),
                 quantity: '{{ old('quantity', $contract->quantity ?? 1) }}',
-                city: '{{ old('city', $contract->city) }}',
-                signing_date: '{{ old('signing_date', $contract->signing_date?->format('Y-m-d')) }}',
-                effective_date: '{{ old('effective_date', $contract->effective_date?->format('Y-m-d')) }}',
-                creator_role: '{{ old('creator_role', $contract->creator_role ?? 'vendedor') }}',
+                city: @json(old('city', $contract->city)),
+                signing_date: @json(old('signing_date', $contract->signing_date?->format('Y-m-d'))),
+                effective_date: @json(old('effective_date', $contract->effective_date?->format('Y-m-d'))),
+                creator_role: @json(old('creator_role', $contract->creator_role ?? 'vendedor')),
                 price_amount: '{{ old('price_amount', $contract->price_amount) }}',
                 tax_amount: '{{ old('tax_amount', $contract->tax_amount ?? 0) }}',
-                currency: '{{ old('currency', $contract->currency ?? 'EUR') }}',
+                currency: @json(old('currency', $contract->currency ?? 'EUR')),
                 payment_terms: @json(old('payment_terms', $contract->payment_terms ?? '')),
                 delivery_terms: @json(old('delivery_terms', $contract->delivery_terms ?? '')),
                 warranties: @json(old('warranties', $contract->warranties ?? '')),
@@ -516,7 +526,7 @@
                     buyerRoleLabel: 'Compradora / Reservante'
                 },
                 vehiculos: {
-                    titlePlaceholder: 'p. ej. Contrato de compraventa de vehículo usado Seat Ibiza 1.6 TDI',
+                    titlePlaceholder: 'p. ej. Contrato de compraventa de vehículo usado',
                     objectTypeLabel: 'Vehículo (Marca, Modelo y Matrícula) *',
                     objectTypePlaceholder: 'p. ej. Turismo Seat Ibiza 1.6 TDI Style, Matrícula 1234-XYZ',
                     objectDescLabel: 'Datos técnicos del vehículo (Bastidor VIN, km, ITV) *',
@@ -690,13 +700,16 @@
             get currentHints() {
                 return this.typeHints[this.form.contract_type] || this.typeHints['arras'];
             },
-            steps: [
-                { shortName: '1. Objeto', name: 'Tipo y Objeto', title: '1. Modifica el tipo de contrato y el objeto', description: 'Revisa qué vas a transmitir, la ciudad de firma y la fecha de efectividad.' },
-                { shortName: '2. Vendedor', name: 'Parte Vendedora', title: '2. Datos de la Parte Vendedora', description: 'Modifica los datos del titular o sube nuevo documento si procede.' },
-                { shortName: '3. Comprador', name: 'Parte Compradora', title: '3. Datos de la Parte Compradora', description: 'Modifica los datos del adquirente o sus identificaciones.' },
-                { shortName: '4. Condiciones', name: 'Condiciones y Pago', title: '4. Condiciones económicas y cláusulas', description: 'Modifica el precio, señal, plazos de otorgamiento y garantías.' },
-                { shortName: '5. Revisar', name: 'Guardar Cambios', title: '5. Resumen final y confirmación', description: 'Comprueba los cambios realizados antes de guardarlos.' },
-            ],
+            get steps() {
+                const isSeller = this.form.creator_role === 'vendedor';
+                return [
+                    { shortName: '1. Objeto & Rol', name: 'Tipo y Objeto', title: '1. Modifica el tipo de contrato, tu posición y el objeto', description: 'Revisa qué vas a transmitir, la posición en el contrato, la ciudad de firma y las fechas.' },
+                    { shortName: '2. Tus Datos', name: 'Tus Datos', title: '2. Tus datos de identificación (' + (isSeller ? this.currentHints.sellerRoleLabel : this.currentHints.buyerRoleLabel) + ')', description: 'Modifica tus datos fiscales o escanea un nuevo documento de identidad si procede.' },
+                    { shortName: '3. Contraparte', name: 'La Otra Parte', title: '3. Identificación de la otra parte (' + (isSeller ? this.currentHints.buyerRoleLabel : this.currentHints.sellerRoleLabel) + ')', description: 'Modifica los datos de la otra parte o actualiza sus documentos de identidad.' },
+                    { shortName: '4. Condiciones', name: 'Condiciones y Pago', title: '4. Condiciones económicas y cláusulas', description: 'Modifica el precio, señal, plazos de otorgamiento y garantías.' },
+                    { shortName: '5. Revisar', name: 'Guardar Cambios', title: '5. Resumen final y confirmación', description: 'Comprueba los cambios realizados antes de guardarlos.' },
+                ];
+            },
             init() {
                 this.$nextTick(() => {
                     this.updatePreview();
@@ -768,6 +781,17 @@
                 this.fillField('special_clauses', 'specialPlaceholder');
                 this.updatePreview();
                 this.updateTotal();
+                computeRegime();
+            },
+            onContractTypeChange() {
+                const currentTitle = (this.form.title || '').trim();
+                const isGenericOrEmpty = !currentTitle || Object.values(this.typeHints).some(h => this.cleanPlaceholder(h.titlePlaceholder).toLowerCase() === currentTitle.toLowerCase());
+                if (isGenericOrEmpty) {
+                    this.form.title = this.cleanPlaceholder(this.currentHints.titlePlaceholder);
+                    const titleEl = document.getElementById('input_title');
+                    if (titleEl) titleEl.value = this.form.title;
+                }
+                this.updatePreview();
                 computeRegime();
             },
             getPartyName(role) {
@@ -1075,6 +1099,55 @@
         }, 2500);
     }
 
+    // Helper for non-destructive autofill and suggestions
+    function smartFillOrSuggest(inputEl, newValue, fieldLabel) {
+        if (!inputEl || !newValue || !String(newValue).trim()) return { autoFilled: false, suggested: false };
+        const currentVal = (inputEl.value || '').trim();
+        const cleanNew = String(newValue).trim();
+
+        const isPlaceholder = !currentVal || ['PENDIENTE', '00000', '00000000T', '000000000', 'Pendiente de cumplimentar', 'Pendiente'].includes(currentVal);
+        const isEquivalent = currentVal.toLowerCase() === cleanNew.toLowerCase();
+
+        if (isPlaceholder || isEquivalent) {
+            inputEl.value = cleanNew;
+            highlightField(inputEl);
+            const oldPill = document.getElementById(`sugg_${inputEl.id}`);
+            if (oldPill) oldPill.remove();
+            return { autoFilled: true, suggested: false };
+        }
+
+        // Show suggestion pill without overwriting
+        let pill = document.getElementById(`sugg_${inputEl.id}`);
+        if (!pill) {
+            pill = document.createElement('div');
+            pill.id = `sugg_${inputEl.id}`;
+            pill.className = 'mt-1.5 flex items-center justify-between gap-2 text-[11px] text-amber-200 bg-amber-950/70 border border-amber-800/80 rounded-lg px-2.5 py-1.5 shadow-sm transition';
+            inputEl.parentNode.insertBefore(pill, inputEl.nextSibling);
+        }
+
+        pill.innerHTML = `
+            <span class="truncate">💡 Detectado en DNI (${fieldLabel}): <strong>${cleanNew}</strong></span>
+            <div class="flex items-center gap-2 shrink-0">
+                <button type="button" class="text-xs text-emerald-400 font-semibold hover:underline" id="btn_apply_${inputEl.id}">Reemplazar</button>
+                <button type="button" class="text-xs text-slate-400 hover:text-slate-200" id="btn_dismiss_${inputEl.id}">✕</button>
+            </div>
+        `;
+
+        document.getElementById(`btn_apply_${inputEl.id}`)?.addEventListener('click', () => {
+            inputEl.value = cleanNew;
+            highlightField(inputEl);
+            inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+            inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+            pill.remove();
+        });
+
+        document.getElementById(`btn_dismiss_${inputEl.id}`)?.addEventListener('click', () => {
+            pill.remove();
+        });
+
+        return { autoFilled: false, suggested: true };
+    }
+
     // Identity card OCR scanning handler (Anverso / Reverso / Cámara)
     document.querySelectorAll('.js-id-scanner').forEach(input => {
         input.addEventListener('change', async (e) => {
@@ -1164,10 +1237,12 @@
                     slotEl.classList.add('border-solid', 'border-emerald-500/80', 'bg-emerald-950/20');
                 }
 
-                // Auto-fill fields if present
+                let suggestionsCount = 0;
+
+                // Smart fill or suggest
                 if (data.party_type) {
                     const partyTypeSelect = document.getElementById(`${role}_party_type`);
-                    if (partyTypeSelect) {
+                    if (partyTypeSelect && partyTypeSelect.value !== data.party_type) {
                         partyTypeSelect.value = data.party_type;
                         togglePartyFields(`${role}[party_type]`);
                     }
@@ -1175,49 +1250,45 @@
 
                 if (data.full_name) {
                     const nameInput = document.getElementById(`${role}_input_full_name`);
-                    if (nameInput) {
-                        nameInput.value = data.full_name;
-                        highlightField(nameInput);
-                    }
+                    const res = smartFillOrSuggest(nameInput, data.full_name, 'Nombre');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.tax_id) {
                     const taxIdInput = document.getElementById(`${role}_tax_id`);
-                    if (taxIdInput) {
-                        taxIdInput.value = data.tax_id;
-                        highlightField(taxIdInput);
-                    }
+                    const res = smartFillOrSuggest(taxIdInput, data.tax_id, 'NIF/NIE');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.tax_id_country) {
                     const taxCountryInput = document.getElementById(`${role}_tax_id_country`);
-                    if (taxCountryInput) taxCountryInput.value = data.tax_id_country;
+                    if (taxCountryInput && !taxCountryInput.value) taxCountryInput.value = data.tax_id_country;
                     const countryInput = document.getElementById(`${role}_country`);
-                    if (countryInput) countryInput.value = data.tax_id_country;
+                    if (countryInput && !countryInput.value) countryInput.value = data.tax_id_country;
                 }
 
                 if (data.address) {
                     const addressInput = document.getElementById(`${role}_address`);
-                    if (addressInput) {
-                        addressInput.value = data.address;
-                        highlightField(addressInput);
-                    }
+                    const res = smartFillOrSuggest(addressInput, data.address, 'Dirección');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.postal_code) {
                     const postalInput = document.getElementById(`${role}_postal_code`);
-                    if (postalInput) {
-                        postalInput.value = data.postal_code;
-                        highlightField(postalInput);
-                    }
+                    const res = smartFillOrSuggest(postalInput, data.postal_code, 'Código Postal');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.city) {
                     const cityInput = document.getElementById(`${role}_city`);
-                    if (cityInput) {
-                        cityInput.value = data.city;
-                        highlightField(cityInput);
-                    }
+                    const res = smartFillOrSuggest(cityInput, data.city, 'Ciudad');
+                    if (res?.suggested) suggestionsCount++;
+                }
+
+                if (data.province) {
+                    const provInput = document.getElementById(`${role}_province`);
+                    const res = smartFillOrSuggest(provInput, data.province, 'Provincia');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 computeRegime();
@@ -1235,7 +1306,11 @@
                 statusEl.classList.add('bg-emerald-950/60', 'text-emerald-300', 'border-emerald-800');
                 
                 const identifiedInfo = [data.full_name, data.tax_id, data.city].filter(Boolean).join(' · ');
-                statusEl.innerHTML = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${identifiedInfo || 'Datos extraídos'}. Archivo vinculado legalmente al contrato.`;
+                let successMsg = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${identifiedInfo || 'Datos extraídos'}. Archivo vinculado legalmente al contrato.`;
+                if (suggestionsCount > 0) {
+                    successMsg += ` <span class="text-amber-300 ml-1">(${suggestionsCount} sugerencia(s) disponible(s) sin sobreescribir tus datos).</span>`;
+                }
+                statusEl.innerHTML = successMsg;
             } catch (err) {
                 statusEl.classList.remove('bg-amber-950/60', 'text-amber-300', 'border-amber-800');
                 statusEl.classList.add('bg-rose-950/60', 'text-rose-300', 'border-rose-800');

@@ -106,7 +106,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-200 mb-1">Tipo de contrato *</label>
-                                <select name="contract_type" id="contract_type" x-model="form.contract_type" @change="updatePreview(); computeRegime();"
+                                <select name="contract_type" id="contract_type" x-model="form.contract_type" @change="onContractTypeChange()"
                                     class="w-full border border-slate-600 bg-slate-900 text-slate-100 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500">
                                     <option value="arras">Contrato de arras (reserva de inmueble)</option>
                                     <option value="inmuebles">Compraventa de inmueble</option>
@@ -622,7 +622,7 @@
                     buyerRoleLabel: 'Compradora / Reservante'
                 },
                 vehiculos: {
-                    titlePlaceholder: 'p. ej. Contrato de compraventa de vehículo usado Seat Ibiza 1.6 TDI',
+                    titlePlaceholder: 'p. ej. Contrato de compraventa de vehículo usado',
                     objectTypeLabel: 'Vehículo (Marca, Modelo y Matrícula) *',
                     objectTypePlaceholder: 'p. ej. Turismo Seat Ibiza 1.6 TDI Style, Matrícula 1234-XYZ',
                     objectDescLabel: 'Datos técnicos del vehículo (Bastidor VIN, km, ITV) *',
@@ -877,6 +877,17 @@
                 this.fillField('special_clauses', 'specialPlaceholder');
                 this.updatePreview();
                 this.updateTotal();
+                computeRegime();
+            },
+            onContractTypeChange() {
+                const currentTitle = (this.form.title || '').trim();
+                const isGenericOrEmpty = !currentTitle || Object.values(this.typeHints).some(h => this.cleanPlaceholder(h.titlePlaceholder).toLowerCase() === currentTitle.toLowerCase());
+                if (isGenericOrEmpty) {
+                    this.form.title = this.cleanPlaceholder(this.currentHints.titlePlaceholder);
+                    const titleEl = document.getElementById('input_title');
+                    if (titleEl) titleEl.value = this.form.title;
+                }
+                this.updatePreview();
                 computeRegime();
             },
             applyTemplate(type, title, objectDesc) {
@@ -1196,6 +1207,55 @@
         }, 2500);
     }
 
+    // Helper for non-destructive autofill and suggestions
+    function smartFillOrSuggest(inputEl, newValue, fieldLabel) {
+        if (!inputEl || !newValue || !String(newValue).trim()) return { autoFilled: false, suggested: false };
+        const currentVal = (inputEl.value || '').trim();
+        const cleanNew = String(newValue).trim();
+
+        const isPlaceholder = !currentVal || ['PENDIENTE', '00000', '00000000T', '000000000', 'Pendiente de cumplimentar', 'Pendiente'].includes(currentVal);
+        const isEquivalent = currentVal.toLowerCase() === cleanNew.toLowerCase();
+
+        if (isPlaceholder || isEquivalent) {
+            inputEl.value = cleanNew;
+            highlightField(inputEl);
+            const oldPill = document.getElementById(`sugg_${inputEl.id}`);
+            if (oldPill) oldPill.remove();
+            return { autoFilled: true, suggested: false };
+        }
+
+        // Show suggestion pill without overwriting
+        let pill = document.getElementById(`sugg_${inputEl.id}`);
+        if (!pill) {
+            pill = document.createElement('div');
+            pill.id = `sugg_${inputEl.id}`;
+            pill.className = 'mt-1.5 flex items-center justify-between gap-2 text-[11px] text-amber-200 bg-amber-950/70 border border-amber-800/80 rounded-lg px-2.5 py-1.5 shadow-sm transition';
+            inputEl.parentNode.insertBefore(pill, inputEl.nextSibling);
+        }
+
+        pill.innerHTML = `
+            <span class="truncate">💡 Detectado en DNI (${fieldLabel}): <strong>${cleanNew}</strong></span>
+            <div class="flex items-center gap-2 shrink-0">
+                <button type="button" class="text-xs text-emerald-400 font-semibold hover:underline" id="btn_apply_${inputEl.id}">Reemplazar</button>
+                <button type="button" class="text-xs text-slate-400 hover:text-slate-200" id="btn_dismiss_${inputEl.id}">✕</button>
+            </div>
+        `;
+
+        document.getElementById(`btn_apply_${inputEl.id}`)?.addEventListener('click', () => {
+            inputEl.value = cleanNew;
+            highlightField(inputEl);
+            inputEl.dispatchEvent(new Event('input', { bubbles: true }));
+            inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+            pill.remove();
+        });
+
+        document.getElementById(`btn_dismiss_${inputEl.id}`)?.addEventListener('click', () => {
+            pill.remove();
+        });
+
+        return { autoFilled: false, suggested: true };
+    }
+
     // Identity card OCR scanning handler (Anverso / Reverso / Cámara)
     document.querySelectorAll('.js-id-scanner').forEach(input => {
         input.addEventListener('change', async (e) => {
@@ -1285,10 +1345,12 @@
                     slotEl.classList.add('border-solid', 'border-emerald-500/80', 'bg-emerald-950/20');
                 }
 
-                // Auto-fill fields if present
+                let suggestionsCount = 0;
+
+                // Smart fill or suggest
                 if (data.party_type) {
                     const partyTypeSelect = document.getElementById(`${role}_party_type`);
-                    if (partyTypeSelect) {
+                    if (partyTypeSelect && partyTypeSelect.value !== data.party_type) {
                         partyTypeSelect.value = data.party_type;
                         togglePartyFields(role);
                     }
@@ -1296,49 +1358,45 @@
 
                 if (data.full_name) {
                     const nameInput = document.getElementById(`${role}_input_full_name`);
-                    if (nameInput) {
-                        nameInput.value = data.full_name;
-                        highlightField(nameInput);
-                    }
+                    const res = smartFillOrSuggest(nameInput, data.full_name, 'Nombre');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.tax_id) {
                     const taxIdInput = document.getElementById(`${role}_tax_id`);
-                    if (taxIdInput) {
-                        taxIdInput.value = data.tax_id;
-                        highlightField(taxIdInput);
-                    }
+                    const res = smartFillOrSuggest(taxIdInput, data.tax_id, 'NIF/NIE');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.tax_id_country) {
                     const taxCountryInput = document.getElementById(`${role}_tax_id_country`);
-                    if (taxCountryInput) taxCountryInput.value = data.tax_id_country;
+                    if (taxCountryInput && !taxCountryInput.value) taxCountryInput.value = data.tax_id_country;
                     const countryInput = document.getElementById(`${role}_country`);
-                    if (countryInput) countryInput.value = data.tax_id_country;
+                    if (countryInput && !countryInput.value) countryInput.value = data.tax_id_country;
                 }
 
                 if (data.address) {
                     const addressInput = document.getElementById(`${role}_address`);
-                    if (addressInput) {
-                        addressInput.value = data.address;
-                        highlightField(addressInput);
-                    }
+                    const res = smartFillOrSuggest(addressInput, data.address, 'Dirección');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.postal_code) {
                     const postalInput = document.getElementById(`${role}_postal_code`);
-                    if (postalInput) {
-                        postalInput.value = data.postal_code;
-                        highlightField(postalInput);
-                    }
+                    const res = smartFillOrSuggest(postalInput, data.postal_code, 'Código Postal');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 if (data.city) {
                     const cityInput = document.getElementById(`${role}_city`);
-                    if (cityInput) {
-                        cityInput.value = data.city;
-                        highlightField(cityInput);
-                    }
+                    const res = smartFillOrSuggest(cityInput, data.city, 'Ciudad');
+                    if (res?.suggested) suggestionsCount++;
+                }
+
+                if (data.province) {
+                    const provInput = document.getElementById(`${role}_province`);
+                    const res = smartFillOrSuggest(provInput, data.province, 'Provincia');
+                    if (res?.suggested) suggestionsCount++;
                 }
 
                 computeRegime();
@@ -1356,7 +1414,11 @@
                 statusEl.classList.add('bg-emerald-950/60', 'text-emerald-300', 'border-emerald-800');
                 
                 const identifiedInfo = [data.full_name, data.tax_id, data.city].filter(Boolean).join(' · ');
-                statusEl.innerHTML = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${identifiedInfo || 'Datos extraídos'}. Archivo vinculado legalmente al contrato.`;
+                let successMsg = `<strong>✓ ${sideLabel} procesado con éxito:</strong> ${identifiedInfo || 'Datos extraídos'}. Archivo vinculado legalmente al contrato.`;
+                if (suggestionsCount > 0) {
+                    successMsg += ` <span class="text-amber-300 ml-1">(${suggestionsCount} sugerencia(s) disponible(s) sin sobreescribir tus datos).</span>`;
+                }
+                statusEl.innerHTML = successMsg;
             } catch (err) {
                 statusEl.classList.remove('bg-amber-950/60', 'text-amber-300', 'border-amber-800');
                 statusEl.classList.add('bg-rose-950/60', 'text-rose-300', 'border-rose-800');

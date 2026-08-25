@@ -367,15 +367,33 @@ class ClauseBuilder
         $sellerInfo = $this->rightsObligations->for($contract, $seller);
         $buyerInfo = $this->rightsObligations->for($contract, $buyer);
 
-        $format = fn (array $data, string $role) => implode(' ', [
-            $role.' — DERECHOS: ',
-            implode(' ', array_map(fn ($r) => '• '.$r, $data['rights'])),
-            ' OBLIGACIONES: ',
-            implode(' ', array_map(fn ($o) => '• '.$o, $data['obligations'])),
-        ]);
+        $sellerName = $seller->displayName() ?: 'Parte Vendedora';
+        $buyerName = $buyer->displayName() ?: 'Parte Compradora';
 
-        $body = $format($sellerInfo, 'VENDEDOR').' '.$format($buyerInfo, 'COMPRADOR')
-            .' Referencias legales: '.implode(' ', array_map(fn ($r) => '• '.$r, $sellerInfo['legal_refs']));
+        $formatSection = function (array $data, string $num, string $roleTitle, string $partyName) {
+            $lines = [];
+            $lines[] = "{$num}. {$roleTitle} ({$partyName}):";
+            $lines[] = "   a) DERECHOS:";
+            foreach ($data['rights'] as $r) {
+                $lines[] = "      • {$r}";
+            }
+            $lines[] = "   b) OBLIGACIONES:";
+            foreach ($data['obligations'] as $o) {
+                $lines[] = "      • {$o}";
+            }
+            return implode("\n", $lines);
+        };
+
+        $sellerSection = $formatSection($sellerInfo, '1', 'PARTE VENDEDORA', $sellerName);
+        $buyerSection = $formatSection($buyerInfo, '2', 'PARTE COMPRADORA', $buyerName);
+
+        $legalLines = ["3. MARCO Y REFERENCIAS LEGALES APLICABLES:"];
+        foreach ($sellerInfo['legal_refs'] as $ref) {
+            $legalLines[] = "   • {$ref}";
+        }
+        $legalSection = implode("\n", $legalLines);
+
+        $body = $sellerSection . "\n\n" . $buyerSection . "\n\n" . $legalSection;
 
         return [
             'title' => 'Derechos y obligaciones de las partes',
