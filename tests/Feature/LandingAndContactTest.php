@@ -14,15 +14,15 @@ class LandingAndContactTest extends TestCase
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSee('Tratix · Contratos de Compraventa Legales');
-        $response->assertSee('Tratix vs PDF');
+        $response->assertSee('Tratix · Contratos de compraventa legales');
+        $response->assertSee('Tratix vs. PDF');
         $response->assertSee('¿Por qué rellenar un PDF descargado es una trampa legal?');
-        $response->assertSee('Escáner OCR Dual Anverso + Reverso');
-        $response->assertSee('Delegación a la Contraparte sin Registro');
-        $response->assertSee('Firma Electrónica eIDAS Certificada');
-        $response->assertSee('Precios Claros y Sin Sorpresas');
-        $response->assertSee('Sobre Nosotros');
-        $response->assertSee('Atención Personalizada');
+        $response->assertSee('Escáner OCR dual de anverso y reverso');
+        $response->assertSee('Delegación a la otra parte sin registro');
+        $response->assertSee('Firma electrónica eIDAS certificada');
+        $response->assertSee('Precios claros y sin sorpresas');
+        $response->assertSee('Sobre nosotros');
+        $response->assertSee('Atención personalizada');
         $response->assertSee('SoftwareApplication');
         $response->assertSee('FAQPage');
     }

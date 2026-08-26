@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Tratix · Contratos de Compraventa Legales, Firmados y Sellados en 3 Minutos</title>
+    <title>Tratix · Contratos de compraventa legales, firmados y sellados en 3 minutos</title>
 
-    <meta name="description" content="Olvídate de descargar PDFs genéricos de internet. Tratix genera contratos adaptados a la ley vigente, escanea tu DNI por OCR, permite negociar en tiempo real y sella la firma electrónica conforme a eIDAS y RGPD en España y Latinoamérica.">
+    <meta name="description" content="Olvídate de descargar plantillas genéricas de internet. Tratix genera contratos adaptados a la legislación vigente, escanea tu DNI por OCR, permite negociar en tiempo real y sella la firma electrónica conforme a eIDAS y RGPD.">
     <meta name="keywords" content="contrato compraventa vehiculo, contrato arras penitenciales, firma electronica eIDAS, contrato compraventa entre particulares, modelo contrato legal espana, escanear dni ocr contrato, contrato alquiler vivienda, contrato prestacion servicios">
     <meta name="author" content="Tratix Legal Tech">
     <link rel="canonical" href="{{ url('/') }}">
@@ -25,7 +25,7 @@
 
     <!-- Open Graph / Social Sharing -->
     <meta property="og:site_name" content="Tratix">
-    <meta property="og:title" content="Tratix · Contratos Legales Inteligentes sin Papel ni PDFs Obsoletos">
+    <meta property="og:title" content="Tratix · Contratos legales sin papel ni plantillas obsoletas">
     <meta property="og:description" content="Crea, negocia, firma y custodia acuerdos legales con validez jurídica eIDAS, escaneo OCR de DNI y expediente documental.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
@@ -34,8 +34,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tratix · Contratos Legales en Minutos">
-    <meta name="twitter:description" content="Firma electrónica eIDAS, escáner OCR de identidad y redacción jurídica inteligente.">
+    <meta name="twitter:title" content="Tratix · Contratos legales en minutos">
+    <meta name="twitter:description" content="Firma electrónica eIDAS, escáner OCR de identidad y redacción jurídica profesional.">
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -60,10 +60,10 @@
           },
           "description": "Plataforma de redacción legal automatizada, verificación de identidad por OCR y firma electrónica conforme a eIDAS y RGPD.",
           "featureList": [
-            "Escáner OCR de DNI / NIE anverso y reverso",
-            "Firma electrónica eIDAS con verificación OTP por email",
+            "Escáner OCR de DNI y NIE de anverso y reverso",
+            "Firma electrónica con validez legal eIDAS",
             "Negociación colaborativa de cláusulas en tiempo real",
-            "Delegación de formulario a la contraparte sin registro obligatorio",
+            "Delegación de formulario a la otra parte sin registro obligatorio",
             "Expediente de trámites y documentación obligatoria por ley (ITP, DGT)",
             "Sellado criptográfico de integridad SHA-256"
           ]
@@ -88,7 +88,7 @@
               "name": "¿Por qué es mejor Tratix que descargar un PDF gratis de internet?",
               "acceptedAnswer": {
                 "@@type": "Answer",
-                "text": "Los modelos de PDF descargables de internet suelen estar desactualizados, contienen cláusulas ilegales o nulas según la jurisprudencia actual, obligan a imprimir y rellenar a mano con erratas, y carecen de firma electrónica certificada. Tratix genera cláusulas válidas según el régimen legal (B2B, B2C, C2C), verifica las identidades con OCR y certifica la firma con código OTP y sello de tiempo inmutable."
+                "text": "Los modelos de PDF descargables de internet suelen estar desactualizados, contienen cláusulas ilegales o nulas según la jurisprudencia actual, obligan a imprimir y rellenar a mano con erratas, y carecen de firma electrónica certificada. Tratix genera cláusulas válidas según el régimen legal (B2B, B2C, C2C), verifica las identidades con OCR y certifica la firma con registro de evidencias y sello de tiempo inmutable."
               }
             },
             {
@@ -101,10 +101,10 @@
             },
             {
               "@@type": "Question",
-              "name": "¿Necesita la otra parte crearse una cuenta para firmar o rellenar sus datos?",
+              "name": "¿Necesita la otra parte crearse una cuenta para firmar o completar sus datos?",
               "acceptedAnswer": {
                 "@@type": "Answer",
-                "text": "No. Puedes enviar un enlace privado y seguro a la contraparte por email o WhatsApp para que revise el borrador, complete sus datos y firme desde su móvil u ordenador en menos de 1 minuto sin necesidad de registrarse."
+                "text": "No. Puedes enviar un enlace privado y seguro a la contraparte por correo electrónico o WhatsApp para que revise el borrador, complete sus datos y firme desde su móvil u ordenador en menos de 1 minuto sin necesidad de registrarse."
               }
             },
             {
@@ -112,7 +112,7 @@
               "name": "¿Cómo cumple Tratix con el RGPD y la protección de datos?",
               "acceptedAnswer": {
                 "@@type": "Answer",
-                "text": "Tratix aplica el principio de privacidad desde el diseño (Art. 25 RGPD), cifrado de datos en reposo y en tránsito, servidores en la Unión Europea, purga periódica de escaneos temporales y mecanismos directos para ejercer los derechos de acceso, rectificación, portabilidad y supresión."
+                "text": "Tratix aplica el principio de privacidad desde el diseño (art. 25 del RGPD), cifrado de datos en reposo y en tránsito, servidores en la Unión Europea, purga periódica de escaneos temporales y mecanismos directos para ejercer los derechos de acceso, rectificación, portabilidad y supresión."
               }
             }
           ]
@@ -151,11 +151,11 @@
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <span class="inline-flex items-center gap-1.5 font-bold text-emerald-400">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                Legalidad 100% Garantizada
+                Legalidad 100% garantizada
             </span>
-            <span>· Conforme a Reglamento UE eIDAS 910/2014</span>
-            <span class="hidden sm:inline">· Ley de Consumidores & Código Civil</span>
-            <span class="hidden md:inline">· Sellado Criptográfico SHA-256 RFC 3161</span>
+            <span>· Conforme al Reglamento UE eIDAS 910/2014</span>
+            <span class="hidden sm:inline">· Ley de Consumidores y Código Civil</span>
+            <span class="hidden md:inline">· Sellado criptográfico SHA-256 RFC 3161</span>
         </div>
     </div>
 
@@ -181,28 +181,28 @@
                     :class="activeSection === 'comparativa' || activeSection === 'como-funciona' ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'hover:text-white hover:bg-slate-800'"
                     class="px-4 py-1.5 rounded-full transition flex items-center gap-1.5">
                     <span>⚡</span>
-                    <span>Cómo Funciona</span>
+                    <span>Cómo funciona</span>
                 </a>
                 
                 <a href="#modelos" 
                     :class="activeSection === 'modelos' ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'hover:text-white hover:bg-slate-800'"
                     class="px-4 py-1.5 rounded-full transition flex items-center gap-1.5">
                     <span>📋</span>
-                    <span>Modelos Legales</span>
+                    <span>Modelos legales</span>
                 </a>
 
                 <a href="#precios" 
                     :class="activeSection === 'precios' || activeSection === 'referidos' ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'hover:text-white hover:bg-slate-800'"
                     class="px-4 py-1.5 rounded-full transition flex items-center gap-1.5">
                     <span>💰</span>
-                    <span>Planes & Referidos</span>
+                    <span>Planes y referidos</span>
                 </a>
 
                 <a href="#contacto" 
                     :class="activeSection === 'contacto' || activeSection === 'sobre-nosotros' ? 'bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-500/20' : 'hover:text-white hover:bg-slate-800'"
                     class="px-4 py-1.5 rounded-full transition flex items-center gap-1.5">
                     <span>🛡️</span>
-                    <span>Soporte & DPO</span>
+                    <span>Soporte y DPO</span>
                 </a>
             </div>
 
@@ -210,14 +210,14 @@
             <div class="hidden sm:flex items-center gap-3">
                 @auth
                     <a href="{{ route('dashboard') }}" class="btn-primary text-xs px-5 py-2.5 font-bold shadow-lg shadow-emerald-950 hover:scale-105 transition">
-                        Ir a mi Panel →
+                        Ir a mi panel →
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="text-slate-300 hover:text-white text-xs font-semibold px-3 py-2 transition">
-                        Iniciar Sesión
+                        Iniciar sesión
                     </a>
                     <a href="{{ route('register') }}" class="btn-primary text-xs px-5 py-2.5 font-bold shadow-lg shadow-emerald-950 hover:scale-105 transition-transform flex items-center gap-1.5">
-                        <span>Empezar Gratis</span>
+                        <span>Empezar gratis</span>
                         <span>→</span>
                     </a>
                 @endauth
@@ -237,18 +237,18 @@
 
         {{-- Mobile Dropdown Menu --}}
         <div x-show="mobileMenu" x-transition.opacity class="md:hidden bg-slate-950 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 mt-2">
-            <a href="#comparativa" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">⚡ Cómo Funciona (Tratix vs PDF)</a>
-            <a href="#modelos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">📋 Catálogo de Modelos</a>
-            <a href="#precios" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">💰 Planes y Precios</a>
-            <a href="#referidos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-bold text-amber-400 hover:bg-slate-900">🎁 Invita y Gana Pro (1 Mes Gratis Mutuo)</a>
+            <a href="#comparativa" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">⚡ Cómo funciona (Tratix vs. PDF)</a>
+            <a href="#modelos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">📋 Catálogo de modelos</a>
+            <a href="#precios" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">💰 Planes y precios</a>
+            <a href="#referidos" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-bold text-amber-400 hover:bg-slate-900">🎁 Invita y gana Pro (1 mes gratis mutuo)</a>
             <a href="#contacto" @click="mobileMenu = false" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-200 hover:bg-slate-900 hover:text-emerald-400">🛡️ Contacto y DPO</a>
             
             <div class="pt-3 border-t border-slate-800 flex flex-col gap-2">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="btn-primary text-center text-xs py-3 font-bold">Ir a mi Panel</a>
+                    <a href="{{ route('dashboard') }}" class="btn-primary text-center text-xs py-3 font-bold">Ir a mi panel</a>
                 @else
-                    <a href="{{ route('login') }}" class="btn-outline text-center text-xs py-2.5">Iniciar Sesión</a>
-                    <a href="{{ route('register') }}" class="btn-primary text-center text-xs py-3 font-bold">Crear Cuenta Gratis</a>
+                    <a href="{{ route('login') }}" class="btn-outline text-center text-xs py-2.5">Iniciar sesión</a>
+                    <a href="{{ route('register') }}" class="btn-primary text-center text-xs py-3 font-bold">Crear cuenta gratis</a>
                 @endauth
             </div>
         </div>
@@ -264,38 +264,38 @@
             <div class="text-center max-w-4xl mx-auto space-y-6">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-inner">
                     <span class="text-base">⚖️</span>
-                    <span>Di adiós a descargar PDFs genéricos y firmar en servilletas</span>
+                    <span>Di adiós a descargar plantillas genéricas y firmar en papel</span>
                 </div>
 
                 <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight">
-                    Contratos Legales Inteligentes.<br>
+                    Contratos legales con validez jurídica.<br>
                     <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-                        Firmados y Sellados en 3 Minutos.
+                        Firmados y sellados en 3 minutos.
                     </span>
                 </h1>
 
                 <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                    Descargar plantillas PDF de internet es arriesgado: cláusulas obsoletas, errores a mano y nulo valor probatorio. <strong class="text-white">Tratix</strong> redacta automáticamente según el régimen legal (B2B, B2C, C2C), escanea el DNI por OCR, permite negociar en vivo y sella la firma electrónica con plena validez <strong class="text-emerald-400">eIDAS y RGPD</strong>.
+                    Descargar plantillas PDF de internet es arriesgado: cláusulas obsoletas, errores a mano y nulo valor probatorio. <strong class="text-white">Tratix</strong> redacta automáticamente según el régimen legal aplicable (B2B, B2C, C2C), escanea el DNI por OCR, permite negociar en vivo y sella la firma electrónica con plena validez <strong class="text-emerald-400">eIDAS y RGPD</strong>.
                 </p>
 
                 {{-- Action CTAs --}}
                 <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a href="{{ route('register') }}" class="btn-primary w-full sm:w-auto text-sm sm:text-base px-8 py-4 font-extrabold shadow-xl shadow-emerald-500/25 hover:scale-105 transition-all text-center flex items-center justify-center gap-2">
-                        <span>🚀 Crear mi Primer Contrato Gratis</span>
+                        <span>🚀 Crear mi primer contrato gratis</span>
                         <span>→</span>
                     </a>
                     <a href="#simulador" class="btn-outline w-full sm:w-auto text-sm sm:text-base px-7 py-4 font-bold text-slate-200 hover:border-emerald-500 hover:text-emerald-300 transition-all text-center flex items-center justify-center gap-2">
-                        <span>🎮 Probar Simulador en Vivo</span>
+                        <span>🎮 Probar el simulador en vivo</span>
                         <span>↓</span>
                     </a>
                 </div>
 
                 <p class="text-xs text-slate-400 pt-1 flex items-center justify-center gap-3">
-                    <span>✓ Sin tarjeta de crédito requerida</span>
+                    <span>✓ Sin tarjeta de crédito</span>
                     <span>·</span>
                     <span>✓ 2 contratos gratis al mes</span>
                     <span>·</span>
-                    <span>✓ La otra parte firma gratis sin cuenta</span>
+                    <span>✓ La otra parte firma gratis sin registrarse</span>
                 </p>
             </div>
 
@@ -304,48 +304,48 @@
                 contractType: 'vehiculos',
                 types: {
                     vehiculos: {
-                        name: '🚗 Compraventa de Vehículo',
-                        badge: 'Coches, Motos y Furgonetas',
+                        name: '🚗 Compraventa de vehículo',
+                        badge: 'Coches, motos y furgonetas',
                         price: '8.500 €',
                         buyer: 'Carlos Mendoza',
                         seller: 'María Fernández',
                         object: 'Volkswagen Golf 2.0 TDI (Matrícula 1234-KMT)',
                         clause: 'El COMPRADOR declara haber inspeccionado el vehículo a su entera satisfacción, eximiendo al VENDEDOR de vicios ocultos no dolosos y acordando la liquidación del ITP (Modelo 620) en 30 días.',
-                        dgt: 'Incluye checklist oficial para transferencia telemática en DGT.',
-                        cta: 'Crear Contrato de Vehículo'
+                        dgt: 'Incluye guía oficial para la transferencia en la DGT.',
+                        cta: 'Crear contrato de vehículo'
                     },
                     arras: {
-                        name: '🏠 Arras Penitenciales',
-                        badge: 'Art. 1454 Código Civil',
+                        name: '🏠 Arras penitenciales',
+                        badge: 'Art. 1454 del Código Civil',
                         price: '15.000 € (Señal)',
                         buyer: 'Javier Navarro',
                         seller: 'Inmobiliaria Costa S.L.',
                         object: 'Vivienda sita en C/ Mayor 12, 3ºB (Madrid)',
-                        clause: 'Si el COMPRADOR desiste perderá la señal entregada; si el VENDEDOR rescinde el acuerdo devolverá el duplo de la cantidad percibida conforme al Art. 1454 del Código Civil.',
+                        clause: 'Si el COMPRADOR desiste perderá la señal entregada; si el VENDEDOR rescinde el acuerdo devolverá el duplo de la cantidad percibida conforme al art. 1454 del Código Civil.',
                         dgt: 'Incluye verificación registral de cargas y certificado de eficiencia energética.',
-                        cta: 'Crear Contrato de Arras'
+                        cta: 'Crear contrato de arras'
                     },
                     servicios: {
-                        name: '💼 Servicios Profesionales',
-                        badge: 'B2B & Freelance',
+                        name: '💼 Servicios profesionales',
+                        badge: 'B2B y freelance',
                         price: '3.200 € / mes',
                         buyer: 'Tech Solutions S.A.',
                         seller: 'Lucía Morales (Diseñadora)',
-                        object: 'Desarrollo de plataforma web y branding corporativo',
+                        object: 'Desarrollo de plataforma web e identidad corporativa',
                         clause: 'La titularidad de los derechos de propiedad intelectual se transferirá de forma plena e irrevocable tras la recepción del pago final correspondiente al hito 3.',
-                        dgt: 'Incluye cláusula estricta de confidencialidad y no competencia por 12 meses.',
-                        cta: 'Crear Contrato de Servicios'
+                        dgt: 'Incluye cláusulas de confidencialidad y propiedad intelectual.',
+                        cta: 'Crear contrato de servicios'
                     },
                     nda: {
                         name: '🔒 Confidencialidad (NDA)',
-                        badge: 'Protección de Secretos',
+                        badge: 'Protección de información',
                         price: 'Penalización: 50.000 €',
-                        buyer: 'Inversor / Partner B',
+                        buyer: 'Inversor / Socio B',
                         seller: 'Startup Innovadora S.L.',
                         object: 'Intercambio de algoritmos, código fuente y datos financieros',
-                        clause: 'Toda la información técnica revelada mantendrá el deber de secreto por un periodo de 5 años. El quebrantamiento facultará la indemnización automática pactada.',
-                        dgt: 'Admisible ante cualquier tribunal de la UE conforme a eIDAS y Ley 6/2020.',
-                        cta: 'Crear Acuerdo NDA'
+                        clause: 'Toda la información técnica revelada mantendrá el deber de secreto por un periodo de 5 años. El incumplimiento facultará la indemnización automática pactada.',
+                        dgt: 'Admisible ante cualquier tribunal conforme a eIDAS y Ley 6/2020.',
+                        cta: 'Crear acuerdo NDA'
                     }
                 }
             }">
@@ -355,9 +355,9 @@
                     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-5">
                         <div>
                             <span class="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3 py-1 rounded-full">
-                                Simulador Interactivo en Vivo
+                                Simulador interactivo en vivo
                             </span>
-                            <h3 class="text-xl font-black text-white mt-1">Descubre cómo Tratix redacta tu contrato en tiempo real</h3>
+                            <h3 class="text-xl font-black text-white mt-1">Comprueba cómo Tratix redacta tu contrato en tiempo real</h3>
                         </div>
 
                         {{-- Type Selector Buttons --}}
@@ -395,7 +395,7 @@
                         {{-- Meta details --}}
                         <div class="space-y-4 bg-slate-950/80 p-5 rounded-2xl border border-slate-800 text-xs">
                             <div>
-                                <span class="text-slate-500 block">Tipo de Acuerdo:</span>
+                                <span class="text-slate-500 block">Tipo de acuerdo:</span>
                                 <strong class="text-white text-sm" x-text="types[contractType].name"></strong>
                                 <span class="text-[10px] text-emerald-400 font-semibold block" x-text="types[contractType].badge"></span>
                             </div>
@@ -419,9 +419,9 @@
                             <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/60 space-y-1 text-[11px]">
                                 <span class="text-emerald-400 font-bold flex items-center gap-1.5">
                                     <span>🪪</span>
-                                    <span>OCR & eIDAS Verificados</span>
+                                    <span>OCR y eIDAS verificados</span>
                                 </span>
-                                <p class="text-slate-400">Fotos de DNI adjuntas y firma OTP certificada.</p>
+                                <p class="text-slate-400">Fotos de DNI adjuntas y firma certificada.</p>
                             </div>
                         </div>
 
@@ -430,10 +430,10 @@
                             <div class="flex items-center justify-between border-b border-slate-900 pb-3 text-slate-500">
                                 <span class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                                    <span>CLÁUSULA ESPECIAL GENERADA AUTOMÁTICAMENTE</span>
+                                    <span>Cláusula especial generada automáticamente</span>
                                 </span>
                                 <span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
-                                    Validez Jurídica eIDAS
+                                    Validez jurídica eIDAS
                                 </span>
                             </div>
 
@@ -457,27 +457,27 @@
 
             {{-- Trust Metrics Ribbon --}}
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto text-left">
-                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
-                        <span class="text-2xl font-black text-emerald-400 block">3 min</span>
-                        <span class="text-xs text-slate-300 font-semibold block mt-0.5">Tiempo de Redacción</span>
-                        <span class="text-[11px] text-slate-500 block">Frente a 3 días con métodos tradicionales.</span>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
-                        <span class="text-2xl font-black text-teal-400 block">100%</span>
-                        <span class="text-xs text-slate-300 font-semibold block mt-0.5">Validez eIDAS</span>
-                        <span class="text-[11px] text-slate-500 block">Admisible en cualquier tribunal de la UE.</span>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
-                        <span class="text-2xl font-black text-cyan-400 block">5 seg</span>
-                        <span class="text-xs text-slate-300 font-semibold block mt-0.5">Escaneo OCR de DNI</span>
-                        <span class="text-[11px] text-slate-500 block">Extracción automática de datos fiscales.</span>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
-                        <span class="text-2xl font-black text-amber-400 block">SHA-256</span>
-                        <span class="text-xs text-slate-300 font-semibold block mt-0.5">Sellado Criptográfico</span>
-                        <span class="text-[11px] text-slate-500 block">Custodia inalterable de evidencias.</span>
-                    </div>
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
+                    <span class="text-2xl font-black text-emerald-400 block">3 min</span>
+                    <span class="text-xs text-slate-300 font-semibold block mt-0.5">Tiempo de redacción</span>
+                    <span class="text-[11px] text-slate-500 block">Frente a varios días con métodos tradicionales.</span>
                 </div>
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
+                    <span class="text-2xl font-black text-teal-400 block">100%</span>
+                    <span class="text-xs text-slate-300 font-semibold block mt-0.5">Validez eIDAS</span>
+                    <span class="text-[11px] text-slate-500 block">Admisible en cualquier tribunal de la UE.</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
+                    <span class="text-2xl font-black text-cyan-400 block">5 seg</span>
+                    <span class="text-xs text-slate-300 font-semibold block mt-0.5">Escaneo OCR de DNI</span>
+                    <span class="text-[11px] text-slate-500 block">Extracción rápida de datos fiscales.</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 shadow-lg">
+                    <span class="text-2xl font-black text-amber-400 block">SHA-256</span>
+                    <span class="text-xs text-slate-300 font-semibold block mt-0.5">Sellado criptográfico</span>
+                    <span class="text-[11px] text-slate-500 block">Custodia inalterable de evidencias.</span>
+                </div>
+            </div>
 
             </div>
         </div>
@@ -488,11 +488,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-extrabold uppercase tracking-widest text-rose-400 bg-rose-950/80 border border-rose-900 px-3.5 py-1 rounded-full">
-                    El Riesgo de lo "Gratis en Internet"
+                    El riesgo de lo «gratis» en internet
                 </span>
                 <h2 class="text-3xl sm:text-5xl font-black text-white">¿Por qué rellenar un PDF descargado es una trampa legal?</h2>
                 <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-                    Buscar "modelo contrato compraventa word" en Google parece rápido, pero genera el 80% de los litigios y fraudes entre particulares y profesionales.
+                    Buscar plantillas genéricas en internet parece rápido, pero genera la mayoría de los litigios y problemas legales entre particulares y profesionales.
                 </p>
             </div>
 
@@ -504,7 +504,7 @@
                         <div class="flex items-center gap-3">
                             <span class="w-10 h-10 rounded-xl bg-rose-950 border border-rose-800 flex items-center justify-center text-rose-400 font-bold text-xl">✕</span>
                             <div>
-                                <h3 class="text-lg font-bold text-white">El PDF / Word Descargado de Google</h3>
+                                <h3 class="text-lg font-bold text-white">El archivo PDF o Word descargado de internet</h3>
                                 <span class="text-xs text-rose-400 font-semibold">Lento, desactualizado e inseguro</span>
                             </div>
                         </div>
@@ -513,27 +513,27 @@
                     <ul class="space-y-4 text-xs sm:text-sm text-slate-300">
                         <li class="flex items-start gap-3">
                             <span class="text-rose-500 font-bold text-base shrink-0">✕</span>
-                            <span><strong>Cláusulas Nulas o Ilegales:</strong> Modelos antiguos que ignoran la Ley de Consumidores 2022 o el régimen fiscal aplicable (ITP vs IVA).</span>
+                            <span><strong>Cláusulas nulas o ilegales:</strong> Modelos antiguos que ignoran la normativa vigente o el régimen fiscal aplicable (ITP frente a IVA).</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-rose-500 font-bold text-base shrink-0">✕</span>
-                            <span><strong>Papeleo Físico Pesado:</strong> Requiere impresora, bolígrafo, tachones, escanear hojas torcidas y pérdida de copias.</span>
+                            <span><strong>Papeleo físico engorroso:</strong> Requiere impresora, bolígrafo, tachones, escanear hojas torcidas y riesgo de pérdida de copias.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-rose-500 font-bold text-base shrink-0">✕</span>
-                            <span><strong>Sin Verificación de Identidad:</strong> Cualquiera puede inventar un DNI/NIE falso o firmar por otra persona sin control.</span>
+                            <span><strong>Sin verificación de identidad:</strong> Cualquiera puede inventar un documento falso o firmar por otra persona sin control.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-rose-500 font-bold text-base shrink-0">✕</span>
-                            <span><strong>Firma Manual Escaneada Fácilmente Impugnable:</strong> Pegar una foto de una firma no tiene validez probatoria fehaciente en juicio.</span>
+                            <span><strong>Firma manual escaneada fácilmente impugnable:</strong> Pegar una imagen de una firma carece de valor probatorio fehaciente en juicio.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-rose-500 font-bold text-base shrink-0">✕</span>
-                            <span><strong>Negociación Caótica:</strong> Cruces de correos con versiones contradictorias ("contrato_final_v3_definitivo.pdf").</span>
+                            <span><strong>Negociación caótica:</strong> Cruces interminables de correos con versiones contradictorias («contrato_final_v3.pdf»).</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-rose-500 font-bold text-base shrink-0">✕</span>
-                            <span><strong>Olvido de Trámites Obligatorios:</strong> Nadie te avisa de los plazos de Hacienda (Modelo 620/600), DGT o certificados energéticos.</span>
+                            <span><strong>Olvido de trámites obligatorios:</strong> Nadie te informa de los plazos de Hacienda (modelos 620/600), DGT o certificados preceptivos.</span>
                         </li>
                     </ul>
                 </div>
@@ -541,15 +541,15 @@
                 {{-- THE TRATIX WAY --}}
                 <div class="p-6 sm:p-8 rounded-3xl bg-slate-900 border-2 border-emerald-500/70 shadow-2xl shadow-emerald-950/50 space-y-6 relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-emerald-500 text-slate-950 text-[10px] font-black uppercase px-4 py-1 rounded-bl-xl tracking-wider">
-                        Recomendado por Abogados
+                        Recomendado por abogados
                     </div>
 
                     <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                         <div class="flex items-center gap-3">
                             <span class="w-10 h-10 rounded-xl bg-emerald-950 border border-emerald-700 flex items-center justify-center text-emerald-400 font-bold text-xl">✓</span>
                             <div>
-                                <h3 class="text-lg font-bold text-white">La Solución Inteligente Tratix</h3>
-                                <span class="text-xs text-emerald-400 font-semibold">100% Digital, Rápido y con Rigor Jurídico</span>
+                                <h3 class="text-lg font-bold text-white">La solución Tratix</h3>
+                                <span class="text-xs text-emerald-400 font-semibold">100% digital, rápida y con rigor jurídico</span>
                             </div>
                         </div>
                     </div>
@@ -557,27 +557,27 @@
                     <ul class="space-y-4 text-xs sm:text-sm text-slate-200">
                         <li class="flex items-start gap-3">
                             <span class="text-emerald-400 font-bold text-base shrink-0">✓</span>
-                            <span><strong>Articulado Jurídico Automatizado:</strong> Generación exacta de cláusulas según el régimen (B2B, B2C, C2C) y jurisdicción.</span>
+                            <span><strong>Articulado jurídico adaptado:</strong> Generación exacta de cláusulas según el régimen de las partes (B2B, B2C, C2C) y la legislación vigente.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-emerald-400 font-bold text-base shrink-0">✓</span>
-                            <span><strong>Escáner OCR de DNI (Anverso + Reverso):</strong> Foto con el móvil, autocompletado en 5 segundos y documento adjunto legalmente.</span>
+                            <span><strong>Escáner OCR de DNI (anverso y reverso):</strong> Captura con el móvil, lectura de datos y documento incorporado al expediente legal.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-emerald-400 font-bold text-base shrink-0">✓</span>
-                            <span><strong>Delegación a la Contraparte:</strong> ¿No tienes sus datos? Envíale un enlace privado para que los rellene sin registrarse.</span>
+                            <span><strong>Delegación a la otra parte:</strong> Si no tienes sus datos, envíale un enlace privado para que los complete sin necesidad de cuenta.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-emerald-400 font-bold text-base shrink-0">✓</span>
-                            <span><strong>Firma Electrónica eIDAS con OTP por Email:</strong> Sellado de tiempo RFC 3161, IP registrada y hash criptográfico SHA-256.</span>
+                            <span><strong>Firma electrónica con validez eIDAS:</strong> Sellado de tiempo RFC 3161, IP registrada y hash criptográfico SHA-256.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-emerald-400 font-bold text-base shrink-0">✓</span>
-                            <span><strong>Negociación con Control de Cambios en Vivo:</strong> Propón modificaciones cláusula a cláusula con total transparencia.</span>
+                            <span><strong>Negociación con control de cambios en vivo:</strong> Propón modificaciones cláusula a cláusula con total transparencia.</span>
                         </li>
                         <li class="flex items-start gap-3">
                             <span class="text-emerald-400 font-bold text-base shrink-0">✓</span>
-                            <span><strong>Expediente de Trámites por Ley:</strong> Checklist guiado con enlaces directos a DGT, Registro y modelos tributarios.</span>
+                            <span><strong>Expediente de trámites legales:</strong> Guía con enlaces directos a la DGT, Registro y modelos tributarios correspondientes.</span>
                         </li>
                     </ul>
                 </div>
@@ -594,11 +594,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full">
-                    Flujo 100% Sin Fricción
+                    Flujo 100% sin fricción
                 </span>
                 <h2 class="text-3xl sm:text-5xl font-black text-white">De la idea a la firma en 4 pasos</h2>
                 <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
-                    Diseñado para que cualquier persona, sin conocimientos legales previos, cree un contrato perfecto desde su teléfono o navegador.
+                    Diseñado para que cualquier persona, sin conocimientos jurídicos previos, formalice un contrato impecable desde su teléfono u ordenador.
                 </p>
             </div>
 
@@ -610,12 +610,12 @@
                         <span class="w-10 h-10 rounded-2xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-emerald-400 font-black text-lg">1</span>
                         <span class="text-xs font-bold text-slate-500">Paso 01</span>
                     </div>
-                    <h3 class="text-lg font-bold text-white">Elige Plantilla & Tu Rol</h3>
+                    <h3 class="text-lg font-bold text-white">Elige la plantilla y tu rol</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Selecciona el tipo de acuerdo (vehículo, arras, inmueble, servicios...) e indica si actúas como comprador o vendedor.
+                        Selecciona el tipo de acuerdo (vehículo, arras, servicios, alquiler...) e indica si actúas como comprador o vendedor.
                     </p>
                     <div class="pt-2 text-[11px] text-emerald-400 font-semibold">
-                        ✨ Sugerencias y ejemplos en 1 clic
+                        ✨ Sugerencias y ejemplos en un clic
                     </div>
                 </div>
 
@@ -625,9 +625,9 @@
                         <span class="w-10 h-10 rounded-2xl bg-blue-950 border border-blue-800 flex items-center justify-center text-blue-400 font-black text-lg">2</span>
                         <span class="text-xs font-bold text-slate-500">Paso 02</span>
                     </div>
-                    <h3 class="text-lg font-bold text-white">OCR DNI o Delegación</h3>
+                    <h3 class="text-lg font-bold text-white">OCR de DNI o delegación</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Fotografía el DNI para auto-completar datos o delega el formulario a la otra parte mediante un enlace privado.
+                        Fotografía el documento de identidad para completar los datos o envía el enlace a la otra parte para que los rellene.
                     </p>
                     <div class="pt-2 text-[11px] text-blue-400 font-semibold">
                         🪪 Lectura de DNI 3.0 / 4.0 y NIE
@@ -640,9 +640,9 @@
                         <span class="w-10 h-10 rounded-2xl bg-amber-950 border border-amber-800 flex items-center justify-center text-amber-400 font-black text-lg">3</span>
                         <span class="text-xs font-bold text-slate-500">Paso 03</span>
                     </div>
-                    <h3 class="text-lg font-bold text-white">Revisión & Negociación</h3>
+                    <h3 class="text-lg font-bold text-white">Revisión y negociación</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Ambas partes ven el borrador, proponen ajustes en precio o plazos y adjuntan la documentación obligatoria por ley.
+                        Ambas partes revisan el borrador, proponen ajustes en precio o plazos y adjuntan la documentación necesaria.
                     </p>
                     <div class="pt-2 text-[11px] text-amber-400 font-semibold">
                         💬 Control de propuestas en vivo
@@ -655,9 +655,9 @@
                         <span class="w-10 h-10 rounded-2xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400 font-black text-lg">4</span>
                         <span class="text-xs font-bold text-slate-500">Paso 04</span>
                     </div>
-                    <h3 class="text-lg font-bold text-white">Firma eIDAS & Sellado</h3>
+                    <h3 class="text-lg font-bold text-white">Firma eIDAS y sellado</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Firma electrónica con código OTP recibido por email. El contrato se bloquea y se sella con certificado probatorio.
+                        Firma electrónica con plena validez legal. El contrato se bloquea y se custodia con su certificado probatorio de evidencias.
                     </p>
                     <div class="pt-2 text-[11px] text-purple-400 font-semibold">
                         🔒 Sellado de tiempo SHA-256
@@ -668,16 +668,16 @@
         </div>
     </section>
 
-    <!-- KEY ADVANTAGES & AGILITY SHOWCASE -->
+    <!-- KEY ADVANTAGES -->
     <section id="ventajas" class="py-20 bg-slate-900/40 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-teal-400 bg-teal-950 border border-teal-800 px-3.5 py-1 rounded-full">
-                    Tecnología al Servicio de tu Tranquilidad
+                    Tecnología al servicio de tu tranquilidad
                 </span>
                 <h2 class="text-3xl sm:text-5xl font-black text-white">Todo lo que necesitas para pactar sin riesgos</h2>
                 <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
-                    Tratix combina inteligencia jurídica y usabilidad de vanguardia para que cierres tratos con absoluta confianza.
+                    Tratix combina rigor jurídico y facilidad de uso para que cierres acuerdos con absoluta confianza.
                 </p>
             </div>
 
@@ -687,9 +687,9 @@
                     <div class="w-12 h-12 rounded-2xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-2xl">
                         🪪
                     </div>
-                    <h3 class="text-xl font-bold text-white">Escáner OCR Dual Anverso + Reverso</h3>
+                    <h3 class="text-xl font-bold text-white">Escáner OCR dual de anverso y reverso</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Sube o fotografía el documento de identidad desde tu smartphone. Nuestro motor OCR extrae los datos fiscales y adjunta las fotos oficiales al expediente contractual de forma inmutable.
+                        Sube o fotografía el documento de identidad desde tu móvil. El motor OCR extrae los datos fiscales y adjunta las fotos oficiales al expediente contractual de forma inmutable.
                     </p>
                 </div>
 
@@ -697,9 +697,9 @@
                     <div class="w-12 h-12 rounded-2xl bg-blue-950 border border-blue-800 flex items-center justify-center text-2xl">
                         🤝
                     </div>
-                    <h3 class="text-xl font-bold text-white">Delegación a la Contraparte sin Registro</h3>
+                    <h3 class="text-xl font-bold text-white">Delegación a la otra parte sin registro</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Si no conoces el DNI o domicilio de la otra parte, no te preocupes: envíale un enlace privado. Podrá rellenar su información y verificar su identidad en segundos desde su propio móvil.
+                        Si no conoces el DNI o domicilio de la otra parte, no te preocupes: envíale un enlace privado. Podrá completar su información y verificar su identidad en segundos desde su móvil.
                     </p>
                 </div>
 
@@ -707,9 +707,9 @@
                     <div class="w-12 h-12 rounded-2xl bg-purple-950 border border-purple-800 flex items-center justify-center text-2xl">
                         ✍️
                     </div>
-                    <h3 class="text-xl font-bold text-white">Firma Electrónica eIDAS Certificada</h3>
+                    <h3 class="text-xl font-bold text-white">Firma electrónica eIDAS certificada</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Validación mediante código OTP por correo electrónico, sellado de tiempo RFC 3161 y generación de la Hoja de Evidencias con trazabilidad de direcciones IP y consentimientos explícitos.
+                        Firma digital con registro de evidencias, sellado de tiempo RFC 3161 y generación de la hoja de evidencias con trazabilidad de IP y consentimientos explícitos.
                     </p>
                 </div>
 
@@ -717,9 +717,9 @@
                     <div class="w-12 h-12 rounded-2xl bg-teal-950 border border-teal-800 flex items-center justify-center text-2xl">
                         📁
                     </div>
-                    <h3 class="text-xl font-bold text-white">Expediente Documental y Guía de Trámites</h3>
+                    <h3 class="text-xl font-bold text-white">Expediente documental y guía de trámites</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Checklist clasificado entre <strong>Documentación Obligatoria por Ley</strong> y <strong>Recomendada</strong>. Enlaces directos para tramitar el ITP, cambio en DGT o consulta en el Registro de la Propiedad.
+                        Guía clasificada entre documentación obligatoria por ley y recomendada. Enlaces directos para tramitar el ITP, transferencias en la DGT o consultas registrales.
                     </p>
                 </div>
 
@@ -727,9 +727,9 @@
                     <div class="w-12 h-12 rounded-2xl bg-amber-950 border border-amber-800 flex items-center justify-center text-2xl">
                         ⚡
                     </div>
-                    <h3 class="text-xl font-bold text-white">Sugerencias y Ejemplos en 1 Clic</h3>
+                    <h3 class="text-xl font-bold text-white">Sugerencias y ejemplos en un clic</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Botones inteligentes que insertan ejemplos redactados por abogados para condiciones de pago, garantías, plazos de entrega y estado de cargas, adaptados exactamente a tu caso.
+                        Opciones rápidas que insertan ejemplos redactados por abogados para condiciones de pago, garantías, plazos de entrega y estado de cargas adaptados a cada contrato.
                     </p>
                 </div>
 
@@ -737,9 +737,9 @@
                     <div class="w-12 h-12 rounded-2xl bg-rose-950 border border-rose-800 flex items-center justify-center text-2xl">
                         🛡️
                     </div>
-                    <h3 class="text-xl font-bold text-white">Máxima Privacidad RGPD & Cifrado Cloud</h3>
+                    <h3 class="text-xl font-bold text-white">Máxima privacidad RGPD y custodia segura</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Cumplimiento estricto del RGPD y LOPDGDD. Almacenamiento seguro en la nube (Cloudflare R2 / AWS S3 cifrado), purga automática de temporales y canal directo con nuestro Delegado de Protección de Datos (DPO).
+                        Cumplimiento riguroso del RGPD y la LOPDGDD. Almacenamiento seguro y cifrado en la Unión Europea, purga periódica de temporales y contacto directo con el DPO.
                     </p>
                 </div>
 
@@ -751,23 +751,23 @@
     <section id="modelos" class="py-20" x-data="{
         filter: 'all',
         models: [
-            { category: 'motor', icon: '🚗', name: 'Compraventa de Vehículos Usados', desc: 'Coches, motos, furgonetas y embarcaciones. Incluye cláusula de estado técnico, exención de vicios ocultos y guía DGT.', tag: 'El más usado', tagColor: 'emerald' },
-            { category: 'inmueble', icon: '🏠', name: 'Contrato de Arras Penitenciales', desc: 'Conforme al artículo 1454 del Código Civil español. Reserva de vivienda con penalización por duplicado o desistimiento legal.', tag: 'Inmobiliario', tagColor: 'blue' },
-            { category: 'b2b', icon: '💼', name: 'Prestación de Servicios Profesionales', desc: 'Para autónomos, consultores y agencias. Hitos de entrega, confidencialidad, cesión de propiedad intelectual y penalizaciones.', tag: 'B2B / Freelance', tagColor: 'purple' },
-            { category: 'b2b', icon: '📦', name: 'Compraventa de Bienes Muebles', desc: 'Maquinaria, electrónica, mobiliario y stock comercial. Adaptable a transacciones nacionales e intracomunitarias (VIES).', tag: 'Mercantil', tagColor: 'slate' },
-            { category: 'seguridad', icon: '🔒', name: 'Acuerdo de Confidencialidad (NDA)', desc: 'Bilateral o unilateral para proyectos de negocio, software, patentes o intercambio de secretos empresariales.', tag: 'Protección', tagColor: 'amber' },
-            { category: 'finanzas', icon: '💶', name: 'Préstamo y Reconocimiento de Deuda', desc: 'Préstamos entre familiares o particulares sin intereses, exentos del Impuesto de Transmisiones Patrimoniales (ITP).', tag: 'Financiero', tagColor: 'teal' }
+            { category: 'motor', icon: '🚗', name: 'Compraventa de vehículos usados', desc: 'Coches, motos, furgonetas y embarcaciones. Incluye cláusula de estado técnico, exención de vicios ocultos y guía para la DGT.', tag: 'El más utilizado', tagColor: 'emerald' },
+            { category: 'inmueble', icon: '🏠', name: 'Contrato de arras penitenciales', desc: 'Conforme al artículo 1454 del Código Civil español. Reserva de vivienda con penalización por duplicado o desistimiento legal.', tag: 'Inmobiliario', tagColor: 'blue' },
+            { category: 'b2b', icon: '💼', name: 'Prestación de servicios profesionales', desc: 'Para autónomos, consultores y agencias. Hitos de entrega, confidencialidad, cesión de propiedad intelectual y penalizaciones.', tag: 'B2B y freelance', tagColor: 'purple' },
+            { category: 'b2b', icon: '📦', name: 'Compraventa de bienes muebles', desc: 'Maquinaria, electrónica, mobiliario y existencias comerciales. Adaptable a transacciones nacionales e intracomunitarias (VIES).', tag: 'Mercantil', tagColor: 'slate' },
+            { category: 'seguridad', icon: '🔒', name: 'Acuerdo de confidencialidad (NDA)', desc: 'Bilateral o unilateral para proyectos de negocio, software, patentes o intercambio de información confidencial.', tag: 'Protección', tagColor: 'amber' },
+            { category: 'finanzas', icon: '💶', name: 'Préstamo y reconocimiento de deuda', desc: 'Préstamos entre familiares o particulares sin intereses, exentos del Impuesto sobre Transmisiones Patrimoniales (ITP).', tag: 'Financiero', tagColor: 'teal' }
         ]
     }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full">
-                    Especialización Legal
+                    Especialización legal
                 </span>
                 <h2 class="text-3xl sm:text-5xl font-black text-white">Plantillas jurídicas para cualquier acuerdo</h2>
                 <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
-                    Cada contrato incluye el articulado técnico necesario para blindar la operación ante Hacienda, tribunales y terceros.
+                    Cada contrato incluye el articulado técnico necesario para asegurar la operación ante Hacienda, tribunales y terceros.
                 </p>
 
                 {{-- Interactive Filter Buttons --}}
@@ -775,12 +775,12 @@
                     <button type="button" @click="filter = 'all'"
                         :class="filter === 'all' ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'"
                         class="px-4 py-1.5 rounded-full text-xs font-semibold transition">
-                        Todos los Modelos
+                        Todos los modelos
                     </button>
                     <button type="button" @click="filter = 'motor'"
                         :class="filter === 'motor' ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'"
                         class="px-4 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-1">
-                        <span>🚗</span> Motor & DGT
+                        <span>🚗</span> Motor y DGT
                     </button>
                     <button type="button" @click="filter = 'inmueble'"
                         :class="filter === 'inmueble' ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'"
@@ -790,12 +790,12 @@
                     <button type="button" @click="filter = 'b2b'"
                         :class="filter === 'b2b' ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'"
                         class="px-4 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-1">
-                        <span>💼</span> Empresas & Autónomos
+                        <span>💼</span> Empresas y autónomos
                     </button>
                     <button type="button" @click="filter = 'seguridad'"
                         :class="filter === 'seguridad' ? 'bg-emerald-500 text-slate-950 font-bold' : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'"
                         class="px-4 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-1">
-                        <span>🔒</span> NDAs & Finanzas
+                        <span>🔒</span> Acuerdos NDA y finanzas
                     </button>
                 </div>
             </div>
@@ -814,7 +814,7 @@
                             <p class="text-xs text-slate-400 leading-relaxed" x-text="item.desc"></p>
                         </div>
                         <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
-                            <span class="text-[11px] text-emerald-400 font-semibold">100% Legal eIDAS</span>
+                            <span class="text-[11px] text-emerald-400 font-semibold">100% legal eIDAS</span>
                             <a href="{{ route('register') }}" class="text-xs font-bold text-white hover:text-emerald-400 transition flex items-center gap-1">
                                 <span>Crear</span>
                                 <span>→</span>
@@ -826,11 +826,11 @@
         </div>
     </section>
 
-    <!-- REFERRAL PROGRAM & INTERACTIVE REWARDS CALCULATOR -->
+    <!-- REFERRAL PROGRAM & REWARDS CALCULATOR -->
     <section id="referidos" class="py-20 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/40 border-y border-emerald-900/40"
         x-data="{
             referrals: 5,
-            proPrice: 9,
+            proPrice: 19,
             get freeMonths() {
                 return this.referrals;
             },
@@ -841,11 +841,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-950/80 border border-amber-800 px-4 py-1.5 rounded-full shadow-md">
-                    🎁 Programa de Invitaciones y Recompensas
+                    🎁 Programa de invitaciones y recompensas
                 </span>
-                <h2 class="text-3xl sm:text-5xl font-black text-white">Invita a tus contactos y ambos conseguís 1 Mes Pro Gratis</h2>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Invita a tus contactos y ambos conseguís 1 mes Pro gratis</h2>
                 <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-                    Comparte tu enlace exclusivo con amigos, clientes, autónomos o empresas. Por cada registro, tú y tu contacto recibís <strong>1 mes de Tratix Pro ilimitado gratis</strong> (valorado en 9 €) y <strong>1 crédito extra de sellado</strong>.
+                    Comparte tu enlace exclusivo con amigos, clientes, autónomos o empresas. Por cada registro, tú y tu contacto recibís <strong>1 mes de Tratix Pro gratis</strong> (valorado en 19 €) y <strong>1 crédito extra de sellado</strong>.
                 </p>
             </div>
 
@@ -854,7 +854,7 @@
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
                     <div>
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
-                            <span>🧮 Calculadora de Ahorro y Meses Pro Acumulados</span>
+                            <span>🧮 Calculadora de ahorro y meses Pro acumulados</span>
                         </h3>
                         <span class="text-xs text-slate-400">Ajusta el número de amigos o colegas que invitarías a Tratix</span>
                     </div>
@@ -867,7 +867,7 @@
                 {{-- Interactive Range Slider --}}
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs text-slate-300 font-semibold">
-                        <span>Contactos o Clientes Invitados:</span>
+                        <span>Contactos o clientes invitados:</span>
                         <span class="text-amber-400 font-bold" x-text="referrals + ' registros completados'"></span>
                     </div>
                     <input type="range" min="1" max="24" step="1" x-model="referrals" 
@@ -885,7 +885,7 @@
                         ✓ <strong>Beneficio mutuo:</strong> Tu invitado también recibe 1 mes de Plan Pro gratis de bienvenida y 1 crédito de sellado.
                     </div>
                     <a href="{{ route('register') }}" class="btn-primary text-xs px-6 py-2.5 font-bold shadow-lg shadow-emerald-950 shrink-0">
-                        🎁 Obtener mi Enlace de Invitación →
+                        🎁 Obtener mi enlace de invitación →
                     </a>
                 </div>
             </div>
@@ -893,26 +893,26 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto pt-4">
                 <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-center">
                     <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-950 border border-amber-800 flex items-center justify-center text-xl font-black text-amber-400">1</div>
-                    <h3 class="text-base font-bold text-white">Obtén tu Enlace Único</h3>
+                    <h3 class="text-base font-bold text-white">Obtén tu enlace único</h3>
                     <p class="text-xs text-slate-400">Copia tu enlace personal desde tu panel de usuario o perfil con un solo clic.</p>
                 </div>
 
                 <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-center">
                     <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-950 border border-emerald-800 flex items-center justify-center text-xl font-black text-emerald-400">2</div>
-                    <h3 class="text-base font-bold text-white">Compártelo con tu Red</h3>
+                    <h3 class="text-base font-bold text-white">Compártelo con tus contactos</h3>
                     <p class="text-xs text-slate-400">Envíalo por WhatsApp, email o redes a quien necesite redactar o firmar contratos.</p>
                 </div>
 
                 <div class="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-center">
                     <div class="w-12 h-12 mx-auto rounded-2xl bg-teal-950 border border-teal-800 flex items-center justify-center text-xl font-black text-teal-400">3</div>
-                    <h3 class="text-base font-bold text-white">Recompensas Inmediatas</h3>
+                    <h3 class="text-base font-bold text-white">Recompensas inmediatas</h3>
                     <p class="text-xs text-slate-400">En cuanto se registren, se os activa a ambos 1 mes de Plan Pro y créditos de sellado.</p>
                 </div>
             </div>
 
             <div class="text-center">
                 <a href="{{ route('register') }}" class="btn-primary inline-flex items-center gap-2 text-sm px-8 py-3.5 font-extrabold shadow-xl shadow-emerald-950">
-                    <span>🎁 Unirme al Programa y Conseguir Meses Pro Gratis</span>
+                    <span>🎁 Unirme al programa y conseguir meses Pro gratis</span>
                     <span>→</span>
                 </a>
             </div>
@@ -924,9 +924,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full">
-                    Precios Claros y Sin Sorpresas
+                    Precios claros y sin sorpresas
                 </span>
-                <h2 class="text-3xl sm:text-5xl font-black text-white">Empieza gratis, escala cuando lo necesites</h2>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Empieza gratis y amplía cuando lo necesites</h2>
                 <p class="text-sm sm:text-base text-slate-400 leading-relaxed">
                     Todos los planes incluyen validez legal eIDAS, custodia criptográfica y escáner OCR de DNI.
                 </p>
@@ -937,29 +937,29 @@
                 {{-- Free Plan --}}
                 <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-xl space-y-6 flex flex-col justify-between">
                     <div class="space-y-4">
-                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Plan Starter</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Plan inicial</span>
                         <h3 class="text-2xl font-bold text-white">Gratis</h3>
                         <div class="text-3xl font-black text-white">0 € <span class="text-xs text-slate-500 font-normal">/ para siempre</span></div>
                         <p class="text-xs text-slate-400">Ideal para compras o ventas puntuales entre particulares.</p>
 
                         <ul class="space-y-3 text-xs text-slate-300 pt-4 border-t border-slate-800">
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> 2 contratos legales al mes</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Escáner OCR de DNI (Anverso + Reverso)</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Firma electrónica eIDAS con OTP</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Escáner OCR de DNI (anverso y reverso)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Firma electrónica eIDAS</li>
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Sellado temporal SHA-256</li>
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Expediente documental básico</li>
                         </ul>
                     </div>
 
                     <a href="{{ route('register') }}" class="btn-outline w-full text-center text-xs py-3 font-bold hover:border-emerald-500 hover:text-emerald-300">
-                        Comenzar Gratis
+                        Comenzar gratis
                     </a>
                 </div>
 
                 {{-- Pro Plan --}}
                 <div class="bg-slate-900 border-2 border-emerald-500 rounded-3xl p-8 shadow-2xl shadow-emerald-950/60 space-y-6 flex flex-col justify-between relative">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-slate-950 text-[10px] font-black uppercase px-4 py-1 rounded-full tracking-wider shadow-md">
-                        Más Popular
+                        Más popular
                     </div>
 
                     <div class="space-y-4">
@@ -969,11 +969,11 @@
                         <p class="text-xs text-slate-400">Para autónomos, profesionales y usuarios activos.</p>
 
                         <ul class="space-y-3 text-xs text-slate-200 pt-4 border-t border-slate-800">
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> <strong>Contratos Ilimitados</strong></li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Todas las plantillas avanzadas (B2B, Arras, NDAs)</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> <strong>Contratos ilimitados</strong></li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Todas las plantillas avanzadas (B2B, arras, acuerdos NDA)</li>
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Exportación masiva en archivo ZIP</li>
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Hoja de evidencias extendida</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Soporte prioritario en menos de 4h</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Soporte prioritario en menos de 4 h</li>
                         </ul>
                     </div>
 
@@ -992,9 +992,9 @@
 
                         <ul class="space-y-3 text-xs text-slate-300 pt-4 border-t border-slate-800">
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Todo lo incluido en Pro</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Múltiples agentes y usuarios en equipo</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Logotipo y branding corporativo en contratos</li>
-                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Integración API y Webhooks</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Múltiples agentes y usuarios de equipo</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Logotipo y marca corporativa en los contratos</li>
+                            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Integración mediante API y webhooks</li>
                             <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Asesor legal asignado</li>
                         </ul>
                     </div>
@@ -1013,36 +1013,36 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div class="text-center max-w-3xl mx-auto space-y-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full">
-                    Sobre Nosotros
+                    Sobre nosotros
                 </span>
-                <h2 class="text-3xl sm:text-5xl font-black text-white">Nuestra misión: Democratizar la seguridad jurídica sin burocracia</h2>
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Nuestra misión: democratizar la seguridad jurídica sin burocracia</h2>
                 <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
-                    Tratix nació en España de la unión de juristas especializados en derecho mercantil y desarrolladores de software con una visión clara: poner fin a la desprotección y la pérdida de tiempo que sufren millones de personas al formalizar acuerdos en su día a día.
+                    Tratix nació en España de la unión de juristas especializados en derecho mercantil y desarrolladores de software con una visión clara: poner fin a la desprotección y a la pérdida de tiempo que sufren particulares y empresas al formalizar acuerdos cotidianos.
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800 space-y-3">
-                    <span class="text-2xl font-black text-emerald-400 block">01. Rigor Jurídico</span>
-                    <h3 class="text-base font-bold text-white">Actualización Continua</h3>
+                    <span class="text-2xl font-black text-emerald-400 block">01. Rigor jurídico</span>
+                    <h3 class="text-base font-bold text-white">Actualización continua</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Nuestras plantillas y reglas de negocio son revisadas periódicamente por abogados colegiados en España y juristas internacionales para reflejar los últimos cambios legales y jurisprudenciales.
+                        Nuestras plantillas y modelos son revisados periódicamente por abogados colegiados en España y juristas para reflejar los últimos cambios legales y jurisprudenciales.
                     </p>
                 </div>
 
                 <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800 space-y-3">
-                    <span class="text-2xl font-black text-blue-400 block">02. Privacidad Ética</span>
-                    <h3 class="text-base font-bold text-white">Cumplimiento RGPD Real</h3>
+                    <span class="text-2xl font-black text-blue-400 block">02. Privacidad ética</span>
+                    <h3 class="text-base font-bold text-white">Cumplimiento riguroso del RGPD</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        No comercializamos tus datos ni los usamos para entrenar modelos externos. Tu documentación se almacena cifrada en servidores seguros de la Unión Europea bajo estricto secreto profesional.
+                        No comercializamos tus datos ni los cedemos a terceros. Tu documentación se almacena cifrada en servidores seguros de la Unión Europea bajo estricta confidencialidad.
                     </p>
                 </div>
 
                 <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800 space-y-3">
-                    <span class="text-2xl font-black text-teal-400 block">03. Usabilidad Radical</span>
-                    <h3 class="text-base font-bold text-white">Cero Curva de Aprendizaje</h3>
+                    <span class="text-2xl font-black text-teal-400 block">03. Facilidad de uso</span>
+                    <h3 class="text-base font-bold text-white">Sin curva de aprendizaje</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Creemos que el mejor software es aquel que no requiere manuales. Tratix te guía paso a paso, automatizando la parte compleja para que solo tengas que confirmar los términos de tu acuerdo.
+                        Creemos que el mejor software es aquel que no requiere manuales. Tratix te guía paso a paso para que solo tengas que confirmar los términos de tu acuerdo.
                     </p>
                 </div>
             </div>
@@ -1054,7 +1054,7 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div class="text-center space-y-4">
                 <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full">
-                    Preguntas Frecuentes
+                    Preguntas frecuentes
                 </span>
                 <h2 class="text-3xl sm:text-4xl font-black text-white">Resolvemos tus dudas legales y técnicas</h2>
             </div>
@@ -1067,7 +1067,7 @@
                         <span class="text-emerald-400 text-lg" x-text="openFaq === 1 ? '−' : '+'"></span>
                     </button>
                     <div x-show="openFaq === 1" x-transition.opacity class="mt-3 text-slate-400 leading-relaxed pt-2 border-t border-slate-800">
-                        La firma electrónica de Tratix cumple rigurosamente con el Reglamento Europeo (UE) Nº 910/2014 (eIDAS), la Ley 6/2020 de servicios electrónicos de confianza y el Código Civil. Cada contrato firmado incluye una Hoja de Evidencias Digital con el código OTP verificado, registro de direcciones IP, fecha y hora oficial sellada (RFC 3161) y el hash criptográfico SHA-256 que garantiza que el documento no ha sido alterado.
+                        La firma electrónica de Tratix cumple rigurosamente con el Reglamento Europeo (UE) Nº 910/2014 (eIDAS), la Ley 6/2020 de servicios electrónicos de confianza y el Código Civil. Cada contrato firmado incluye una hoja de evidencias digital con registro de direcciones IP, fecha y hora oficial sellada (RFC 3161) y el hash criptográfico SHA-256 que garantiza que el documento no ha sido alterado.
                     </div>
                 </div>
 
@@ -1077,7 +1077,7 @@
                         <span class="text-emerald-400 text-lg" x-text="openFaq === 2 ? '−' : '+'"></span>
                     </button>
                     <div x-show="openFaq === 2" x-transition.opacity class="mt-3 text-slate-400 leading-relaxed pt-2 border-t border-slate-800">
-                        No. Tratix está diseñado para eliminar cualquier fricción: puedes enviar un enlace seguro por email o WhatsApp. La contraparte accede directamente, revisa las cláusulas, puede proponer cambios o rellenar sus datos de DNI y firma con un código de verificación que recibe en su propio correo electrónico sin pagar ni registrarse.
+                        No. Tratix está diseñado para eliminar cualquier fricción: puedes enviar un enlace seguro por correo electrónico o WhatsApp. La contraparte accede directamente, revisa las cláusulas, puede proponer cambios o completar sus datos de DNI y firma de forma inmediata sin pagar ni registrarse.
                     </div>
                 </div>
 
@@ -1087,7 +1087,7 @@
                         <span class="text-emerald-400 text-lg" x-text="openFaq === 3 ? '−' : '+'"></span>
                     </button>
                     <div x-show="openFaq === 3" x-transition.opacity class="mt-3 text-slate-400 leading-relaxed pt-2 border-t border-slate-800">
-                        Tus documentos se procesan mediante canales cifrados TLS 1.3 y se almacenan en repositorios privados con cifrado de grado bancario en la Unión Europea. Solo las partes del contrato tienen acceso a ellos. Además, dispones de herramientas directas para solicitar la portabilidad o supresión de tus datos en cualquier momento conforme al RGPD.
+                        Tus documentos se procesan mediante canales cifrados TLS 1.3 y se almacenan en repositorios privados con cifrado de alto nivel en la Unión Europea. Solo las partes del contrato tienen acceso a ellos. Además, dispones de herramientas directas para solicitar la portabilidad o supresión de tus datos en cualquier momento conforme al RGPD.
                     </div>
                 </div>
 
@@ -1097,7 +1097,7 @@
                         <span class="text-emerald-400 text-lg" x-text="openFaq === 4 ? '−' : '+'"></span>
                     </button>
                     <div x-show="openFaq === 4" x-transition.opacity class="mt-3 text-slate-400 leading-relaxed pt-2 border-t border-slate-800">
-                        Una vez firmado el contrato, Tratix genera automáticamente un Expediente Documental con la guía específica para tu tipo de acuerdo: te indicamos cómo y dónde liquidar el Impuesto de Transmisiones Patrimoniales (Modelo 620/600), cómo tramitar el cambio de titularidad en la DGT en compraventas de vehículos o qué hacer con la fianza en contratos de alquiler.
+                        Una vez firmado el contrato, Tratix genera automáticamente un expediente documental con la guía específica para tu tipo de acuerdo: te indicamos cómo y dónde liquidar el Impuesto sobre Transmisiones Patrimoniales (modelos 620/600), cómo tramitar el cambio de titularidad en la DGT en compraventas de vehículos o qué hacer con la fianza en contratos de alquiler.
                     </div>
                 </div>
 
@@ -1146,7 +1146,7 @@
                 
                 <div class="space-y-6">
                     <span class="text-xs font-bold uppercase tracking-widest text-emerald-400 bg-emerald-950 border border-emerald-800 px-3.5 py-1 rounded-full">
-                        Atención Personalizada
+                        Atención personalizada
                     </span>
                     <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight">
                         ¿Tienes dudas o necesitas un plan a medida?
@@ -1176,7 +1176,7 @@
                     <template x-if="sent">
                         <div class="p-6 text-center space-y-4 bg-emerald-950/40 border border-emerald-500/50 rounded-2xl">
                             <span class="text-4xl">🎉</span>
-                            <h3 class="text-lg font-bold text-white">¡Mensaje Recibido con Éxito!</h3>
+                            <h3 class="text-lg font-bold text-white">¡Mensaje recibido con éxito!</h3>
                             <p class="text-xs text-slate-300 leading-relaxed">
                                 Gracias por escribirnos. Uno de nuestros especialistas se pondrá en contacto contigo en tu correo a la mayor brevedad.
                             </p>
@@ -1200,20 +1200,20 @@
                                         class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:ring-2 focus:ring-emerald-500">
                                 </div>
                                 <div>
-                                    <label class="block font-semibold text-slate-300 mb-1">Correo Electrónico *</label>
+                                    <label class="block font-semibold text-slate-300 mb-1">Correo electrónico *</label>
                                     <input type="email" x-model="form.email" required placeholder="tu@email.com"
                                         class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:ring-2 focus:ring-emerald-500">
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1">Asunto de la Consulta *</label>
+                                <label class="block font-semibold text-slate-300 mb-1">Asunto de la consulta *</label>
                                 <input type="text" x-model="form.subject" required placeholder="Ej: Duda sobre contrato de arras o plan Business"
                                     class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:ring-2 focus:ring-emerald-500">
                             </div>
 
                             <div>
-                                <label class="block font-semibold text-slate-300 mb-1">Mensaje o Consulta Detallada *</label>
+                                <label class="block font-semibold text-slate-300 mb-1">Mensaje o consulta detallada *</label>
                                 <textarea x-model="form.message" rows="4" required placeholder="Explícanos brevemente qué necesitas..."
                                     class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:ring-2 focus:ring-emerald-500"></textarea>
                             </div>
@@ -1228,7 +1228,7 @@
                             </div>
 
                             <button type="submit" :disabled="sending" class="btn-primary w-full text-xs sm:text-sm py-3 font-bold shadow-lg shadow-emerald-950 flex items-center justify-center gap-2">
-                                <span x-show="!sending">📨 Enviar Mensaje a Soporte</span>
+                                <span x-show="!sending">📨 Enviar mensaje a soporte</span>
                                 <span x-show="sending">Enviando mensaje...</span>
                             </button>
                         </form>
@@ -1242,13 +1242,13 @@
     <!-- FINAL CTA BANNER -->
     <section class="py-20 text-center relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <h2 class="text-3xl sm:text-5xl font-black text-white">¿Listo para firmar tu próximo contrato con total tranquilidad?</h2>
+            <h2 class="text-3xl sm:text-5xl font-black text-white">¿Listo para formalizar tu próximo contrato con total tranquilidad?</h2>
             <p class="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
                 Crea tu cuenta gratuita en 30 segundos y experimenta la forma más rápida y segura de cerrar acuerdos legales.
             </p>
             <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="{{ route('register') }}" class="btn-primary text-sm sm:text-base px-8 py-4 font-extrabold shadow-2xl shadow-emerald-500/30 hover:scale-105 transition-transform">
-                    🚀 Empezar Gratis Ahora (Sin Tarjeta)
+                    🚀 Empezar gratis ahora (sin tarjeta)
                 </a>
             </div>
         </div>
@@ -1268,17 +1268,17 @@
                         Plataforma de generación, negociación y firma electrónica de contratos con plena validez legal eIDAS, lectura OCR de DNI y custodia criptográfica SHA-256.
                     </p>
                     <div class="text-[11px] text-slate-500">
-                        🇪🇸 Desarrollado y alojado en la Unión Europea. Cumplimiento estricto RGPD & LOPDGDD.
+                        🇪🇸 Desarrollado y alojado en la Unión Europea. Cumplimiento estricto del RGPD y la LOPDGDD.
                     </div>
                 </div>
 
                 <div class="space-y-2.5">
                     <h4 class="text-white font-bold uppercase tracking-wider text-[11px]">Modelos</h4>
                     <ul class="space-y-2 text-slate-400">
-                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Compraventa Vehículos</a></li>
-                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Arras Penitenciales</a></li>
-                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Inmuebles y Alquiler</a></li>
-                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Servicios y Freelance</a></li>
+                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Compraventa de vehículos</a></li>
+                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Arras penitenciales</a></li>
+                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Inmuebles y alquiler</a></li>
+                        <li><a href="#modelos" class="hover:text-emerald-400 transition">Servicios y freelance</a></li>
                         <li><a href="#modelos" class="hover:text-emerald-400 transition">Acuerdos NDA</a></li>
                     </ul>
                 </div>
@@ -1286,33 +1286,33 @@
                 <div class="space-y-2.5">
                     <h4 class="text-white font-bold uppercase tracking-wider text-[11px]">Plataforma</h4>
                     <ul class="space-y-2 text-slate-400">
-                        <li><a href="#como-funciona" class="hover:text-emerald-400 transition">Cómo Funciona</a></li>
-                        <li><a href="#comparativa" class="hover:text-emerald-400 transition">Tratix vs PDF</a></li>
-                        <li><a href="{{ route('billing.pricing') }}" class="hover:text-emerald-400 transition">Planes y Precios</a></li>
-                        <li><a href="{{ route('referrals.index') }}" class="hover:text-emerald-400 transition text-amber-400">Programa de Referidos</a></li>
-                        <li><a href="{{ route('login') }}" class="hover:text-emerald-400 transition">Acceso Usuarios</a></li>
+                        <li><a href="#como-funciona" class="hover:text-emerald-400 transition">Cómo funciona</a></li>
+                        <li><a href="#comparativa" class="hover:text-emerald-400 transition">Tratix vs. PDF</a></li>
+                        <li><a href="{{ route('billing.pricing') }}" class="hover:text-emerald-400 transition">Planes y precios</a></li>
+                        <li><a href="{{ route('referrals.index') }}" class="hover:text-emerald-400 transition text-amber-400">Programa de referidos</a></li>
+                        <li><a href="{{ route('login') }}" class="hover:text-emerald-400 transition">Acceso de usuarios</a></li>
                     </ul>
                 </div>
 
                 <div class="space-y-2.5">
-                    <h4 class="text-white font-bold uppercase tracking-wider text-[11px]">Legal & RGPD</h4>
+                    <h4 class="text-white font-bold uppercase tracking-wider text-[11px]">Legal y RGPD</h4>
                     <ul class="space-y-2 text-slate-400">
-                        <li><a href="{{ route('privacy') }}" class="hover:text-white transition">Política de Privacidad</a></li>
-                        <li><a href="{{ route('privacy') }}#cookies" class="hover:text-white transition">Política de Cookies</a></li>
+                        <li><a href="{{ route('privacy') }}" class="hover:text-white transition">Política de privacidad</a></li>
+                        <li><a href="{{ route('privacy') }}#cookies" class="hover:text-white transition">Política de cookies</a></li>
                         <li>
                             <button type="button" onclick="window.dispatchEvent(new CustomEvent('tratix:open-cookie-preferences'))" class="hover:text-emerald-400 text-left transition flex items-center gap-1">
-                                <span>⚙️</span> Configuración de Cookies
+                                <span>⚙️</span> Configuración de cookies
                             </button>
                         </li>
                         <li><a href="{{ route('privacy') }}#ejercicio-derechos" class="hover:text-white transition">Derechos ARCO+ (DPO)</a></li>
-                        <li><a href="#contacto" class="hover:text-white transition">Contacto & Soporte</a></li>
+                        <li><a href="#contacto" class="hover:text-white transition">Contacto y soporte</a></li>
                     </ul>
                 </div>
 
             </div>
 
             <div class="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
-                <p>© {{ date('Y') }} Tratix Legal Tech. Todos los derechos reservados. Cumplimiento eIDAS (UE) 910/2014 & RGPD (UE) 2016/679.</p>
+                <p>© {{ date('Y') }} Tratix Legal Tech. Todos los derechos reservados. Cumplimiento eIDAS (UE) 910/2014 y RGPD (UE) 2016/679.</p>
                 <div class="flex items-center gap-4">
                     <a href="{{ route('privacy') }}" class="hover:text-slate-300">Privacidad</a>
                     <button type="button" onclick="window.dispatchEvent(new CustomEvent('tratix:open-cookie-preferences'))" class="hover:text-slate-300">
@@ -1338,7 +1338,7 @@
             :class="activeSection === 'comparativa' ? 'bg-emerald-500 text-slate-950 font-bold' : 'hover:text-white hover:bg-slate-800'"
             class="px-3 py-1 rounded-full transition flex items-center gap-1">
             <span>⚖️</span>
-            <span>Tratix vs PDF</span>
+            <span>Tratix vs. PDF</span>
         </a>
         <a href="#modelos" 
             :class="activeSection === 'modelos' ? 'bg-emerald-500 text-slate-950 font-bold' : 'hover:text-white hover:bg-slate-800'"
@@ -1350,7 +1350,7 @@
             :class="activeSection === 'referidos' ? 'bg-emerald-500 text-slate-950 font-bold' : 'hover:text-white hover:bg-slate-800'"
             class="px-3 py-1 rounded-full transition flex items-center gap-1 text-amber-400 font-bold">
             <span>🎁</span>
-            <span>Invita y Gana Pro</span>
+            <span>Invita y gana Pro</span>
         </a>
         <a href="#contacto" 
             :class="activeSection === 'contacto' ? 'bg-emerald-500 text-slate-950 font-bold' : 'hover:text-white hover:bg-slate-800'"
@@ -1359,7 +1359,7 @@
             <span>Contacto</span>
         </a>
         <a href="{{ route('register') }}" class="ml-1 bg-emerald-500 text-slate-950 font-extrabold px-3 py-1 rounded-full hover:bg-emerald-400 transition shadow">
-            Empezar Gratis →
+            Empezar gratis →
         </a>
     </div>
 
