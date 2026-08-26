@@ -27,7 +27,7 @@ class CookieConsentAndAdSenseTest extends TestCase
         $response->assertSee('Google AdSense');
         $response->assertSee('Centro de Preferencias de Cookies');
         $response->assertSee('Espacio Patrocinado Google AdSense');
-        $response->assertSee('Configuración de Cookies');
+        $response->assertSee('Configuración de cookies');
     }
 
     public function test_privacy_page_renders_comprehensive_cookie_policy(): void
